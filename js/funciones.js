@@ -10,6 +10,7 @@ $(document).ready(function(){
 function leer(){
 	var url = "externas/pruebaConsulta.php";
 	var nombreB = $('#btn-ingresar').val();
+	
         $.ajax({                        
            type: "POST",                 
            url: url,                     

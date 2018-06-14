@@ -4,10 +4,10 @@
 	include('externas/menuDocente.php');
 	include('externas/lateral.php');
  ?>
-<title>QP2</title>
+<title>QP2</title>	 
 	<?php 
-		include('externas/contenido.php');
-	 ?>
+		include('externas/Preregistro.php')
+	?>
 	<?php 
 		include('externas/footer.php');
 	 ?>

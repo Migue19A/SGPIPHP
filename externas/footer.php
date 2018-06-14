@@ -1,5 +1,5 @@
 <footer class="container-fluid text-center" id="pie">
-            <div class="copyrights" style="margin-top:-50px;">
+            <div class="copyrights" style="margin-top:20px;">
                 <p>
                     Sección 5A Reserva Territorial s/n, Col. Santa Bárbara, CP 91096, Xalapa, Veracruz, México
                     <br>

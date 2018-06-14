@@ -40,7 +40,8 @@
         <script src="js/menuCom.js" type="text/javascript">
         </script>
         <script src="js/menuDocente.js" type="text/javascript">
-        </script>
+        </script>        
+        <script src="js/preRegistro.js" type="text/javascript"></script>
         <link href="css/sweetalert2.css" rel="stylesheet" type="text/css"/>
 		<script type="text/javascript" src="js/funciones.js"></script>
 
@@ -64,5 +65,21 @@
                 } 
               }
             }
+    </script>
+    <script type="text/javascript">
+            var currentStep = 1;
+            $(document).ready(function () {
+                $('.li-nav').click(function () {
+                    var $targetStep = $($(this).attr('step'));
+                    currentStep = parseInt($(this).attr('id').substr(7));
+                    if (!$(this).hasClass('disabled')) {
+                        $('.li-nav.active').removeClass('active');
+                        $(this).addClass('active');
+                        $('.setup-content').hide();
+                        $targetStep.show();
+                    }
+                });
+                $('#navStep1').click();
+            });
     </script>
 </head> 
