@@ -1,0 +1,13 @@
+<?php 
+	include('externas/head.php');
+	include('externas/header.php');
+	include('externas/menuDocente.php');
+	include('externas/lateral.php');
+ ?>
+<title>QP2</title>
+	<?php 
+		include('externas/contenido.php');
+	 ?>
+	<?php 
+		include('externas/footer.php');
+	 ?>
