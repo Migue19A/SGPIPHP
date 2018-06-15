@@ -324,9 +324,9 @@ function validate_importe(value, decimal) {
 
 function habilitarEspecifique() {
     if (document.getElementById('id_tipoSector_5').checked) {
-        document.getElementById('id_especifique').removeAttribute('disabled');
+        document.getElementById('id_especifique').removeAttribute('readonly');
     } else {
-        document.getElementById('id_especifique').disabled = "disabled";
+        document.getElementById('id_especifique').readonly = "readonly";
     }
 }
 
@@ -458,3 +458,24 @@ function step8Next() {
         $('#navStep9').click();
     }
 }
+
+$(document).ready(function(){
+     $('#recepcion_form').on('submit', function(e){
+        e.preventDefault();
+        var url = "controladores/preregistro/insertar.php";
+        var form = $('#recepcion_form').serialize();        
+        var nombreB = $('#btn-ingresar').val();
+        var checkEsp = $('#id_tipoSector_5').val();
+        console.log("CajaV: "+ checkEsp);
+    
+        $.ajax({                        
+           type: "POST",                 
+           url: url,                     
+           data: form,
+           success: function(data)             
+           {
+             $('#resp').html(data);               
+           }
+        });
+     });
+});

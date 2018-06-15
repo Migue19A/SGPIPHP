@@ -67,43 +67,64 @@
                             <h2 class="text-center">Pre-Registro de Proyecto de Investigación y Desarrollo Tecnológico</h2> 
                         </div>
                         <div class="panel-body">
-                            <form id="recepcion_form" name="form1" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">    
-                                {% csrf_token %}  
+                            <form id="recepcion_form" name="form1" class="container" method="POST" style="margin-left: 10px; width: 100%;">  
                                 <div class="row setup-content" id="step-1">
                                     <div class="col-md-12 col-lg-12">
                                         <div class="col-md-12">
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Recepción</h2>
                                             <div class="row">
-                                                {{form.folio_proyecto}}
                                                 <div class="form-group col-md-3 col-lg-6">
-                                                    <div class="input-group date">
-                                                <label>*Fecha de presentación</label>   
-                                                <input type="date" class="form-control" id="fechaPresentacion" required name = "fecha_presentacion" value="{{fecha}}" readonly>
-                                            </div>
+                                                <div class="input-group date">
+                                                <div id="resp">
+                                                    
                                                 </div>
-                                                <div class="form-group col-md-5 col-lg-5">                                 <label>*Convocatorio CPR</label>        
-                                                    {{form.convocatoria_CPR}}
+                                                <input type="hidden" name="folio_proyecto" value="PRE1">
+                                                <input type="hidden" name="recepcion" value="recepcion">
+                                                <label>*Fecha de presentación</label>   
+                                                <input type="date" class="form-control" id="fechaPresentacion" required name = "fecha_presentacion" min='2018-06-09' readonly>
+                                                </div>
+                                                </div>
+                                                <div class="form-group col-md-5 col-lg-5">
+                                                    <label>*Convocatorio CPR</label>        
+                                                    <input type="text" class="form-control" name="clave_cpr" readonly id="CPR" value="CPR1">
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-4">                                                    
+                                                <div class="col-md-4">                                       
                                                     <div class="row">
                                                         <label>*Tipo de investigación</label>
-                                                        {{form.tipoInvestigacion}}
+
+                                                        <select class="form-control" name="tipo_investigacion">
+                                                            <?php 
+                                                            $consulta= "SELECT * FROM  tipoinvestigacion ORDER BY id_tipo_investigacion";
+                                                            $resultado = pg_query($conexion, $consulta);
+                                                            while($row= pg_fetch_array($resultado)){
+                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";
+                                                            }
+                                                            ?>                                           
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-8">                                                
                                                     <div class="row">
                                                         <label>*Tipo de sector</label>
-                                                        {{ form.tipoSector}}
+                                                        <select class="form-control" name="tipo_sector">
+                                                            <?php 
+                                                            $consulta= "SELECT * FROM  tiposector ORDER BY id_tipo_sector";
+                                                            $resultado = pg_query($conexion, $consulta);
+                                                            while($row= pg_fetch_array($resultado)){
+                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";
+                                                            }
+                                                            ?>   
+                                                        </select>
                                                     <label for="id_tipoSector_5"><input id="id_tipoSector_5" onchange="habilitarEspecifique()" type="checkbox" name="tipoSector" value="otro">Otro</label>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-12 form-group"> 
+                                                <div class="col-md-d12 form-group"> 
                                                     <label>Especifique</label>
-                                                    {{form.otro_sector}}
+                                                    <textarea id="id_especifique" readonly name="especifique" class="form-control" rows="7" style="resize: none; width: 98%;"></textarea>
                                                 </div>
                                             </div>
                                             
@@ -111,12 +132,21 @@
                                             <div class="row">
                                                 <div class="col-md-12 form-group">
                                                     <label>*Línea de investigación</label>
-                                                    {{form.lineaInvestigacion}}
+                                                    <select class="form-control" name="linea_investigacion">
+                                                            <?php 
+                                                            $consulta= "SELECT * FROM  lineainvestigacion ORDER BY id_linea_investigacion";
+                                                            $resultado = pg_query($conexion, $consulta);
+                                                            while($row= pg_fetch_array($resultado)){
+                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";
+                                                            }
+                                                            ?>   
+                                                    </select>
                                                 </div>    
                                             </div> 
                                             <div class="row">
-                                                <div class="col-md-12">                             <label>*Nombre del proyecto</label>
-                                                    {{form.nombre_proyecto}}
+                                                <div class="col-md-12">
+                                                    <label>*Nombre del proyecto</label>
+                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%;" required name="nombre_proyecto"></textarea>
                                                     <label>Total de caracteres: 200</label><br>
                                                 
                                                 </div>
@@ -128,18 +158,18 @@
                                                 <div class="col-md-5 form-group">
                                                 <div class="input-group date">
                                                 <label>Inicio</label>    
-                                                <input type="date" value="{{fecha}}" class="form-control" required name="inicio" readonly min="{{fecha}}">
+                                                <input type="date" class="form-control" required name="fecha_inicio" id="fechaInicio">
                                                 </div>
                                                
                                                 </label>
                                                 </div>
                                                 <div class=" input-group date">
-                                                <label>Fin {{fecham}}</label>
-                                                <input type="date" class="form-control" required name="fin" min="{{fecham}}" max="{{fechaM}}">
+                                                <label>Fin</label>
+                                                <input type="date" class="form-control" required name="fecha_fin" id="fechaFin">
                                                 </div>
                                                 </div>                                           
-                                            <div class="row">
-                                                <input id="btnSig" type="submit" class="btn btn-primary" value="Siguiente" name="btnSgt" style="float: right;" >
+                                                <div class="row">
+                                                <input id="btnSig" class="btn btn-primary" value="Siguiente" name="btnSgt" type="submit" style="float: right;" >
                                             </div>
                                         </div>
                                     </div>
@@ -148,7 +178,6 @@
                             
                             <!--RESPONSABLE-->
                             <form id="responsable_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">
-                                {% csrf_token %} 
                                 <div class="row setup-content" id="step-2">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
@@ -215,8 +244,6 @@
                             <!--COLABORADORES-->
                             
                             <form id="colaborador_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">
-                                {% csrf_token %}
-                                {{ formset.management_form }}
                                 <div class="row setup-content" id="step-3">
                                 <input type="text" name="form-0-folio_proyecto"  readonly>
                                     <div class="col-md-12">

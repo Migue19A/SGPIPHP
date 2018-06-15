@@ -1,3 +1,6 @@
+<?php  
+include('conexion.php');
+?>
 <head>
 	<meta charset="utf-8">
 	<script src="MenuIzquierdo/moment.js">
@@ -80,6 +83,25 @@
                     }
                 });
                 $('#navStep1').click();
+
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth()+1; //January is 0!
+                var yyyy = today.getFullYear();
+                 if(dd<10){
+                        dd='0'+dd
+                    } 
+                    if(mm<10){
+                        mm='0'+mm
+                    } 
+
+                today = yyyy+'-'+mm+'-'+dd;
+                document.getElementById("fechaPresentacion").setAttribute("min", today);
+                document.getElementById("fechaPresentacion").setAttribute("value", today);
+                document.getElementById("fechaInicio").setAttribute("min", today);
+                document.getElementById("fechaInicio").setAttribute("value", today);
+                document.getElementById("fechaFin").setAttribute("min", today);
+                document.getElementById("fechaFin").setAttribute("value", today);
             });
     </script>
 </head> 
