@@ -142,7 +142,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>*Nombre del proyecto</label>
-                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%;" required name="nombre_proyecto"></textarea>
+                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%;" required name="nombre_proyecto">Pelador de chayotes</textarea>
                                                     <label>Total de caracteres: 200</label><br>
                                                 
                                                 </div>
