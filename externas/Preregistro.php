@@ -96,15 +96,12 @@
                                                         <select class="form-control" name="tipo_investigacion">
                                                         <?php
                                                         $miConn= new consultas();
-                                                        $resultado = $miConn->cboInvestigacion();
-                                                        foreach($resultado as $row){
-                                                            echo "<option value='".$row[0]."'>".$row[1]."</option>";
-                                                        }                                                 
+                                                        $res = $miConn->cboInvestigacion();
+                                                        while($r = pg_fetch_array($res)){
+                                                            echo "<option value='".$r[0]."'>".$r[1]."</option>";                                                 
+                                                        }
                                                         ?>     
                                                         </select>
-                                                        <?php 
-                                                            echo gettype($resultado);
-                                                        ?>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-8">                                                
