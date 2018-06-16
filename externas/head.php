@@ -1,5 +1,7 @@
 <?php  
 include('conexion.php');
+//include('Clases/classConn.php');
+include('Clases/consultas.php');
 ?>
 <head>
 	<meta charset="utf-8">
