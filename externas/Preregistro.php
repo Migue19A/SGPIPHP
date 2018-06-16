@@ -1,6 +1,3 @@
-<?php 
-$miConn= new Consultas();
-?>
 <div class="container">
     <div class="col-lg-9" >
         <nav class="navbar navbar-inverse">
@@ -98,7 +95,8 @@ $miConn= new Consultas();
                                                         <label>*Tipo de investigación</label>
                                                         <select class="form-control" name="tipo_investigacion">
                                                         <?php
-                                                        $resultado=$miConn->cboInvestigacion();
+                                                        $miConn= new consultas();
+                                                        $resultado = $miConn->cboInvestigacion();
                                                          
                                                         /*foreach ($resultado as $row) 
                                                         {
@@ -111,7 +109,7 @@ $miConn= new Consultas();
                                                         ?>     
                                                         </select>
                                                         <?php  
-                                                        echo $resultado;
+                                                        print_r($resultado);
 
                                                         ?>
                                                     </div>

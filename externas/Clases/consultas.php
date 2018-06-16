@@ -10,8 +10,9 @@ class Consultas extends ClassConn
 	{
         
 		$miConn=new ClassConn();
-        $consulta= "SELECT * FROM  tipoinvestigacion ORDER BY id_tipo_investigacion";
-        $resultado = pg_query($miConn->conexion(), $consulta);
+        $consulta= "SELECT * FROM  tipoinvestigacion ORDER BY id_tipo_investigacion";        
+        $result = pg_query($miConn->conexion(), $consulta);
+        $resultado= pg_fetch_array($result);
         return $resultado;
 	}
 }
