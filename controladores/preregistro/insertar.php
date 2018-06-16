@@ -1,4 +1,5 @@
 <?php 
+	include('../../externas/conexion.php');
 	$fp= $_POST['folio_proyecto'];
 	$fpresent= $_POST['fecha_presentacion'];
 	$ccpr = $_POST['clave_cpr'];
@@ -30,8 +31,41 @@
 	echo "Fin: ".$fin."<br>";
 	echo "Botón: ".$boton."<br>";
 
+	if($boton=='recepcion'){
+		$sqlInsertar = "INSERT INTO proyecto(
+			folio_proyecto,
+			fecha_presentacion,
+			convocatoria_CPR,
+			inicio,
+			fin,
+			nombre_proyecto,
+			lineaInvestigacion_id,
+			tipoInvestigacion_id,
+			tipoSector_id,
+			especificar) VALUES (
+			'".$fp."',
+			'".$fpresent."',
+			'".$ccpr."',
+			'".$inicio."',
+			'".$fin."',
+			'".$nombreProy."',
+			".$linea.",
+			".$tipoInvest.",
+			".$tipoSec.",
+			'hola'
+			);";
+
+			echo $sqlInsertar;
+			return pg_query($conexion, $sqlInsertar);
+		}
+			
+			//echo "<script>jQuery(function(){swal(\"¡Guardado con éxito!\", \"Datos guardados correctamente\", \"success\");});</script>";*/
+			
+
+	
 
 
-	echo "<script>jQuery(function(){swal(\"¡Bien!\", \"Condición cumplida\", \"success\");});</script>";
+
+	
 
  ?>
