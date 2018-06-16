@@ -1,7 +1,7 @@
 <?php  
 include('conexion.php');
-//include('Clases/classConn.php');
 include('Clases/consultas.php');
+$miConn= new consultas();
 ?>
 <head>
 	<meta charset="utf-8">

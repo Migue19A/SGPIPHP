@@ -326,7 +326,8 @@ function habilitarEspecifique() {
     if (document.getElementById('id_tipoSector_5').checked) {
         document.getElementById('id_especifique').removeAttribute('readonly');
     } else {
-        document.getElementById('id_especifique').readonly = "readonly";
+        //document.getElementById('id_especifique').readonly = "readonly";
+        $('#id_especifique').attr('readonly', true);
     }
 }
 

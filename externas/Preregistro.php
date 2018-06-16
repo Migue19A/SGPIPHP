@@ -95,10 +95,9 @@
                                                         <label>*Tipo de investigación</label>
                                                         <select class="form-control" name="tipo_investigacion">
                                                         <?php
-                                                        $miConn= new consultas();
                                                         $res = $miConn->cboInvestigacion();
                                                         while($r = pg_fetch_array($res)){
-                                                            echo "<option value='".$r[0]."'>".$r[1]."</option>";                                                 
+                                                            echo "<option value='".$r[0]."'>".$r[1]."</option>";       
                                                         }
                                                         ?>     
                                                         </select>
@@ -108,13 +107,12 @@
                                                     <div class="row">
                                                         <label>*Tipo de sector</label>
                                                         <select class="form-control" name="tipo_sector">
-                                                            <?php 
-                                                            $consulta= "SELECT * FROM  tiposector ORDER BY id_tipo_sector";
-                                                            $resultado = pg_query($conexion, $consulta);
-                                                            while($row= pg_fetch_array($resultado)){
-                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";
+                                                        <?php
+                                                            $res = $miConn->cboSector();
+                                                            while($r = pg_fetch_array($res)){
+                                                                echo "<option value='".$r[0]."'>".$r[1]."</option>";       
                                                             }
-                                                            ?>   
+                                                        ?>   
                                                         </select>
                                                     <label for="id_tipoSector_5"><input id="id_tipoSector_5" onchange="habilitarEspecifique()" type="checkbox" name="tipoSector" value="otro">Otro</label>
                                                     </div>
@@ -132,13 +130,12 @@
                                                 <div class="col-md-12 form-group">
                                                     <label>*Línea de investigación</label>
                                                     <select class="form-control" name="linea_investigacion">
-                                                            <?php 
-                                                            $consulta= "SELECT * FROM  lineainvestigacion ORDER BY id_linea_investigacion";
-                                                            $resultado = pg_query($conexion, $consulta);
-                                                            while($row= pg_fetch_array($resultado)){
-                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";
+                                                            <?php
+                                                            $res = $miConn->cboLinea();
+                                                            while($r = pg_fetch_array($res)){
+                                                                echo "<option value='".$r[0]."'>".$r[1]."</option>";       
                                                             }
-                                                            ?>   
+                                                        ?> 
                                                     </select>
                                                 </div>    
                                             </div> 
