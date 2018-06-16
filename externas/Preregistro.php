@@ -97,20 +97,13 @@
                                                         <?php
                                                         $miConn= new consultas();
                                                         $resultado = $miConn->cboInvestigacion();
-                                                         
-                                                        /*foreach ($resultado as $row) 
-                                                        {
-                                                            ?>
-                                                            <option value="<? echo $row['id_linea_investigacion']?>">
-                                                                <?php echo $row['descripcion_linea'] ?>
-                                                            </option>
-                                                            <?
-                                                        }*/
+                                                        foreach($resultado as $row){
+                                                            echo "<option value='".$row[0]."'>".$row[1]."</option>";
+                                                        }                                                 
                                                         ?>     
                                                         </select>
-                                                        <?php  
-                                                        print_r($resultado);
-
+                                                        <?php 
+                                                            echo gettype($resultado);
                                                         ?>
                                                     </div>
                                                 </div>
