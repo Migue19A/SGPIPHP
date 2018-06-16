@@ -93,13 +93,15 @@
                                                 <div class="col-md-4">                                       
                                                     <div class="row">
                                                         <label>*Tipo de investigación</label>
+
                                                         <select class="form-control" name="tipo_investigacion">
-                                                        <?php
-                                                        $res = $miConn->cboInvestigacion();
-                                                        while($r = pg_fetch_array($res)){
-                                                            echo "<option value='".$r[0]."'>".$r[1]."</option>";       
-                                                        }
-                                                        ?>     
+                                                            <?php 
+                                                            $consulta= "SELECT * FROM  tipoinvestigacion ORDER BY id_tipo_investigacion";
+                                                            $resultado = pg_query($conexion, $consulta);
+                                                            while($row= pg_fetch_array($resultado)){
+                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";
+                                                            }
+                                                            ?>                                           
                                                         </select>
                                                     </div>
                                                 </div>
@@ -107,12 +109,13 @@
                                                     <div class="row">
                                                         <label>*Tipo de sector</label>
                                                         <select class="form-control" name="tipo_sector">
-                                                        <?php
-                                                            $res = $miConn->cboSector();
-                                                            while($r = pg_fetch_array($res)){
-                                                                echo "<option value='".$r[0]."'>".$r[1]."</option>";       
+                                                            <?php 
+                                                            $consulta= "SELECT * FROM  tiposector ORDER BY id_tipo_sector";
+                                                            $resultado = pg_query($conexion, $consulta);
+                                                            while($row= pg_fetch_array($resultado)){
+                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";
                                                             }
-                                                        ?>   
+                                                            ?>   
                                                         </select>
                                                     <label for="id_tipoSector_5"><input id="id_tipoSector_5" onchange="habilitarEspecifique()" type="checkbox" name="tipoSector" value="otro">Otro</label>
                                                     </div>
@@ -130,19 +133,20 @@
                                                 <div class="col-md-12 form-group">
                                                     <label>*Línea de investigación</label>
                                                     <select class="form-control" name="linea_investigacion">
-                                                            <?php
-                                                            $res = $miConn->cboLinea();
-                                                            while($r = pg_fetch_array($res)){
-                                                                echo "<option value='".$r[0]."'>".$r[1]."</option>";       
+                                                            <?php 
+                                                            $consulta= "SELECT * FROM  lineainvestigacion ORDER BY id_linea_investigacion";
+                                                            $resultado = pg_query($conexion, $consulta);
+                                                            while($row= pg_fetch_array($resultado)){
+                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";
                                                             }
-                                                        ?> 
+                                                            ?>   
                                                     </select>
                                                 </div>    
                                             </div> 
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>*Nombre del proyecto</label>
-                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%;" required name="nombre_proyecto">Pelador de chayotes</textarea>
+                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%;" required name="nombre_proyecto"></textarea>
                                                     <label>Total de caracteres: 200</label><br>
                                                 
                                                 </div>
@@ -173,47 +177,39 @@
                             </form>
                             
                             <!--RESPONSABLE-->
-                            <form id="responsable_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                            <form id="responsable_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">
                                 <div class="row setup-content" id="step-2">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Responsable</h2>
                                             <input type="text" name="folio_proyecto"  readonly>
-                                            <input typw="number" readonly name="id_docente"  value="">
-
+                                            <input typw="number" readonly name="id_docente"  value="{{user.id}}">
                                             <div class="form-group col-md-5" readonly>
                                                 <label>*Apellidos</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{user.last_name}}"> 
                                             </div>
                                             <div class="form-group col-md-5" readonly>
                                                 <label>*Nombre(s)</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{user.first_name}}">
                                             </div>
                                             <div class="form-group col-md-4" readonly>      
                                                 <label>*Grado máximo de estudios</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{dr.grado_maximo_estudios}}">
                                             </div>
                                             <div class="form-group col-md-6" readonly>
                                                 <label>*Academia a la que pertenece</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{dr.carrera}}">                  
                                             </div>
                                             <div class="form-group col-md-2" readonly>
                                                 <label>*N° de personal</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{dr.numero_personal}}">
                                             </div>
                                             <div class="form-group col-md-3" readonly>
                                                 <label>Móvil</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{dr.telefono_movil}}"></div>
                                             <div class="form-group col-md-4">
                                                 <label>*Correo institucional</label>
-                                                <input type="email" class="form-control" readonly value="">
-
+                                                <input type="email" class="form-control" readonly value="{{user.email}}">    
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>Correo alternativo</label>
@@ -247,7 +243,7 @@
                             
                             <!--COLABORADORES-->
                             
-                            <form id="colaborador_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                            <form id="colaborador_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">
                                 <div class="row setup-content" id="step-3">
                                 <input type="text" name="form-0-folio_proyecto"  readonly>
                                     <div class="col-md-12">
@@ -268,6 +264,9 @@
                                             <div class="form-group col-md-12">
                                                 <select class="form-control" id="opcion_colabora" name="form-0-numero_personal">
                                                     <option>--------</option> 
+                                                    {% for c in consulta %}   
+                                                    <option value="{{c.id}}">{{c.last_name}} {{c.first_name}}</option>  
+                                                    {% endfor %}
                                                 </select>                 
                                             </div>     
                                             <div class="form-group col-md-4">
@@ -334,6 +333,9 @@
                                                 <div class="form-group col-md-12">
                                                 <select class="form-control" id="opcion_colabora2" name="numero_personal">
                                                     <option>--------</option> 
+                                                    {% for c in consulta %}   
+                                                    <option value="{{c.id}}">{{c.last_name}} {{c.first_name}}</option>  
+                                                    {% endfor %}
                                                 </select>                 
                                                 </div>   
                                                 <div class="form-group col-md-4">
@@ -342,7 +344,7 @@
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Apellido Materno</label>
-                                                    <input type="text" class="form-control" id="amCol2"> 
+                                                    <input type="text" class="form-control" id="amCol2">    <!--programaCol2-->
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Nombre(s)</label>
@@ -407,6 +409,9 @@
                                                 <div class="form-group col-md-12">
                                                 <select class="form-control" id="opcion_colabora3">
                                                     <option>--------</option> 
+                                                    {% for c in consulta %}   
+                                                    <option value="{{c.id}}">{{c.last_name}} {{c.first_name}}</option>  
+                                                    {% endfor %}
                                                 </select>                 
                                                 </div> 
                                                 <div class="form-group col-md-4">
@@ -481,7 +486,10 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                 <select class="form-control" id="opcion_colabora4">
-                                                    <option>--------</option>
+                                                    <option>--------</option> 
+                                                    {% for c in consulta %}   
+                                                    <option value="{{c.id}}">{{c.last_name}} {{c.first_name}}</option>  
+                                                    {% endfor %}
                                                 </select>                 
                                                 </div>  
                                                 <div class="form-group col-md-4">
@@ -546,7 +554,7 @@
                                             
                                             <div class="form-group col-md-12">
                                                 <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                <input onclick="step3Next()" class="btn btn-primary" value="Siguiente" type="submit" style="float: right;">
+                                                <input onclick="cargarColaborador()" class="btn btn-primary" value="Siguiente" type="submit" style="float: right;">
                                             </div>
                                         </div>
                                     </div>
@@ -562,18 +570,15 @@
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Objetivos</h2>
                                             <div class="form-group col-md-12">
                                                 <label>*Indique el objetivo general(No más de 512 caracteres)</label>
-                                                
-
+                                                {{form.objetivoG}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Establezca los objetivos específicos, científicos y tecnológicos subyacentes en el proyecto(No más de 512 caracteres)</label>
-                                                
-
+                                                {{form.objetivoE}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Indique los resultados esperados en términos concretos(No más de 512 Caracteres)</label>
-                                                
-
+                                                {{form.resultados}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <input onclick="prevStep()" class="btn btn-default" value="Regresar">
@@ -596,53 +601,44 @@
                                                 <label>*Existe convenio:</label>
                                             </div>
                                             <div class="form-group col-md-12">
-                                                
-
+                                                {{form.convenio}}
                                             </div>
                                             <div class="row hidden" id="vincula">
                                                 <div class="form-group col-md-6">
                                                     <label>*Nombre de la organización</label>
-                                                    
-
+                                                    {{form.nombre_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>*Dirección</label>
-                                                    
-
+                                                    {{form.direccion_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Área</label>
-                                                    
-
+                                                    {{form.area_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Teléfono</label>
-                                                    
-
+                                                    {{form.telefono_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Nombre del contacto</label>
-                                                    
-
+                                                    {{form.nombreC_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>*Descripción de la organización(No más de 256 caracteres)</label>
-                                                    
-
+                                                    {{form.descripcion_organizacion}}
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-10">
                                                 <label>*Existen aportaciones financieras o en especie de la vinculación:</label>
                                             </div>
                                             <div class="form-group col-md-8">
-                                               
-
+                                               {{form.aporta}}
                                             </div>
                                             <div class="row hidden" id="respuesta">
                                                 <div class="col-md-12 form-group">
                                                     <label>Si la respuesta es sí, describa cuales son(No más de 256 caracteres)</label>
-                                                    
-
+                                                    {{form.describa_aportaciones}}
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-12">
@@ -663,8 +659,7 @@
                                         <input type="text" name="folio_proyecto"  readonly>
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Productos académicos</h2>
                                             <label>*Seleccione al menos uno</label>
-                                            
-
+                                            {{form.productosA}}
                                             <div class="form-group col-md-3">
                                                 <label><input type="checkbox">Propiedad intelectual</label>
                                             </div>
@@ -672,8 +667,7 @@
                                                 <label>Especificar:</label>
                                             </div>
                                             <div class="form-group col-md-7">
-                                                
-
+                                                {{form.intelectual}}
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label><input type="checkbox">Otros</label>
@@ -682,8 +676,7 @@
                                                 <label>Especificar:</label>
                                             </div>
                                             <div class="form-group col-md-7">
-                                                
-
+                                                {{form.otros}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <input onclick="prevStep()" class="btn btn-default" value="Regresar">
@@ -703,52 +696,44 @@
                                         <div class="col-md-12">
                                             <div class="form-group col-md-12">
                                                 <label>No. de Etapas</label>
-                                                
-
+                                                {{form.sEtapa}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <h2 style="text-align: center;">Etapa 1°</h2>
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                
-
+                                                {{form.n_Etapa}}
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>*Fecha de inicio</label>
-                                                
-
+                                                {{form.etapaInicio}}
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>*Fecha de terminación</label>
-                                                
-
+                                                {{form.etapaTermino}}
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>Meses</label>
-                                                
-
+                                                {{form.etapaMeses}}
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label>*Descripción:</label>
                                             </div>
                                             <div class="form-group col-md-10">
-                                                
-
+                                                {{form.etapaDes}}
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label>*Actividades:</label>
                                             </div>
                                             <div class="form-group col-md-10">
-                                                
-
+                                                {{form.etapaAct}}
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label>*Productos:</label>
                                             </div>
                                             <div class="form-group col-md-10">
-                                                
-
+                                                {{form.etapaPro}}
                                             </div>
                                             
                                             <!--ETAPA 2-->
@@ -759,44 +744,37 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    
-
+                                                    {{form.n_Etapa2}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de inicio</label>
-                                                    
-
+                                                    {{form.etapaInicio2}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de terminación</label>
-                                                    
-
+                                                    {{form.etapaTermino2}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Meses</label>
-                                                    
-
+                                                    {{form.etapaMeses2}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Descripción:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaDes2}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Actividades:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaAct2}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Productos:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaPro2}}
                                                 </div>
                                             </div>
                                             
@@ -810,44 +788,37 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    
-
+                                                    {{form.n_Etapa3}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de inicio</label>
-                                                    
-
+                                                    {{form.etapaInicio3}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de terminacion</label>
-                                                    
-
+                                                    {{form.etapaTermino3}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Meses</label>
-                                                    
-
+                                                    {{form.etapaMeses3}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Descripción:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaDes3}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Actividades:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaAct3}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Productos:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaPro3}}
                                                 </div>
                                             </div>
                                             
@@ -861,44 +832,37 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    
-
+                                                    {{form.n_Etapa4}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de inicio</label>
-                                                    
-
+                                                    {{form.etapaInicio4}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de terminacion</label>
-                                                    
-
+                                                    {{form.etapaTermino4}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Meses</label>
-                                                    
-
+                                                    {{form.etapaMeses4}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Descripción:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaDes4}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Actividades:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaAct4}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Productos:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaPro4}}
                                                 </div>
                                             </div>
                                             
@@ -927,21 +891,18 @@
                                                 <label>*¿Existe actualmente algún financiamiento del proyecto?</label>
                                             </div>
                                             <div class="form-group  col-md-2">
-                                                
-
+                                                {{form.financi}}
                                             </div>
                                             <div class="row hidden" id="financiamientoSi">
                                                 <div class="form-group col-md-12">
                                                     <label>En caso de que la respuesta sea sí</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    
-
+                                                    {{form.finanSi}}
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>Especifique</label>
-                                                    
-
+                                                    {{form.fEspeci}}
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-12">
@@ -953,8 +914,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fInfra}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -964,8 +924,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fCon}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -976,8 +935,7 @@
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
                                                         <div class="input-group">
-                                                            <span class="input-group-addon">$</span>
-
+                                                            <span class="input-group-addon">$</span>{{form.fLic}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -988,8 +946,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fVia}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -999,8 +956,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fPubli}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1010,8 +966,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fEqui}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1021,8 +976,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fPat}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1032,16 +986,14 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fOtros}}
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-1">
                                                     <label>Desglosar:</label>
                                                 </div>
                                                 <div class="form-group col-md-5">
-                                                    
-
+                                                    {{form.fDesglo}}
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -1050,8 +1002,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fTot}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1075,8 +1026,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group col-md-4">
                                                 <label>Total de alumnos colaboradores</label>
-                                                
-
+                                                {{form.alumTot}}
                                             </div>
                                              <div class=" form-group col-md-2">
                                                 <a aria-pressed="true" class="btn btn-primary" onclick="TAlum()" role="button" style="margin-top: 25px;">Aceptar</a>
@@ -1097,29 +1047,28 @@
                                                         <div class="row">
                                                             <div class="form-group col-md-6">
                                                                 <label>*Nombre del alumno</label>
-                                                                
-
+                                                                {{form.alumNomb}}
                                                             </div>
                                                             <div class="form-group col-md-5">
-                                                                
-
+                                                                {{form.alumSRT}}
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="form-group col-md-4">
                                                                 <label>*N° control</label>
-                                                                
-
+                                                                {{form.alumControl}}
                                                             </div>
                                                             <div class="form-group col-md-3">
                                                                 <label>*Semestre</label>
+                                                                {{form.alumSem}}
                                                             </div>
                                                             <div class="form-group col-md-5">
                                                                 <label>*Carrera</label>
+                                                                    {{form.alumCar}}
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 <label>*Detalle de actividades (máximo 256 caracteres)</label>
-
+                                                                {{form.alumActi}}
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 <h5><b>NOTA:</b>La cantidad de alumnos colaboradores depende de la complejidad del proyecto, como máximo 20 alumnos.</h5>
