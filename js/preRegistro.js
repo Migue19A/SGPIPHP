@@ -472,10 +472,7 @@ $(document).ready(function(){
            type: "POST",                 
            url: url,                     
            data: form,
-           success: function(data)             
-           {
-             $('#resp').html(data);               
-           }
+           success: step1Next()
         });
      });
 });

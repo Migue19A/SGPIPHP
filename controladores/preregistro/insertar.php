@@ -18,7 +18,7 @@
 	$boton= $_POST['recepcion'];
 
 
-	echo "Folio: ".$fp."<br>";
+	/*echo "Folio: ".$fp."<br>";
 	echo "Fecha: ".$fpresent."<br>";
 	echo "CPR: ".$ccpr."<br>";
 	echo "TipoInv: ".$tipoInvest."<br>";
@@ -29,7 +29,7 @@
 	echo "Nombre del proyecto: ".$nombreProy."<br>";
 	echo "Inicio: ".$inicio."<br>";
 	echo "Fin: ".$fin."<br>";
-	echo "Botón: ".$boton."<br>";
+	echo "Botón: ".$boton."<br>";*/
 
 	if($boton=='recepcion'){
 		$sqlInsertar = "INSERT INTO proyecto(
@@ -52,11 +52,15 @@
 			".$linea.",
 			".$tipoInvest.",
 			".$tipoSec.",
-			'hola'
+			'".$especific."'
 			);";
 
-			echo $sqlInsertar;
-			return pg_query($conexion, $sqlInsertar);
+			$resultado= pg_query($conexion, $sqlInsertar);
+
+			/*if($resultado){				
+				echo "<script>jQuery(function(){swal(\"¡Guardado con éxito!\", \"Datos guardados correctamente\", \"success\");});</script>";				
+				//return $resultado;
+			}*/
 		}
 			
 			//echo "<script>jQuery(function(){swal(\"¡Guardado con éxito!\", \"Datos guardados correctamente\", \"success\");});</script>";*/
