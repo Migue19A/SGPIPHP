@@ -342,3 +342,13 @@ $(document).ready(function(){
         });
      });
 });
+
+function habilitarEspecifique() {
+    if($('#tipo_sector').val()==0){
+        document.getElementById('id_especifique').removeAttribute('readonly');
+        $('#id_especifique').attr('required', false);
+    }else{
+         $('#id_especifique').attr('readonly', true);
+         $('#id_especifique').attr('required',true);
+    }
+}

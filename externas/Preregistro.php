@@ -13,7 +13,7 @@
                         <a href="#" title="Informe general 2" id="navPre">
                             <span class="glyphicon glyphicon-arrow-right"></span>
                             <span class="sec-text">Responsable</span>
-                        </a>
+                        </a>    
                     </li>
                     <li id="navStep3" class="li-nav disabled col-lg-1 barra"  step="#step-3">
                         <a href="#" id="navPre">
@@ -106,17 +106,19 @@
                                                 <div class="col-md-8">                                                
                                                     <div class="row">
                                                         <label>*Tipo de sector</label>
-                                                        <select class="form-control" name="tipo_sector">
+                                                        <select class="form-control" name="tipo_sector" onchange="habilitarEspecifique()" id="tipo_sector">
                                                         <?php
                                                             $res = $miConn->cboSector();
                                                             while($r = pg_fetch_array($res)){
                                                                 echo "<option value='".$r[0]."'>".$r[1]."</option>";       
                                                             }
-                                                        ?>   
-                                                        </select>
-                                                    <label for="id_tipoSector_5"><input id="id_tipoSector_5" onchange="habilitarEspecifique()" type="checkbox" name="tipoSector" value="otro">Otro</label>
-                                                    </div>
-                                                </div>
+                                                        ?>                                                           
+                                                        <option value="0">Otro</option>
+                                                        </select>                                                      
+                                                        <br>
+                                                        <br>
+                                                  </div>
+                                              </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-d12 form-group"> 
@@ -137,12 +139,12 @@
                                                             }
                                                         ?> 
                                                     </select>
-                                                </div>    
+                                                </div>   
                                             </div> 
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>*Nombre del proyecto</label>
-                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%;" required name="nombre_proyecto">Pelador de chayotes</textarea>
+                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%;" required name="nombre_proyecto"></textarea>
                                                     <label>Total de caracteres: 200</label><br>
                                                 
                                                 </div>
@@ -173,47 +175,39 @@
                             </form>
                             
                             <!--RESPONSABLE-->
-                            <form id="responsable_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                            <form id="responsable_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">
                                 <div class="row setup-content" id="step-2">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Responsable</h2>
                                             <input type="text" name="folio_proyecto"  readonly>
-                                            <input typw="number" readonly name="id_docente"  value="">
-
+                                            <input typw="number" readonly name="id_docente"  value="{{user.id}}">
                                             <div class="form-group col-md-5" readonly>
                                                 <label>*Apellidos</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{user.last_name}}"> 
                                             </div>
                                             <div class="form-group col-md-5" readonly>
                                                 <label>*Nombre(s)</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{user.first_name}}">
                                             </div>
                                             <div class="form-group col-md-4" readonly>      
                                                 <label>*Grado máximo de estudios</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{dr.grado_maximo_estudios}}">
                                             </div>
                                             <div class="form-group col-md-6" readonly>
                                                 <label>*Academia a la que pertenece</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{dr.carrera}}">                  
                                             </div>
                                             <div class="form-group col-md-2" readonly>
                                                 <label>*N° de personal</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{dr.numero_personal}}">
                                             </div>
                                             <div class="form-group col-md-3" readonly>
                                                 <label>Móvil</label>
-                                                <input type="text" class="form-control" readonly value="">
-
+                                                <input type="text" class="form-control" readonly value="{{dr.telefono_movil}}"></div>
                                             <div class="form-group col-md-4">
                                                 <label>*Correo institucional</label>
-                                                <input type="email" class="form-control" readonly value="">
-
+                                                <input type="email" class="form-control" readonly value="{{user.email}}">    
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>Correo alternativo</label>
@@ -247,306 +241,80 @@
                             
                             <!--COLABORADORES-->
                             
-                            <form id="colaborador_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                           <form id="colaborador_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
                                 <div class="row setup-content" id="step-3">
                                 <input type="text" name="form-0-folio_proyecto"  readonly>
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <div class="form-group col-md-12">
-                                                <select class="form-control" id="opcion_colabora" onchange="muestra_colaborador()" name="select_colaborador">
+                                                <select class="form-control" id="cantidad_colaboradores" onchange="muestra_colaborador(this.id)" name="select_colaborador">
                                                     <option>N° de colaboradores a participar en el proyecto</option>
                                                     <option>1</option>
                                                     <option>2</option>
                                                     <option>3</option>
                                                     <option>4</option>
                                                 </select>                                                
-                                            </div>                                            
-                                            <div class="form-group col-md-12">
-                                                <h3 style="text-align: center;">Colaborador 1°</h3>
                                             </div>
-                                            
-                                            <div class="form-group col-md-12">
-                                                <select class="form-control" id="opcion_colabora" name="form-0-numero_personal">
-                                                    <option>--------</option> 
-                                                </select>                 
-                                            </div>     
-                                            <div class="form-group col-md-4">
-                                                <label>Apellido Paterno</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Apellido Materno</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Nombre(s)</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>Grado maximo de estudios</label>
-                                                <input type="text" class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label>Academia a la que pertenece</label>
-                                                <select class="form-control">
-                                                    <option>Ingenieria en sistemas computacionales</option>
-                                                    <option>Ingenieria industrial</option>
-                                                    <option>Ingenieria en industrias alimentarias</option>
-                                                    <option>Ingenieria civil</option>
-                                                    <option>Ingenieria electronica</option>
-                                                    <option>Ingenieria electromecanica</option>
-                                                    <option>Ingenieria bioquimica</option>
-                                                    <option>Ingenieria en gestion empresarial</option>
-                                                    <option>Ingeneiria mecatronica</option>
-                                                    <option>Gastronomia</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <label>N° personal</label>
-                                                <input type="number" class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Movil</label>
-                                                <input type="number" class="form-control" pattern="^\d{10}$">
-                                            </div>
-                                            <div class="form-grup col-md-3">
-                                                <label>Correo intitucional</label>
-                                                <input type="email" class="form-control">
-                                            </div>
-                                            <div class="form-grup col-md-3">
-                                                <label>Correo alternativo</label>
-                                                <input type="email" class="form-control">
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label>Descripción de las principales actividades a desarrollar en el proyecto</label>
-                                                <textarea class="form-control" rows="6" style="resize: none;" required name="form-0-actividades_colaborador" ></textarea>
-                                            </div>
-                                            <div class="hidden" id="colabora2">
-                                                <div class="col-sm-12" style="background:#000">
-                                                </div>
-                                            </div>
-                                            
-                                            <!--COLABORADOR 2-->
-                                            <div class=" container hidden" id="colabora2.2">
+                                            <div id="colaborador">                                            
                                                 <div class="form-group col-md-12">
-                                                    <h3 style="text-align: center;" class="hidden" id="colabora2.1">Colaborador 2°</h3>
+                                                    <h3 style="text-align: center;" id="tituloColaborador">Colaborador 1</h3>
                                                 </div>
-                                                <div class="form-group col-md-12">
-                                                <select class="form-control" id="opcion_colabora2" name="numero_personal">
-                                                    <option>--------</option> 
-                                                </select>                 
-                                                </div>   
                                                 <div class="form-group col-md-4">
                                                     <label>Apellido Paterno</label>
-                                                    <input type="text" class="form-control" id="apCol2">
+                                                    <input type="text" class="form-control" id="apPaternoCol_1" name="apPaternoCol_1">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Apellido Materno</label>
-                                                    <input type="text" class="form-control" id="amCol2"> 
+                                                    <input type="text" class="form-control" id="apMaternoCol_1" name="apMaternoCol_1">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Nombre(s)</label>
-                                                    <input type="text" class="form-control" id="nombresCol2">
+                                                    <input type="text" class="form-control" id="nombreCol_1" name="nombreCol_1">
                                                 </div>
-                                                <div class="hidden" id="colabora2.3">
-                                                    <div class="form-group col-md-6">
-                                                        <label>Grado maximo de estudios</label>
-                                                        <input type="text" class="form-control" id="gradoMCol2">
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label>Academia a la que pertenece</label>
-                                                        <select class="form-control" id="programaCol2">
-                                                            <option>Ingenieria en sistemas computacionales</option>
-                                                            <option>Ingenieria industrial</option>
-                                                            <option>Ingenieria en industrias alimentarias</option>
-                                                            <option>Ingenieria civil</option>
-                                                            <option>Ingenieria electronica</option>
-                                                            <option>Ingenieria electromecanica</option>
-                                                            <option>Ingenieria bioquimica</option>
-                                                            <option>Ingenieria en gestion empresarial</option>
-                                                            <option>Ingeneiria mecatronica</option>
-                                                            <option>Gastronomia</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label>N° personal</label>
-                                                        <input type="number" class="form-control" id="noPersonalCol2">
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label>Movil</label>
-                                                        <input type="number" class="form-control" pattern="^\d{10}$" id="movilCol2">
-                                                    </div>
-                                                    <div class="form-grup col-md-3">
-                                                        <label>Correo intitucional</label>
-                                                        <input type="email" class="form-control" id="correoCol2">
-                                                    </div>
-                                                    <div class="form-grup col-md-3">
-                                                        <label>Correo alternativo</label>
-                                                        <input type="email" class="form-control" id="correoAlCol2">
-                                                    </div>
-                                                    <div class="hidden" id="colabora2.4">
-                                                        <div class="form-group col-md-12">
-                                                            <label>Descripción de las principales actividades a desarrollar en el proyecto</label>
-                                                            <textarea class="form-control" rows="6" style="resize: none;" id="actividadesCol2" name="actividades_colaborador"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="hidden" id="colabora3">
-                                                        <div class="col-sm-12" style="background:#000">
-                                                        </div>
-                                                    </div>
-                                                </div>         
+                                                <div class="form-group col-md-6">
+                                                    <label>Grado maximo de estudios</label>
+                                                    <input type="text" class="form-control" id="gradMaximoCol_1" name="gradMaximoCol_1">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label>Academia a la que pertenece</label>
+                                                    <select class="form-control" id="academiaCol_1" name="academiaCol_1">
+                                                        <option value="0">Ingenieria industrial</option>
+                                                        <option value="1">Ingenieria en industrias alimentarias</option>
+                                                        <option value="2">Ingenieria civil</option>
+                                                        <option value="3">Ingenieria electronica</option>
+                                                        <option value="4">Ingenieria electromecanica</option>
+                                                        <option value="5">Ingenieria bioquimica</option>
+                                                        <option value="6">Ingenieria en gestion empresarial</option>
+                                                        <option value="7">Ingeneiria mecatronica</option>
+                                                        <option value="8">Gastronomia</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label>N° personal</label>
+                                                    <input type="number" class="form-control" id="numPersonalCol_1" name="numPersonalCol_1">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label>Movil</label>
+                                                    <input type="number" class="form-control" pattern="^\d{10}$" id="movilCol_1" name="movilCol_1">
+                                                </div>
+                                                <div class="form-grup col-md-3">
+                                                    <label>Correo intitucional</label>
+                                                    <input type="email" class="form-control" id="correoInstCol_1" name="correoInstCol_1">
+                                                </div>
+                                                <div class="form-grup col-md-3">
+                                                    <label>Correo alternativo</label>
+                                                    <input type="email" class="form-control" id="correoAltCol_1" name="correoAltCol_1">
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <label>Descripción de las principales actividades a desarrollar en el proyecto</label>
+                                                    <textarea class="form-control" rows="6" style="resize: none;" required name="form-0-actividades_colaborador" id="principalesActCol_1" name="principalesActCol_1"></textarea>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <input onclick="prevStep()" class="btn btn-default" value="Regresar">
+                                                    <input onclick="step3Next()" class="btn btn-primary" value="Siguiente" type="submit" style="float: right;">
+                                                </div>
                                             </div>
-                                            <!--FIN COLABORADOR 2-->
-                                            
-                                            <!--COLABORADOR3-->
-                                            <div class="hidden" id="colabora3.2">
-                                            <form id="colaborador_form3" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">
-                                                <div class="form-group col-md-12">
-                                                    <h3 style="text-align: center;" class="hidden" id="colabora3.1">Colaborador 3°</h3>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                <select class="form-control" id="opcion_colabora3">
-                                                    <option>--------</option> 
-                                                </select>                 
-                                                </div> 
-                                                <div class="form-group col-md-4">
-                                                    <label>Apellido Paterno</label>
-                                                    <input type="text" class="form-control" id="apCol3">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Apellido Materno</label>
-                                                    <input type="text" class="form-control" id="amCol3">    <!--programaCol2-->
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Nombre(s)</label>
-                                                    <input type="text" class="form-control" id="nombresCol3">
-                                                </div>
-                                                <div class="hidden" id="colabora3.3">
-                                                    <div class="form-group col-md-6">
-                                                        <label>Grado maximo de estudios</label>
-                                                        <input type="text" class="form-control" id="gradoMCol3">
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label>Academia a la que pertenece</label>
-                                                        <select class="form-control" id="programaCol3">
-                                                            <option>Ingenieria en sistemas computacionales</option>
-                                                            <option>Ingenieria industrial</option>
-                                                            <option>Ingenieria en industrias alimentarias</option>
-                                                            <option>Ingenieria civil</option>
-                                                            <option>Ingenieria electronica</option>
-                                                            <option>Ingenieria electromecanica</option>
-                                                            <option>Ingenieria bioquimica</option>
-                                                            <option>Ingenieria en gestion empresarial</option>
-                                                            <option>Ingeneiria mecatronica</option>
-                                                            <option>Gastronomia</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label>N° personal</label>
-                                                        <input type="number" class="form-control" id="noPersonalCol3">
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label>Movil</label>
-                                                        <input type="number" class="form-control" pattern="^\d{10}$" id="movilCol3">
-                                                    </div>
-                                                    <div class="form-grup col-md-3">
-                                                        <label>Correo intitucional</label>
-                                                        <input type="email" class="form-control" id="correoCol3">
-                                                    </div>
-                                                    <div class="form-grup col-md-3">
-                                                        <label>Correo alternativo</label>
-                                                        <input type="email" class="form-control" id="correoAlCol3">
-                                                    </div>
-                                                    <div class="hidden" id="colabora3.4">
-                                                        <div class="form-group col-md-12">
-                                                            <label>Descripción de las principales actividades a desarrollar en el proyecto</label>
-                                                            <textarea class="form-control" rows="6" style="resize: none;" id="actividadesCol3"></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="hidden" id="colabora4">
-                                                        <div class="col-sm-12" style="background:#000">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                            <!--FIN COLABORADOR 3-->
-                                            
-                                            <!--COLABORADOR 4-->
-                                            <div class="hidden" id="colabora4.2">
-                                            <form id="colaborador_form4" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">
-                                                <div class="form-group col-md-12">
-                                                    <h3 style="text-align: center;" class="hidden" id="colabora4.1">Colaborador 4°</h3>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                <select class="form-control" id="opcion_colabora4">
-                                                    <option>--------</option>
-                                                </select>                 
-                                                </div>  
-                                                <div class="form-group col-md-4">
-                                                    <label>Apellido Paterno</label>
-                                                    <input type="text" class="form-control" id="apCol4">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Apellido Materno</label>
-                                                    <input type="text" class="form-control" id="amCol4">    <!--programaCol2-->
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Nombre(s)</label>
-                                                    <input type="text" class="form-control" id="nombresCol4">
-                                                </div>
-                                                <div class="hidden" id="colabora4.3">
-                                                     <div class="form-group col-md-6">
-                                                        <label>Grado maximo de estudios</label>
-                                                        <input type="text" class="form-control" id="gradoMCol4">
-                                                    </div>
-                                                    <div class="form-group col-md-6">
-                                                        <label>Academia a la que pertenece</label>
-                                                        <select class="form-control" id="programaCol4">
-                                                            <option>Ingenieria en sistemas computacionales</option>
-                                                            <option>Ingenieria industrial</option>
-                                                            <option>Ingenieria en industrias alimentarias</option>
-                                                            <option>Ingenieria civil</option>
-                                                            <option>Ingenieria electronica</option>
-                                                            <option>Ingenieria electromecanica</option>
-                                                            <option>Ingenieria bioquimica</option>
-                                                            <option>Ingenieria en gestion empresarial</option>
-                                                            <option>Ingeneiria mecatronica</option>
-                                                            <option>Gastronomia</option>
-                                                        </select>
-                                                    </div>
-                                                    <div class="form-group col-md-2">
-                                                        <label>N° personal</label>
-                                                        <input type="number" class="form-control" id="noPersonalCol4">
-                                                    </div>
-                                                    <div class="form-group col-md-4">
-                                                        <label>Movil</label>
-                                                        <input type="number" class="form-control" pattern="^\d{10}$" id="movilCol4">
-                                                    </div>
-                                                    <div class="form-grup col-md-3">
-                                                        <label>Correo intitucional</label>
-                                                        <input type="email" class="form-control" id="correoCol4">
-                                                    </div>
-                                                    <div class="form-grup col-md-3">
-                                                        <label>Correo alternativo</label>
-                                                        <input type="email" class="form-control" id="correoAlCol4">
-                                                    </div>
-                                                    <div class="hidden" id="colabora4.4">
-                                                        <div class="form-group col-md-12">
-                                                            <label>Descripción de las principales actividades a desarrollar en el proyecto</label>
-                                                            <textarea class="form-control" rows="6" style="resize: none;" id="actividadesCol4"></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                              </form>
-                                            </div>
-                                            
-                                            <!--FIN COLABORADOR 4-->
-                                            
-                                            <div class="form-group col-md-12">
-                                                <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                <input onclick="step3Next()" class="btn btn-primary" value="Siguiente" type="submit" style="float: right;">
+                                            <div id="colaboradores">    
                                             </div>
                                         </div>
                                     </div>
@@ -562,18 +330,15 @@
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Objetivos</h2>
                                             <div class="form-group col-md-12">
                                                 <label>*Indique el objetivo general(No más de 512 caracteres)</label>
-                                                
-
+                                                {{form.objetivoG}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Establezca los objetivos específicos, científicos y tecnológicos subyacentes en el proyecto(No más de 512 caracteres)</label>
-                                                
-
+                                                {{form.objetivoE}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Indique los resultados esperados en términos concretos(No más de 512 Caracteres)</label>
-                                                
-
+                                                {{form.resultados}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <input onclick="prevStep()" class="btn btn-default" value="Regresar">
@@ -596,53 +361,44 @@
                                                 <label>*Existe convenio:</label>
                                             </div>
                                             <div class="form-group col-md-12">
-                                                
-
+                                                {{form.convenio}}
                                             </div>
                                             <div class="row hidden" id="vincula">
                                                 <div class="form-group col-md-6">
                                                     <label>*Nombre de la organización</label>
-                                                    
-
+                                                    {{form.nombre_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>*Dirección</label>
-                                                    
-
+                                                    {{form.direccion_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Área</label>
-                                                    
-
+                                                    {{form.area_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Teléfono</label>
-                                                    
-
+                                                    {{form.telefono_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Nombre del contacto</label>
-                                                    
-
+                                                    {{form.nombreC_organizacion}}
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>*Descripción de la organización(No más de 256 caracteres)</label>
-                                                    
-
+                                                    {{form.descripcion_organizacion}}
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-10">
                                                 <label>*Existen aportaciones financieras o en especie de la vinculación:</label>
                                             </div>
                                             <div class="form-group col-md-8">
-                                               
-
+                                               {{form.aporta}}
                                             </div>
                                             <div class="row hidden" id="respuesta">
                                                 <div class="col-md-12 form-group">
                                                     <label>Si la respuesta es sí, describa cuales son(No más de 256 caracteres)</label>
-                                                    
-
+                                                    {{form.describa_aportaciones}}
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-12">
@@ -663,8 +419,7 @@
                                         <input type="text" name="folio_proyecto"  readonly>
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Productos académicos</h2>
                                             <label>*Seleccione al menos uno</label>
-                                            
-
+                                            {{form.productosA}}
                                             <div class="form-group col-md-3">
                                                 <label><input type="checkbox">Propiedad intelectual</label>
                                             </div>
@@ -672,8 +427,7 @@
                                                 <label>Especificar:</label>
                                             </div>
                                             <div class="form-group col-md-7">
-                                                
-
+                                                {{form.intelectual}}
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label><input type="checkbox">Otros</label>
@@ -682,8 +436,7 @@
                                                 <label>Especificar:</label>
                                             </div>
                                             <div class="form-group col-md-7">
-                                                
-
+                                                {{form.otros}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <input onclick="prevStep()" class="btn btn-default" value="Regresar">
@@ -703,52 +456,44 @@
                                         <div class="col-md-12">
                                             <div class="form-group col-md-12">
                                                 <label>No. de Etapas</label>
-                                                
-
+                                                {{form.sEtapa}}
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <h2 style="text-align: center;">Etapa 1°</h2>
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                
-
+                                                {{form.n_Etapa}}
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>*Fecha de inicio</label>
-                                                
-
+                                                {{form.etapaInicio}}
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>*Fecha de terminación</label>
-                                                
-
+                                                {{form.etapaTermino}}
                                             </div>
                                             <div class="form-group col-md-4">
                                                 <label>Meses</label>
-                                                
-
+                                                {{form.etapaMeses}}
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label>*Descripción:</label>
                                             </div>
                                             <div class="form-group col-md-10">
-                                                
-
+                                                {{form.etapaDes}}
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label>*Actividades:</label>
                                             </div>
                                             <div class="form-group col-md-10">
-                                                
-
+                                                {{form.etapaAct}}
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <label>*Productos:</label>
                                             </div>
                                             <div class="form-group col-md-10">
-                                                
-
+                                                {{form.etapaPro}}
                                             </div>
                                             
                                             <!--ETAPA 2-->
@@ -759,44 +504,37 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    
-
+                                                    {{form.n_Etapa2}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de inicio</label>
-                                                    
-
+                                                    {{form.etapaInicio2}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de terminación</label>
-                                                    
-
+                                                    {{form.etapaTermino2}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Meses</label>
-                                                    
-
+                                                    {{form.etapaMeses2}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Descripción:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaDes2}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Actividades:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaAct2}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Productos:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaPro2}}
                                                 </div>
                                             </div>
                                             
@@ -810,44 +548,37 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    
-
+                                                    {{form.n_Etapa3}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de inicio</label>
-                                                    
-
+                                                    {{form.etapaInicio3}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de terminacion</label>
-                                                    
-
+                                                    {{form.etapaTermino3}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Meses</label>
-                                                    
-
+                                                    {{form.etapaMeses3}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Descripción:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaDes3}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Actividades:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaAct3}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Productos:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaPro3}}
                                                 </div>
                                             </div>
                                             
@@ -861,44 +592,37 @@
                                                 </div>
                                                 <div class="form-group col-md-12">
                                                     <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    
-
+                                                    {{form.n_Etapa4}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de inicio</label>
-                                                    
-
+                                                    {{form.etapaInicio4}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Fecha de terminacion</label>
-                                                    
-
+                                                    {{form.etapaTermino4}}
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Meses</label>
-                                                    
-
+                                                    {{form.etapaMeses4}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Descripción:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaDes4}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Actividades:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaAct4}}
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*Productos:</label>
                                                 </div>
                                                 <div class="form-group col-md-10">
-                                                    
-
+                                                    {{form.etapaPro4}}
                                                 </div>
                                             </div>
                                             
@@ -927,21 +651,18 @@
                                                 <label>*¿Existe actualmente algún financiamiento del proyecto?</label>
                                             </div>
                                             <div class="form-group  col-md-2">
-                                                
-
+                                                {{form.financi}}
                                             </div>
                                             <div class="row hidden" id="financiamientoSi">
                                                 <div class="form-group col-md-12">
                                                     <label>En caso de que la respuesta sea sí</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    
-
+                                                    {{form.finanSi}}
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>Especifique</label>
-                                                    
-
+                                                    {{form.fEspeci}}
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-12">
@@ -953,8 +674,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fInfra}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -964,8 +684,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fCon}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -976,8 +695,7 @@
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
                                                         <div class="input-group">
-                                                            <span class="input-group-addon">$</span>
-
+                                                            <span class="input-group-addon">$</span>{{form.fLic}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -988,8 +706,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fVia}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -999,8 +716,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fPubli}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1010,8 +726,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fEqui}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1021,8 +736,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fPat}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1032,16 +746,14 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fOtros}}
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-1">
                                                     <label>Desglosar:</label>
                                                 </div>
                                                 <div class="form-group col-md-5">
-                                                    
-
+                                                    {{form.fDesglo}}
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -1050,8 +762,7 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>
-
+                                                        <span class="input-group-addon">$</span>{{form.fTot}}
                                                     </div>
                                                 </div>
                                             </div>
@@ -1075,8 +786,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group col-md-4">
                                                 <label>Total de alumnos colaboradores</label>
-                                                
-
+                                                {{form.alumTot}}
                                             </div>
                                              <div class=" form-group col-md-2">
                                                 <a aria-pressed="true" class="btn btn-primary" onclick="TAlum()" role="button" style="margin-top: 25px;">Aceptar</a>
@@ -1097,29 +807,28 @@
                                                         <div class="row">
                                                             <div class="form-group col-md-6">
                                                                 <label>*Nombre del alumno</label>
-                                                                
-
+                                                                {{form.alumNomb}}
                                                             </div>
                                                             <div class="form-group col-md-5">
-                                                                
-
+                                                                {{form.alumSRT}}
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="form-group col-md-4">
                                                                 <label>*N° control</label>
-                                                                
-
+                                                                {{form.alumControl}}
                                                             </div>
                                                             <div class="form-group col-md-3">
                                                                 <label>*Semestre</label>
+                                                                {{form.alumSem}}
                                                             </div>
                                                             <div class="form-group col-md-5">
                                                                 <label>*Carrera</label>
+                                                                    {{form.alumCar}}
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 <label>*Detalle de actividades (máximo 256 caracteres)</label>
-
+                                                                {{form.alumActi}}
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 <h5><b>NOTA:</b>La cantidad de alumnos colaboradores depende de la complejidad del proyecto, como máximo 20 alumnos.</h5>
