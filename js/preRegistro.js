@@ -30,6 +30,25 @@ function ValidaMaximo() {
         document.getElementById("totalA").focus();
     }
 }
+function ajaxPreregistro(id)
+{
+    console.log($('form[id="'+id+'"]').serializeArray());
+
+    $.ajax(
+    {
+        async: true,
+        type: 'POST',
+        url: 'controladores/preregistro/insertar.php',
+        data: $('#'+id).serializeArray(),
+        beforeSend: function()
+        {
+        },
+        success: function(data)
+        {
+        },
+                 error: function(data) {}
+      });
+}
 
 function TAlum() {
     var elmtTable = document.getElementById("tablaAlu");
