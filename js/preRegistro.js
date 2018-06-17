@@ -329,16 +329,16 @@ $(document).ready(function(){
      $('#recepcion_form').on('submit', function(e){
         e.preventDefault();
         var url = "controladores/preregistro/insertar.php";
-        var form = $('#recepcion_form').serialize();
+        var form = $('#recepcion_form').serialize();        
+        var nombreB = $('#btn-ingresar').val();
+        var checkEsp = $('#id_tipoSector_5').val();
+        console.log("CajaV: "+ checkEsp);
     
         $.ajax({                        
            type: "POST",                 
            url: url,                     
            data: form,
-           success: function(data){
-                console.log(data);
-                step1Next();
-           }
+           success: step1Next()
         });
      });
 });
@@ -351,22 +351,4 @@ function habilitarEspecifique() {
          $('#id_especifique').attr('readonly', true);
          $('#id_especifique').attr('required',true);
     }
-}
-
-function validarNombre(){
-    var namep = $('#nombre_proyecto').val();   
-    var url = "controladores/preregistro/ValidacionesAjax.php";
-    $.ajax({                        
-           type: "POST",                 
-           url: url,                     
-           data: {accion:'validarNombre', nombreP:namep},
-           success: function(data){
-                console.log(data);
-                $('#error_nombre').text(data);
-                if(data== "Proyecto existente"){
-                    $('#nombre_proyecto').focus();
-                }
-                
-           }
-        });
 }

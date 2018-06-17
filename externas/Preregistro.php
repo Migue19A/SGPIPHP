@@ -78,7 +78,7 @@
                                                 <div id="resp">
                                                     
                                                 </div>
-                                                <input type="hidden" name="folio_proyecto" value="PRE2">
+                                                <input type="hidden" name="folio_proyecto" value="PRE1">
                                                 <input type="hidden" name="recepcion" value="recepcion">
                                                 <label>*Fecha de presentación</label>   
                                                 <input type="date" class="form-control" id="fechaPresentacion" required name = "fecha_presentacion" min='2018-06-09' readonly>
@@ -144,8 +144,7 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label>*Nombre del proyecto</label>
-                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%; text-transform: uppercase;" required id="nombre_proyecto" name="nombre_proyecto" onblur="validarNombre()"></textarea>
-                                                    <div style="color: red;"><label id="error_nombre"></label></div>
+                                                    <textarea maxlength="200" class="form-control" rows="7" style="resize: none; width: 98%;" required name="nombre_proyecto"></textarea>
                                                     <label>Total de caracteres: 200</label><br>
                                                 
                                                 </div>
@@ -158,7 +157,8 @@
                                                 <div class="input-group date">
                                                 <label>Inicio</label>    
                                                 <input type="date" class="form-control" required name="fecha_inicio" id="fechaInicio">
-                                                </div>                                               
+                                                </div>
+                                               
                                                 </label>
                                                 </div>
                                                 <div class=" input-group date">

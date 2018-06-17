@@ -27,8 +27,6 @@ class Consultas extends ClassConn
         $consulta= "SELECT * FROM  lineainvestigacion ORDER BY id_linea_investigacion";        
         $result = pg_query($miConn->conexion(), $consulta);
         return $result;
-	}	
-
-
+	}
 }
 ?>

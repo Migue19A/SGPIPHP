@@ -6,11 +6,17 @@
 	$tipoInvest = $_POST['tipo_investigacion'];
 	$tipoSec = $_POST['tipo_sector'];
 	$especific = $_POST['especifique'];
+	if(isset($_POST['tipoSector'])){
+		$check=1;
+	}else{
+	  	$check=0;
+	}
 	$linea = $_POST['linea_investigacion'];
 	$nombreProy = $_POST['nombre_proyecto'];
 	$inicio = $_POST['fecha_inicio'];
 	$fin = $_POST['fecha_fin'];
 	$boton= $_POST['recepcion'];
+
 
 	/*echo "Folio: ".$fp."<br>";
 	echo "Fecha: ".$fpresent."<br>";

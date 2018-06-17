@@ -5,7 +5,7 @@
 	include('externas/lateral.php');
 	//include('externas/Clases/classConn.php');
  ?>
-<title>Pre-Registro</title>	 
+<title>QP2</title>	 
 	<?php 
 		include('externas/Preregistro.php')
 	?>
