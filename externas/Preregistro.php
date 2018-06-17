@@ -1,6 +1,6 @@
 <div class="container">
     <div class="col-lg-9" >
-        <nav class="navbar navbar-inverse">
+        <!-- <nav class="navbar navbar-inverse">
             <div class="container-fluid col-lg-12">
                 <ul class="nav navbar-nav col-lg-12" id="myNav">
                     <li id="navStep1" class="li-nav active  col-lg-1 barra" step="#step-1">
@@ -59,7 +59,7 @@
                     </li>
                 </ul>
             </div>
-        </nav>
+        </nav> -->
             <div class="col-md-12">
                 <div class="panel-group">
                     <div class="panel panel-default">
@@ -78,8 +78,6 @@
                                                 <div id="resp">
                                                     
                                                 </div>
-                                                <input type="hidden" name="folio_proyecto" value="PRE1">
-                                                <input type="hidden" name="recepcion" value="recepcion">
                                                 <label>*Fecha de presentación</label>   
                                                 <input type="date" class="form-control" id="fechaPresentacion" required name = "fecha_presentacion" min='2018-06-09' readonly>
                                                 </div>
@@ -175,65 +173,69 @@
                             </form>
                             
                             <!--RESPONSABLE-->
-                            <form id="responsable_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" data-post-url="{% url 'seguimientoProy:preRegistro' %}">
+                            <form id="responsable_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
                                 <div class="row setup-content" id="step-2">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Responsable</h2>
-                                            <input type="text" name="folio_proyecto"  readonly>
-                                            <input typw="number" readonly name="id_docente"  value="{{user.id}}">
                                             <div class="form-group col-md-5" readonly>
-                                                <label>*Apellidos</label>
-                                                <input type="text" class="form-control" readonly value="{{user.last_name}}"> 
+                                                <label>*Apellido Paterno</label>
+                                                <input type="text" class="form-control" readonly value="" id="apellidoPatResp" name="" > 
                                             </div>
                                             <div class="form-group col-md-5" readonly>
+                                                <label>*Apellido Materno</label>
+                                                <input type="text" class="form-control" readonly value="" id="apellidoMaternoResp" name="" > 
+                                            </div>
+                                            <div class="form-group col-md-5" readonly >
                                                 <label>*Nombre(s)</label>
-                                                <input type="text" class="form-control" readonly value="{{user.first_name}}">
+                                                <input type="text" class="form-control" readonly value=""id="nombreResp" name="nombreResp">
                                             </div>
                                             <div class="form-group col-md-4" readonly>      
                                                 <label>*Grado máximo de estudios</label>
-                                                <input type="text" class="form-control" readonly value="{{dr.grado_maximo_estudios}}">
+                                                <input type="text" class="form-control" readonly value="" id="gradoMaximoResp" name="gradoMaximoResp" >
                                             </div>
                                             <div class="form-group col-md-6" readonly>
                                                 <label>*Academia a la que pertenece</label>
-                                                <input type="text" class="form-control" readonly value="{{dr.carrera}}">                  
+                                                <input type="text" class="form-control" readonly value="" id="academiaResp" name="academiaResp" >                  
                                             </div>
                                             <div class="form-group col-md-2" readonly>
                                                 <label>*N° de personal</label>
-                                                <input type="text" class="form-control" readonly value="{{dr.numero_personal}}">
+                                                <input type="text" class="form-control" readonly value="" id="NumeroPersonalResp" name="NumeroPersonalResp" >
                                             </div>
                                             <div class="form-group col-md-3" readonly>
                                                 <label>Móvil</label>
-                                                <input type="text" class="form-control" readonly value="{{dr.telefono_movil}}"></div>
+                                                <input type="text" class="form-control" readonly value="" id="movilResp" name="NumeroPersonalResp" ></div>
                                             <div class="form-group col-md-4">
                                                 <label>*Correo institucional</label>
-                                                <input type="email" class="form-control" readonly value="{{user.email}}">    
+                                                <input type="email" class="form-control" readonly value="" id="correoInstResp" name="correoInstResp" >    
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>Correo alternativo</label>
-                                                <input type="email" class="form-control">
+                                                <input type="email" class="form-control" id="emailAltResp" name="emailAltResp" >
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Descripción de las principales actividades a desarrollar en el proyecto</label>
-                                                <textarea class="form-control" name="actividades_responsable" required rows="5" cols="200"></textarea>
+                                                <textarea class="form-control" name="actividades_responsable" id="actividades_responsable" required rows="5" cols="200" id="" ></textarea>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>*Palabras clave:</label>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>*(1)</label>
-                                                <input class="form-control" onKeyPress="return palabrasClave(event);" name="palabra_clave1" type="text" required/>
+                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave1" name="palabra_clave1" type="text" required/>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>*(2)</label>
-                                                <input class="form-control" onKeyPress="return palabrasClave(event);" name="palabra_clave2" type="text" required/>
+                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave2" name="palabra_clave2" type="text" required/>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>*(3)</label>
-                                                <input class="form-control" onKeyPress="return palabrasClave(event);" name="palabra_clave3" type="text" required/>
+                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave3" name="palabra_clave3" type="text" required/>
                                             </div>
-                                            <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                            <input type="submit" class="btn btn-primary" value="Siguiente" name="botonS2" style="float: right;" onclick="cargar()">
+                                            <div class="row">
+                                                <input onclick="prevStep()" class="btn btn-default" value="Regresar">
+                                                <input type="submit" class="btn btn-primary" value="Siguiente" name="botonS2" style="float: right;" onclick="cargar()">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
