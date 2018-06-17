@@ -49,214 +49,79 @@ function TAlum() {
 
 
 
-function muestra_colaborador() {
-    opcion = document.getElementById("opcion_colabora").value;
-    if (opcion == 1) {
-        document.getElementById("colabora2").className = "hidden";
-        document.getElementById("colabora2.1").className = "hidden";
-        document.getElementById("colabora2.2").className = "hidden";
-        document.getElementById("colabora2.3").className = "hidden";
-        document.getElementById("colabora2.4").className = "hidden";
-        document.getElementById('apCol2').removeAttribute('required');
-        document.getElementById('amCol2').removeAttribute('required');
-        document.getElementById('nombresCol2').removeAttribute('required');
-        document.getElementById('gradoMCol2').removeAttribute('required');
-        document.getElementById('programaCol2').removeAttribute('required');
-        document.getElementById('noPersonalCol2').removeAttribute('required');
-        document.getElementById('movilCol2').removeAttribute('required');
-        document.getElementById('correoCol2').removeAttribute('required');
-        document.getElementById('correoAlCol2').removeAttribute('required');
-        document.getElementById('actividadesCol2').removeAttribute('required');
-        document.getElementById("colabora3").className = "hidden";
-        document.getElementById("colabora3.1").className = "hidden";
-        document.getElementById("colabora3.2").className = "hidden";
-        document.getElementById("colabora3.3").className = "hidden";
-        document.getElementById("colabora3.4").className = "hidden";
-        document.getElementById('apCol3').removeAttribute('required');
-        document.getElementById('amCol3').removeAttribute('required');
-        document.getElementById('nombresCol3').removeAttribute('required');
-        document.getElementById('gradoMCol3').removeAttribute('required');
-        document.getElementById('programaCol3').removeAttribute('required');
-        document.getElementById('noPersonalCol3').removeAttribute('required');
-        document.getElementById('movilCol3').removeAttribute('required');
-        document.getElementById('correoCol3').removeAttribute('required');
-        document.getElementById('correoAlCol3').removeAttribute('required');
-        document.getElementById('actividadesCol3').removeAttribute('required');
-        document.getElementById("colabora4").className = "hidden";
-        document.getElementById("colabora4.1").className = "hidden";
-        document.getElementById("colabora4.2").className = "hidden";
-        document.getElementById("colabora4.3").className = "hidden";
-        document.getElementById("colabora4.4").className = "hidden";
-        document.getElementById('apCol4').removeAttribute('required');
-        document.getElementById('amCol4').removeAttribute('required');
-        document.getElementById('nombresCol4').removeAttribute('required');
-        document.getElementById('gradoMCol4').removeAttribute('required');
-        document.getElementById('programaCol4').removeAttribute('required');
-        document.getElementById('noPersonalCol4').removeAttribute('required');
-        document.getElementById('movilCol4').removeAttribute('required');
-        document.getElementById('correoCol4').removeAttribute('required');
-        document.getElementById('correoAlCol4').removeAttribute('required');
-        document.getElementById('actividadesCol4').removeAttribute('required');
+function muestra_colaborador(id) {
+    var colaboradores=$('#'+id).val();
+    $('#colaboradores').html('');
+    for (var i = 0; i < (colaboradores-1); i++) 
+    {
+        $('#colaboradores').prepend($('#colaborador').html());
     }
-    if (opcion == 2) {
-        $("#opcion_colabora2").attr("name", "form-1-numero_personal");
-        $("#actividadesCol2").attr("name", "form-1-actividades_colaborador");
-        $("#opcion_colabora3").attr("name", "");
-        $("#actividadesCol3").attr("name", "");
-        $("#opcion_colabora4").attr("name", "");
-        $("#actividadesCol4").attr("name", "");
-        document.getElementById("colabora2").className = "";
-        document.getElementById("colabora2.1").className = "";
-        document.getElementById("colabora2.2").className = "";
-        document.getElementById("colabora2.3").className = "";
-        document.getElementById("colabora2.4").className = "";
-        /*document.getElementById('apCol2').required = "required";
-        document.getElementById('amCol2').required = "required";
-        document.getElementById('nombresCol2').required = "required";
-        document.getElementById('gradoMCol2').required = "required";
-        document.getElementById('programaCol2').required = "required";
-        document.getElementById('noPersonalCol2').required = "required";
-        document.getElementById('movilCol2').required = "required";
-        document.getElementById('correoCol2').required = "required";
-        document.getElementById('correoAlCol2').required = "required";
-        document.getElementById('actividadesCol2').required = "required";*/
-        document.getElementById("colabora3").className = "hidden";
-        document.getElementById("colabora3.1").className = "hidden";
-        document.getElementById("colabora3.2").className = "hidden";
-        document.getElementById("colabora3.3").className = "hidden";
-        document.getElementById("colabora3.4").className = "hidden";
-        document.getElementById('apCol3').removeAttribute('required');
-        document.getElementById('amCol3').removeAttribute('required');
-        document.getElementById('nombresCol3').removeAttribute('required');
-        document.getElementById('gradoMCol3').removeAttribute('required');
-        document.getElementById('programaCol3').removeAttribute('required');
-        document.getElementById('noPersonalCol3').removeAttribute('required');
-        document.getElementById('movilCol3').removeAttribute('required');
-        document.getElementById('correoCol3').removeAttribute('required');
-        document.getElementById('correoAlCol3').removeAttribute('required');
-        document.getElementById('actividadesCol3').removeAttribute('required');
-        document.getElementById("colabora4").className = "hidden";
-        document.getElementById("colabora4.1").className = "hidden";
-        document.getElementById("colabora4.2").className = "hidden";
-        document.getElementById("colabora4.3").className = "hidden";
-        document.getElementById("colabora4.4").className = "hidden";
-        document.getElementById('apCol4').removeAttribute('required');
-        document.getElementById('amCol4').removeAttribute('required');
-        document.getElementById('nombresCol4').removeAttribute('required');
-        document.getElementById('gradoMCol4').removeAttribute('required');
-        document.getElementById('programaCol4').removeAttribute('required');
-        document.getElementById('noPersonalCol4').removeAttribute('required');
-        document.getElementById('movilCol4').removeAttribute('required');
-        document.getElementById('correoCol4').removeAttribute('required');
-        document.getElementById('correoAlCol4').removeAttribute('required');
-        document.getElementById('actividadesCol4').removeAttribute('required');
-    }
-    if (opcion == 3) {
-        $("#opcion_colabora2").attr("name", "numero_personal");
-        $("#actividadesCol2").attr("name", "actividades_colaborador");
-        $("#opcion_colabora3").attr("name", "numero_personal");
-        $("#actividadesCol3").attr("name", "actividades_colaborador");
-        $("#opcion_colabora4").attr("name", "");
-        $("#actividadesCol4").attr("name", "");
-        document.getElementById("colabora2").className = "";
-        document.getElementById("colabora2.1").className = "";
-        document.getElementById("colabora2.2").className = "";
-        document.getElementById("colabora2.3").className = "";
-        document.getElementById("colabora2.4").className = "";
-        document.getElementById('apCol2').required = "required";
-        document.getElementById('amCol2').required = "required";
-        document.getElementById('nombresCol2').required = "required";
-        document.getElementById('gradoMCol2').required = "required";
-        document.getElementById('programaCol2').required = "required";
-        document.getElementById('noPersonalCol2').required = "required";
-        document.getElementById('movilCol2').required = "required";
-        document.getElementById('correoCol2').required = "required";
-        document.getElementById('correoAlCol2').required = "required";
-        document.getElementById('actividadesCol2').required = "required";
-        document.getElementById("colabora3").className = "";
-        document.getElementById("colabora3.1").className = "";
-        document.getElementById("colabora3.2").className = "";
-        document.getElementById("colabora3.3").className = "";
-        document.getElementById("colabora3.4").className = "";
-        document.getElementById('apCol3').required = "required";
-        document.getElementById('amCol3').required = "required";
-        document.getElementById('nombresCol3').required = "required";
-        document.getElementById('gradoMCol3').required = "required";
-        document.getElementById('programaCol3').required = "required";
-        document.getElementById('noPersonalCol3').required = "required";
-        document.getElementById('movilCol3').required = "required";
-        document.getElementById('correoCol3').required = "required";
-        document.getElementById('correoAlCol3').required = "required";
-        document.getElementById('actividadesCol3').required = "required";
-        document.getElementById("colabora4").className = "hidden";
-        document.getElementById("colabora4.1").className = "hidden";
-        document.getElementById("colabora4.2").className = "hidden";
-        document.getElementById("colabora4.3").className = "hidden";
-        document.getElementById("colabora4.4").className = "hidden";
-        document.getElementById('apCol4').removeAttribute('required');
-        document.getElementById('amCol4').removeAttribute('required');
-        document.getElementById('nombresCol4').removeAttribute('required');
-        document.getElementById('gradoMCol4').removeAttribute('required');
-        document.getElementById('programaCol4').removeAttribute('required');
-        document.getElementById('noPersonalCol4').removeAttribute('required');
-        document.getElementById('movilCol4').removeAttribute('required');
-        document.getElementById('correoCol4').removeAttribute('required');
-        document.getElementById('correoAlCol4').removeAttribute('required');
-        document.getElementById('actividadesCol4').removeAttribute('required');
-    }
-    if (opcion == 4) {
-        $("#opcion_colabora2").attr("name", "numero_personal");
-        $("#actividadesCol2").attr("name", "actividades_colaborador");
-        $("#opcion_colabora3").attr("name", "numero_personal");
-        $("#actividadesCol3").attr("name", "actividades_colaborador");
-        $("#opcion_colabora4").attr("name", "numero_personal");
-        $("#actividadesCol4").attr("name", "actividades_colaborador");
-        document.getElementById("colabora2").className = "";
-        document.getElementById("colabora2.1").className = "";
-        document.getElementById("colabora2.2").className = "";
-        document.getElementById("colabora2.3").className = "";
-        document.getElementById("colabora2.4").className = "";
-        document.getElementById('apCol2').required = "required";
-        document.getElementById('amCol2').required = "required";
-        document.getElementById('nombresCol2').required = "required";
-        document.getElementById('gradoMCol2').required = "required";
-        document.getElementById('programaCol2').required = "required";
-        document.getElementById('noPersonalCol2').required = "required";
-        document.getElementById('movilCol2').required = "required";
-        document.getElementById('correoCol2').required = "required";
-        document.getElementById('correoAlCol2').required = "required";
-        document.getElementById('actividadesCol2').required = "required";
-        document.getElementById("colabora3").className = "";
-        document.getElementById("colabora3.1").className = "";
-        document.getElementById("colabora3.2").className = "";
-        document.getElementById("colabora3.3").className = "";
-        document.getElementById("colabora3.4").className = "";
-        document.getElementById('apCol3').required = "required";
-        document.getElementById('amCol3').required = "required";
-        document.getElementById('nombresCol3').required = "required";
-        document.getElementById('gradoMCol3').required = "required";
-        document.getElementById('programaCol3').required = "required";
-        document.getElementById('noPersonalCol3').required = "required";
-        document.getElementById('movilCol3').required = "required";
-        document.getElementById('correoCol3').required = "required";
-        document.getElementById('correoAlCol3').required = "required";
-        document.getElementById('actividadesCol3').required = "required";
-        document.getElementById("colabora4").className = "";
-        document.getElementById("colabora4.1").className = "";
-        document.getElementById("colabora4.2").className = "";
-        document.getElementById("colabora4.3").className = "";
-        document.getElementById("colabora4.4").className = "";
-        document.getElementById('apCol4').required = "required";
-        document.getElementById('amCol4').required = "required";
-        document.getElementById('nombresCol4').required = "required";
-        document.getElementById('gradoMCol4').required = "required";
-        document.getElementById('programaCol4').required = "required";
-        document.getElementById('noPersonalCol4').required = "required";
-        document.getElementById('movilCol4').required = "required";
-        document.getElementById('correoCol4').required = "required";
-        document.getElementById('correoAlCol4').required = "required";
-        document.getElementById('actividadesCol4').required = "required";
-    }
+    var i=1;
+    $('h3[id*=tituloColaborador]').each(function()
+    {
+        $(this).html('Colaborador '+i);
+        i++;
+    });
+    i=1;
+    $('input[id*=apPaternoCol_]').each(function()
+    {
+        $(this).attr('id','apPaternoCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*=apMaternoCol_]').each(function()
+    {
+        $(this).attr('id','apMaternoCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*=nombreCol_]').each(function()
+    {
+        $(this).attr('id','nombreCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*=gradMaximoCol_]').each(function()
+    {
+        $(this).attr('id','gradMaximoCol_'+i);
+        i++;
+    });
+    i=1;
+    $('select[id*=academiaCol_]').each(function()
+    {
+        $(this).attr('id','academiaCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*=numPersonalCol_]').each(function()
+    {
+        $(this).attr('id','numPersonalCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*=movilCol_]').each(function()
+    {
+        $(this).attr('id','movilCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*=correoInstCol_]').each(function()
+    {
+        $(this).attr('id','correoInstCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*=correoAltCol_]').each(function()
+    {
+        $(this).attr('id','correoAltCol_'+i);
+        i++;
+    });
+    i=1;
+    $('textarea[id*=principalesActCol_]').each(function()
+    {
+        $(this).attr('id','principalesActCol_'+i);
+        i++;
+    });
 }
 
 function muestra_etapas() {
