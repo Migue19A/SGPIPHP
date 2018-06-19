@@ -764,7 +764,7 @@
                                         <div class="col-md-12">
                                             <div class="form-group col-md-4">
                                                 <label>Total de alumnos colaboradores</label>
-                                                {{form.alumTot}}
+                                                <input type="number" id="totalAlumnosCol" name="totalAlumnosCol" min="0" max="50">
                                             </div>
                                              <div class=" form-group col-md-2">
                                                 <a aria-pressed="true" class="btn btn-primary" onclick="TAlum()" role="button" style="margin-top: 25px;">Aceptar</a>
@@ -785,28 +785,48 @@
                                                         <div class="row">
                                                             <div class="form-group col-md-6">
                                                                 <label>*Nombre del alumno</label>
-                                                                {{form.alumNomb}}
+                                                                <input type="text" id="nombreAlumnoCol_1" name="nombreAlumnoCol_1">
                                                             </div>
                                                             <div class="form-group col-md-5">
-                                                                {{form.alumSRT}}
+                                                                
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="form-group col-md-4">
                                                                 <label>*N° control</label>
-                                                                {{form.alumControl}}
+                                                                <input type="text" id="noControlAlumnoCol_1" name="noControlAlumnoCol_1">
                                                             </div>
                                                             <div class="form-group col-md-3">
                                                                 <label>*Semestre</label>
-                                                                {{form.alumSem}}
+                                                                <select name="cboSemestreAlumnoCol_1" id="cboSemestreAlumnoCol_1"></select>
+                                                                <option value="1">Primero</option>
+                                                                <option value="2">Segundo</option>
+                                                                <option value="3">Tercero</option>
+                                                                <option value="4">Cuarto</option>
+                                                                <option value="5">Quinto</option>
+                                                                <option value="6">Sexto</option>
+                                                                <option value="7">Septimo</option>
+                                                                <option value="8">Octavo</option>
+                                                                <option value="9">Noveno</option>
+                                                                <option value="10">D&eacute;cimo</option>
+                                                                <option value="11">Onceavo</option>
+                                                                <option value="12">Doceavo</option>
                                                             </div>
                                                             <div class="form-group col-md-5">
                                                                 <label>*Carrera</label>
-                                                                    {{form.alumCar}}
+                                                                    <select name="cboCarreraAlumno_1" id="cboCarreraAlumno_1">
+                                                                    <?php 
+                                                                    $result=$miConn->cboCarrera();
+                                                                    while($row = pg_fetch_array($result))
+                                                                    {
+                                                                        echo "<option value='".$row[0]."'>".$row[1]."</option>";       
+                                                                    }
+                                                                    ?>
+                                                                    </select>
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 <label>*Detalle de actividades (máximo 256 caracteres)</label>
-                                                                {{form.alumActi}}
+                                                                <textarea name="actividadesAlumnoCol_1" id="actividadesAlumnoCol_1" cols="30" rows="10"></textarea>
                                                             </div>
                                                             <div class="form-group col-md-12">
                                                                 <h5><b>NOTA:</b>La cantidad de alumnos colaboradores depende de la complejidad del proyecto, como máximo 20 alumnos.</h5>

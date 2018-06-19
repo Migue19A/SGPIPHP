@@ -43,6 +43,5 @@ class Consultas extends ClassConn
         return $result;
 	}
 
-
 }
 ?>
