@@ -2,27 +2,6 @@
 	include('../../externas/conexion.php');
 	echo $_POST['accion'];
 	$accion=$_POST['accion'];
-
-	/*echo "Folio: ".$fp."<br>";
-	echo "Fecha: ".$fpresent."<br>";
-	echo "CPR: ".$ccpr."<br>";
-	echo "TipoInv: ".$tipoInvest."<br>";
-	echo "TipoSec".$tipoSec."<br>";
-	echo "Especifique: ".$especific."<br>";
-	echo "Checbox: ".$check."<br>";
-	echo "Línea: ".$linea."<br>";
-	echo "Nombre del proyecto: ".$nombreProy."<br>";
-	echo "Inicio: ".$inicio."<br>";
-	echo "Fin: ".$fin."<br>";
-	echo "Botón: ".$boton."<br>";*/
-
-	// if($boton=='recepcion'){
-
-			/*if($resultado){				
-				echo "<script>jQuery(function(){swal(\"¡Guardado con éxito!\", \"Datos guardados correctamente\", \"success\");});</script>";				
-				//return $resultado;
-			}*/
-		// }
 			
 			//echo "<script>jQuery(function(){swal(\"¡Guardado con éxito!\", \"Datos guardados correctamente\", \"success\");});</script>";*/
 	switch ($accion) {
@@ -114,19 +93,114 @@
 				$foli = $_POST['folio_proyecto'];
 				$existeConvenio = $_POST['convenio'];
 				$existeAportacion = $_POST['aporta'];
-				if($existe== "si"){
+				$consulta= "SELECT count (id) from vinculacion;";        
+        		$result = pg_query($conexion, $consulta);
+        		$result = pg_fetch_array($result);
+        		$registro = $result[0]+1;
+				if($existeConvenio== "si"){
 					$organizacion= $_POST['organizacion'];
 					$direccion= $_POST['direccionV'];
 					$area = $_POST['areaV'];
 					$telefono = $_POST['telefonoV'];
 					$contacto = $_POST['nombreV'];		
 					$descripcion = $_POST['descripcionV'];			
+					
+					if($existeAportacion=="si"){
+						$aportacion = $_POST['descriptionR'];
+					}else{
+						$aportacion= ' ';
+					}
+					$sqlIV = "INSERT INTO vinculacion VALUES ("
+							.$registro.",
+							'".$organizacion."',
+							'".$direccion."',
+							'".$area."',
+							'".$descripcion."',
+							'".$aportacion."',
+							'".$foli."',
+							".$telefono.");";
+					echo $sqlIV;	
+					$resultado=pg_query($conexion, $sqlIV);
+
+				}else{
+					echo " ";
 				}
+				break;
+			case 'productosForm':
+				$intText = $_POST['intelectualText'];
+				$otroText = $_POST['otrosText'];
+				$f = $_POST['folio_proyecto'];
+				if(!isset($_POST['servicio'])){
+					$servicio= 'false';
+				}else{
+					$servicio='true';
+				}
+				if(!isset($_POST['residencia'])){
+					$residencia= 'false';
+				}else{
+					$residencia='true';
+				}
+				if(!isset($_POST['tesis'])){
+					$tesis= 'false';
+				}else{
+					$tesis='true';
+				}
+				if(!isset($_POST['ponencia'])){
+					$ponencia= 'false';
+				}else{
+					$ponencia='true';
+				}
+				if(!isset($_POST['articulos'])){
+					$articulos= 'false';
+				}else{
+					$articulos='true';
+				}
+				if(!isset($_POST['libros'])){
+					$libros= 'false';
+				}else{
+					$libros='true';
+				}
+				$consulta= "SELECT count (id) from metas;";        
+        		$result = pg_query($conexion, $consulta);
+        		$result = pg_fetch_array($result);
+        		$registro = $result[0]+1;
 
-				if()
+				$sqlIP= "INSERT INTO metas VALUES(1, 
+						".$servicio.",
+						".$residencia.",
+						".$tesis.",
+						".$ponencia.",
+						".$articulos.",
+						".$libros.",
+						'".$intText."',
+						'".$otroText."',
+						'".$f."');";
+				echo $sqlIP;
+				$resultado=pg_query($conexion, $sqlIP);
+				break;
+			case 'etapasForm':
+                $etapas=$_POST['opcion_etapas'];
+                for ($i=1; $i <= $etapas; $i++) 
+                { 
+                    $nombreEtapa=$_POST['nombreEtapa_'.$i];
+                    $inicioEtapa=$_POST['inicioEtapa_'.$i];
+                    $finEtapa=$_POST['finalEtapa_'.$i];
+                    $mesesEtapa=$_POST['mesesEtapa_'.$i];
+                    $descripcioEtapa=$_POST['descripcionEtapa_'.$i];
+                    $metasEtapa=$_POST['metasEtapa_'.$i];
+                    $actividadeEtapa=$_POST['actividadesEtapa_'.$i];
+                    $productosEtapa=$_POST['productosEtapa_'.$i];
+                    $sql="INSERT INTO etapas (id_etapa, nombre_etapa, fecha_inicio_etapa, fecha_fin_etapa, meses , descripcion_etapa, metas, actividades_etapa, productos) 
+                        VALUES(".$i.",'".$nombreEtapa."','".$inicioEtapa."','".$finEtapa."',".$mesesEtapa.",'".$descripcioEtapa."','".$metasEtapa."','".$actividadeEtapa."','".$productosEtapa."');";
+                    echo $sql;
+                    $resultado=pg_query($conexion, $sql);
+                }
+            	break;
 
 
-				default: echo "XD";;
+				default: echo "XD";
+
+
 
 				break;
 		}	
