@@ -66,60 +66,69 @@ function muestra_colaborador(id) {
     $('input[id*=apPaternoCol_]').each(function()
     {
         $(this).attr('id','apPaternoCol_'+i);
+        $(this).attr('name','apPaternoCol_'+i);
         i++;
     });
     i=1;
     $('input[id*=apMaternoCol_]').each(function()
     {
         $(this).attr('id','apMaternoCol_'+i);
+        $(this).attr('name','apMaternoCol_'+i);
         i++;
     });
     i=1;
     $('input[id*=nombreCol_]').each(function()
     {
         $(this).attr('id','nombreCol_'+i);
+        $(this).attr('name','nombreCol_'+i);
         i++;
     });
     i=1;
     $('input[id*=gradMaximoCol_]').each(function()
     {
         $(this).attr('id','gradMaximoCol_'+i);
+        $(this).attr('name','gradMaximoCol_'+i);
         i++;
     });
     i=1;
     $('select[id*=academiaCol_]').each(function()
     {
         $(this).attr('id','academiaCol_'+i);
+        $(this).attr('name','academiaCol_'+i);
         i++;
     });
     i=1;
     $('input[id*=numPersonalCol_]').each(function()
     {
         $(this).attr('id','numPersonalCol_'+i);
+        $(this).attr('name','numPersonalCol_'+i);
         i++;
     });
     i=1;
     $('input[id*=movilCol_]').each(function()
     {
-        $(this).attr('id','movilCol_'+i);
+         $(this).attr('id','movilCol_'+i);
+        $(this).attr('name','movilCol_'+i);
         i++;
     });
     i=1;
     $('input[id*=correoInstCol_]').each(function()
     {
-        $(this).attr('id','correoInstCol_'+i);
+        $(this).attr('name','correoInstCol_'+i);
         i++;
     });
     i=1;
     $('input[id*=correoAltCol_]').each(function()
     {
         $(this).attr('id','correoAltCol_'+i);
+        $(this).attr('name','correoAltCol_'+i);
         i++;
     });
     i=1;
     $('textarea[id*=principalesActCol_]').each(function()
     {
         $(this).attr('id','principalesActCol_'+i);
+        $(this).attr('name','principalesActCol_'+i);
         i++;
     });
 }
@@ -440,7 +449,7 @@ function ajaxPreregistro(id)
 function anexarFolio(){
     var folio = $('#folio_proyecto1').val();
     var i=2;
-    while (i<=3){        
+    while (i<=5){        
         var anexar= 'folio_proyecto'+i;
         $('#'+ anexar).val(folio); 
         i++;

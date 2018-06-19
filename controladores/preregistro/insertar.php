@@ -45,15 +45,6 @@
 				$resultado=pg_query($conexion, $sqlInsertar);
 				break;
 			case 'responsableForm':
-				/*$apPaterno=$_POST['apellidoPatResp'];
-				$apMaternoResponsable=$_POST['apellidoMaternoResp'];
-				$nombre=$_POST['nombreResp'];
-				$gradoMaximo=$_POST['gradoMaximoResp'];
-				$academia=$_POST['academiaResp'];
-				$numeroPersonal=$_POST['NumeroPersonalResp'];
-				$movil=$_POST['movilResp'];
-				$correoInst=$_POST['correoInstResp'];
-				$correoAlt=$_POST['emailAltResp'];*/
 				$fp= $_POST['folio_proyecto'];
 				$actividades=$_POST['actividades_responsable'];
 				$palabra1=$_POST['palabra_clave1'];
@@ -65,10 +56,6 @@
 							palabra_clave2='".$palabra2."',
 							palabra_clave3='".$palabra3."',
 							id_responsable= 1 WHERE folio_proyecto='".$fp."';";
-
-				/*$sql="INSERT INTO proyecto (folio_proyecto, id_responsable,actividades_responsable,palabra_clave1,palabra_clave2,palabra_clave3) values 
-				('PRE1000', 1,'".$actividades."','".$palabra1."','".$palabra2."','".$palabra3."');";
-				echo  $sql;*/
 				echo $sqlUpdate;
 				$resultado=pg_query($conexion, $sqlUpdate);
 				break;
@@ -88,22 +75,57 @@
 					$correoA= $_POST['correoAltCol_'.$cont];
 					$activ= $_POST['principalesActCol_'.$cont];
 
-					$sqlI = 'INSERT INTO colaboradordocente VALUES 
-							('.$paterno."', 
+					if($cel== ""){
+						$cel= 0;
+						$folio='PRE2';
+					}
+
+					$sqlI = "INSERT INTO colaboradordocente VALUES 
+							('".$paterno."', 
 							'".$materno."',
 							'".$nombre."',
 							'".$gradoMax."',
-							'".$npersonal."',
-							'".$cel."',
+							".$npersonal.",
+							".$cel.",
 							'".$correoI."',
 							'".$correoA."',
 							'".$activ."',
-							'".$carrera."',
-							'".$folio."';";
+							".$carrera.",
+							'".$folio."');";
 					echo $sqlI;	
+					$resultado=pg_query($conexion, $sqlI);
 					$cont= $cont+1;
 				}
-				break;				
+				break;	
+			case 'objetivosForm':
+				$fol= $_POST['folio_proyecto'];
+				$general=$_POST['obj_general'];
+				$especifico=$_POST['obj_especif'];
+				$resultados=$_POST['resultados'];
+				$sqlUpdate= "UPDATE proyecto SET 
+							objetivo_general='".$general."',
+							objetivo_especifico='".$especifico."',
+							resultados='".$resultados."',
+							id_responsable= 1 WHERE folio_proyecto='".$fol."';";
+				echo $sqlUpdate;
+				$resultado=pg_query($conexion, $sqlUpdate);
+				break;			
+			case 'vinculacionForm':
+				$foli = $_POST['folio_proyecto'];
+				$existeConvenio = $_POST['convenio'];
+				$existeAportacion = $_POST['aporta'];
+				if($existe== "si"){
+					$organizacion= $_POST['organizacion'];
+					$direccion= $_POST['direccionV'];
+					$area = $_POST['areaV'];
+					$telefono = $_POST['telefonoV'];
+					$contacto = $_POST['nombreV'];		
+					$descripcion = $_POST['descripcionV'];			
+				}
+
+				if()
+
+
 				default: echo "XD";;
 
 				break;

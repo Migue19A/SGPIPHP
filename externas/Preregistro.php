@@ -329,27 +329,28 @@
                         </form>
                             <!--OBJETIVOS-->
                             
-                            <form class="container" style="width: 100%;">
+                        <form id="objetivos_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" onsubmit="ajaxPreregistro(this.id)">
                                 <div class="row setup-content" id="step-4">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
-                                        <input type="text" name="folio_proyecto"  readonly>
+                                        <input type="hidden" value="objetivosForm" name="accion">
+                                        <input type="hidden" id="folio_proyecto4" name="folio_proyecto" readonly>
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Objetivos</h2>
                                             <div class="form-group col-md-12">
-                                                <label>*Indique el objetivo general(No más de 512 caracteres)</label>
-                                                {{form.objetivoG}}
+                                                <label>*Indique el objetivo general (No más de 512 caracteres)</label>
+                                                <textarea class="form-control" required id="obj_general" name="obj_general" style="resize: none;" rows="6" maxlength="512"></textarea>
                                             </div>
                                             <div class="form-group col-md-12">
-                                                <label>*Establezca los objetivos específicos, científicos y tecnológicos subyacentes en el proyecto(No más de 512 caracteres)</label>
-                                                {{form.objetivoE}}
+                                                <label>*Establezca los objetivos específicos, científicos y tecnológicos subyacentes en el proyecto (No más de 512 caracteres)</label>
+                                                <textarea class="form-control" required id="obj_especif" name="obj_especif" style="resize: none;" rows="6" maxlength="512"></textarea>
                                             </div>
                                             <div class="form-group col-md-12">
-                                                <label>*Indique los resultados esperados en términos concretos(No más de 512 Caracteres)</label>
-                                                {{form.resultados}}
+                                                <label>*Indique los resultados esperados en términos concretos  (No más de 512 Caracteres)</label>
+                                                <textarea class="form-control" required id="resultados" name="resultados" style="resize: none;" rows="6" maxlength="512"></textarea>
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                <input onclick="step4Next()" class="btn btn-primary" value="Siguiente" style="float: right;">
+                                                <input type="submit" class="btn btn-primary" value="Siguiente" style="float: right;">
                                             </div>
                                         </div>
                                     </div>
@@ -362,51 +363,58 @@
                                 <div class="row setup-content" id="step-5">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
-                                        <input type="text" name="folio_proyecto"  readonly>
+                                            <input type="hidden" value="vinculacionForm" name="accion">
+                                            <input type="hidden" id="folio_proyecto5" name="folio_proyecto" value="PRE2" readonly>
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Vinculación</h2>
                                             <div class="form-group col-md-3">
-                                                <label>*Existe convenio:</label>
+                                                <label>*¿Existe convenio?:</label>
                                             </div>
                                             <div class="form-group col-md-12">
-                                                {{form.convenio}}
+                                                <label><input id="ExisteConvenio1" name="convenio" type="radio" onclick="vinculacionConvenio()" value="si"/>Sí</label>
+                                            </div>
+                                            <div class="form-group col-md-12">
+                                                <label><input id="ExisteConvenio2" name="convenio" type="radio" onclick="vinculacionConvenio()" value="no" checked/>No</label>
                                             </div>
                                             <div class="row hidden" id="vincula">
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-md-12">
                                                     <label>*Nombre de la organización</label>
-                                                    {{form.nombre_organizacion}}
+                                                    <input class="form-control"  id="organizacionV" name="organizacion" type="text">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>*Dirección</label>
-                                                    {{form.direccion_organizacion}}
+                                                     <input class="form-control" name="direccionV"  id="direccionV" type="text">
                                                 </div>
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-6">
                                                     <label>*Área</label>
-                                                    {{form.area_organizacion}}
+                                                    <input class="form-control"  id="areaV" name="areaV"  type="text">
                                                 </div>
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-6">
                                                     <label>*Teléfono</label>
-                                                    {{form.telefono_organizacion}}
+                                                    <input class="form-control"  id="telefonoV" name="telefonoV" pattern="^\d{10}$" type="number">
                                                 </div>
-                                                <div class="form-group col-md-4">
+                                                <div class="form-group col-md-6">
                                                     <label>*Nombre del contacto</label>
-                                                    {{form.nombreC_organizacion}}
+                                                    <input class="form-control"  id="nombreV" name="nombreV" type="text">
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>*Descripción de la organización(No más de 256 caracteres)</label>
-                                                    {{form.descripcion_organizacion}}
+                                                    <label>*Descripción de la organización (No más de 256 caracteres)</label>
+                                                     <textarea maxlength="256" id="descripcionV" name="descripcionV" class="form-control" rows="6" style="resize: none; width: 98%"></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-10">
-                                                <label>*Existen aportaciones financieras o en especie de la vinculación:</label>
+                                                <label>*¿Existen aportaciones financieras o en especie de la vinculación?:</label>
                                             </div>
                                             <div class="form-group col-md-8">
-                                               {{form.aporta}}
+                                                <label><input id="aportaciones1" name="aporta" type="radio" onclick="respuestaF()" value="si">Sí</label>
+                                            </div>
+                                            <div class="form-group col-md-8">
+                                                <label><input id="aportaciones2" name="aporta" type="radio" onclick="respuestaF()" value="no" checked>No</label>
                                             </div>
                                             <div class="row hidden" id="respuesta">
                                                 <div class="col-md-12 form-group">
-                                                    <label>Si la respuesta es sí, describa cuales son(No más de 256 caracteres)</label>
-                                                    {{form.describa_aportaciones}}
-                                                </div>
+                                                    <label>Si la respuesta es sí, describa cuáles son (No más de 256 caracteres)</label>
+                                                    <textarea maxlength="256" class="form-control" id="descriptionR" name="descriptionR" style="resize: none; width: 98%" rows="6"></textarea>
+                                            </div>
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <input onclick="prevStep()" class="btn btn-default" value="Regresar">
