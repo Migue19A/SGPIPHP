@@ -15,7 +15,6 @@
                             <span class="sec-text">Responsable</span>
                         </a>    
                     </li>
-                    <!--class="li-nav disabled col-lg-1 barra"-->
                     <li id="navStep3" class="li-nav disabled col-lg-1 barra"  step="#step-3">
                         <a href="#" id="navPre">
                             <span class="glyphicon glyphicon-arrow-right"></span>
@@ -464,195 +463,139 @@
                             
                             <!--ETAPAS-->
                             
-                            <form class="container" style="width: 100%;">
-                                <div class="row setup-content" id="step-7">
-                                    <div class="col-md-12">
-                                    <input type="text" name="folio_proyecto"  readonly>
-                                        <div class="col-md-12">
-                                            <div class="form-group col-md-12">
-                                                <label>No. de Etapas</label>
-                                                {{form.sEtapa}}
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <h2 style="text-align: center;">Etapa 1°</h2>
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                {{form.n_Etapa}}
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>*Fecha de inicio</label>
-                                                {{form.etapaInicio}}
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>*Fecha de terminación</label>
-                                                {{form.etapaTermino}}
-                                            </div>
-                                            <div class="form-group col-md-4">
-                                                <label>Meses</label>
-                                                {{form.etapaMeses}}
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <label>*Descripción:</label>
-                                            </div>
-                                            <div class="form-group col-md-10">
-                                                {{form.etapaDes}}
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <label>*Actividades:</label>
-                                            </div>
-                                            <div class="form-group col-md-10">
-                                                {{form.etapaAct}}
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <label>*Productos:</label>
-                                            </div>
-                                            <div class="form-group col-md-10">
-                                                {{form.etapaPro}}
-                                            </div>
-                                            
-                                            <!--ETAPA 2-->
-                                            
-                                            <div  id="etapa2">
-                                                <div class="form-group col-md-12">
-                                                    <h2 style="text-align: center;">Etapa 2°</h2>
+                            <div class="row setup-content" id="step-7">
+                                <form id="etapas_form" name="etapas_form" onsubmit="ajaxPreregistro(this.id)" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                                    <input type="hidden" id="accion" name="accion" value="etapasForm">
+                                    <h2 class="col-md-6" align="right">Etapas</h2>
+                                    <div class="col-sm-2 col-lg-offset-2" valign="bottom">
+                                        <label>
+                                            Total de etapas:
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <select class="form-control" id="opcion_etapas" name="opcion_etapas" onchange="crearEtapas(this.id)">
+                                            <option>
+                                                1
+                                            </option>
+                                            <option>
+                                                2
+                                            </option>
+                                            <option>
+                                                3
+                                            </option>
+                                            <option>
+                                                4
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <br>
+                                    <div id="etapa">
+                                        <div class="col-lg-12 well" style="">
+                                            <h3 class="text-center" id="tituloEtapa_1" style="font-weight: Yu Gothic UI Light; margin-top: 2px">
+                                                Etapa 1
+                                            </h4>
+                                            <div class="row">
+                                                <div class="col-sm-3 form-group">
+                                                    <label>
+                                                        Nombre de la etapa:
+                                                    </label>
                                                 </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    {{form.n_Etapa2}}
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" name="nombreEtapa_1" id="nombreEtapa_1" style="margin-left: 18px;" type="text">
+                                                    </input>
                                                 </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Fecha de inicio</label>
-                                                    {{form.etapaInicio2}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Fecha de terminación</label>
-                                                    {{form.etapaTermino2}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Meses</label>
-                                                    {{form.etapaMeses2}}
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Descripción:</label>
-                                                </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaDes2}}
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Actividades:</label>
-                                                </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaAct2}}
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Productos:</label>
-                                                </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaPro2}}
+                                                <div class="col-sm-3 form-group col-lg-offset-1">
+                                                    <h6>
+                                                        *No más de 24 caracteres
+                                                    </h6>
                                                 </div>
                                             </div>
-                                            
-                                            <!--FIN ETAPA2-->
-                                            
-                                            <!--ETAPA 3-->
-                                            
-                                            <div  id="etapa3">
-                                                <div class="form-group col-md-12">
-                                                    <h2 style="text-align: center;">Etapa 3°</h2>
+                                            <div class="row">
+                                                <div class="col-sm-2 form-group">
+                                                    <label>
+                                                        Duración:
+                                                    </label>
                                                 </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    {{form.n_Etapa3}}
+                                                <div class="col-sm-1 form-group">
+                                                    <label>
+                                                        Fecha inicio:
+                                                    </label>
                                                 </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Fecha de inicio</label>
-                                                    {{form.etapaInicio3}}
+                                                <div class="col-sm-2 form-group">
+                                                    <input class="form-control" name="inicioEtapa_1" id="inicioEtapa_1" style="margin-left: 18px;" type="date">
+                                                    </input>
                                                 </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Fecha de terminacion</label>
-                                                    {{form.etapaTermino3}}
+                                                <div class="col-sm-1 form-group">
+                                                    <label>
+                                                        Fecha fin:
+                                                    </label>
                                                 </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Meses</label>
-                                                    {{form.etapaMeses3}}
+                                                <div class="col-sm-2 form-group">
+                                                    <input class="form-control" name="finalEtapa_1" id="finalEtapa_1" style="margin-left: 18px;" type="date">
+                                                    </input>
                                                 </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Descripción:</label>
+                                                <div class="col-sm-1 form-group">
+                                                    <label>
+                                                        Meses:
+                                                    </label>
                                                 </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaDes3}}
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Actividades:</label>
-                                                </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaAct3}}
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Productos:</label>
-                                                </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaPro3}}
+                                                <div class="col-sm-2 form-group">
+                                                    <input class="form-control" name="mesesEtapa_1" id="mesesEtapa_1" style="margin-left: 18px;" type="text">
+                                                    </input>
                                                 </div>
                                             </div>
-                                            
-                                            <!--FIN ETAPA2-->
-                                            
-                                            <!--ETAPA 4-->
-                                            
-                                            <div  id="etapa4">
-                                                <div class="form-group col-md-12">
-                                                    <h2 style="text-align: center;">Etapa 4°</h2>
+                                            <div class="row">
+                                                <div class="col-sm-2 form-group">
+                                                    <label>
+                                                        *Descripcion
+                                                    </label>
                                                 </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>*Nombre de la etapa (no más de 24 caracteres)</label>
-                                                    {{form.n_Etapa4}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Fecha de inicio</label>
-                                                    {{form.etapaInicio4}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Fecha de terminacion</label>
-                                                    {{form.etapaTermino4}}
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Meses</label>
-                                                    {{form.etapaMeses4}}
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Descripción:</label>
-                                                </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaDes4}}
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Actividades:</label>
-                                                </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaAct4}}
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>*Productos:</label>
-                                                </div>
-                                                <div class="form-group col-md-10">
-                                                    {{form.etapaPro4}}
+                                                <div class="col-sm-10">
+                                                    <input class="form-control" name="descripcionEtapa_1" id="descripcionEtapa_1" required="" type="text">
+                                                    </input>
                                                 </div>
                                             </div>
-                                            
-                                            <!--FIN ETAPA4-->
-                                            <div class="form-group col-md-12">
-                                                <h5><b>NOTA: </b>Los proyectos pueden tener un máximo de 4 etapas y cada etapa tendrá una duración mínima de 3 meses y máxima de 6 meses, si el proyecto sólo contempla 1  etapa, su duración debe ser de 6 meses</h5>
+                                            <div class="row">
+                                                <div class="col-sm-2 form-group">
+                                                    <label>
+                                                        *Metas
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-10 form-group">
+                                                    <textarea class="form-control" name="metasEtapa_1" id="metasEtapa_1" rows="4" style="resize: none;">
+                                                    </textarea>
+                                                </div>
                                             </div>
-                                            <div class="form-group col-md-12">
-                                                <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                <input onclick="step7Next()" class="btn btn-primary" value="Siguiente" style="float: right;">
+                                            <div class="row">
+                                                <div class="col-sm-2 form-group">
+                                                    <label>
+                                                        *Actividades
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-10 form-group">
+                                                    <textarea class="form-control" name="actividadesEtapa_1" id="actividadesEtapa_1" rows="4" style="resize: none;">
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-2 form-group">
+                                                    <label>
+                                                        *Productos
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-10 form-group">
+                                                    <textarea class="form-control" name="productosEtapa_1" id="productosEtapa_1" rows="4" style="resize: none;">
+                                                    </textarea>
+                                                </div>
                                             </div>
                                         </div>
+                                        <div class="container col-sm-9" id="divEtapa">
+                                        </div>
                                     </div>
-                                </div>
-                            </form>
+                                    <input onclick="prevStep()" class="btn btn-default" value="Regresar">
+                                    <input type="submit" class="btn btn-primary" value="Siguiente" name="botonS7" style="float: right;">
+                                </form>
+
                             
                             <!--FINANCIAMIENTO-->
                             

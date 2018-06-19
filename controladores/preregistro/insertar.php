@@ -123,7 +123,25 @@
 					$descripcion = $_POST['descripcionV'];			
 				}
 
-				if()
+				break;
+			case 'etapasForm':
+				$etapas=$_POST['opcion_etapas'];
+				for ($i=1; $i <= $etapas; $i++) 
+				{ 
+					$nombreEtapa=$_POST['nombreEtapa_'.$i];
+					$inicioEtapa=$_POST['inicioEtapa_'.$i];
+					$finEtapa=$_POST['finalEtapa_'.$i];
+					$mesesEtapa=$_POST['mesesEtapa_'.$i];
+					$descripcioEtapa=$_POST['descripcionEtapa_'.$i];
+					$metasEtapa=$_POST['metasEtapa_'.$i];
+					$actividadeEtapa=$_POST['actividadesEtapa_'.$i];
+					$productosEtapa=$_POST['productosEtapa_'.$i];
+					$sql="INSERT INTO seguimiento_proy_etapas (id_etapa, nombre_etapa, fecha_inicio_etapa, fecha_fin_etapa, meses , descripcion_etapa, metas, actividades_etapa, productos) 
+						VALUES(".$i.",'".$nombreEtapa."','".$inicioEtapa."','".$finEtapa."',".$mesesEtapa.",'".$descripcioEtapa."','".$metasEtapa."','".$actividadeEtapa."','".$productosEtapa."');";
+					echo $sql;
+					$resultado=pg_query($conexion, $sql);
+				}
+			break;
 
 
 				default: echo "XD";;

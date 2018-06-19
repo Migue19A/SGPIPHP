@@ -1,4 +1,78 @@
 
+function crearEtapas(id)
+{
+    $('#divEtapa').html('');
+    var numeroEtapas=$('#'+id).val();
+    var etapa=$('#etapa').html();
+    var i=1;
+    for (var i = 0; i < (numeroEtapas-1); i++) 
+    {
+        $('#divEtapa').prepend(etapa);
+    }
+    i=1;
+    $('h3[id*="tituloEtapa_"]').each(function()
+    {
+        $(this).text('Etapa '+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="nombreEtapa_"]').each(function()
+    {
+        $(this).attr('id','nombreEtapa_'+i);
+        $(this).attr('name','nombreEtapa_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="inicioEtapa_"]').each(function()
+    {
+        $(this).attr('id','inicioEtapa_'+i);
+        $(this).attr('name','inicioEtapa_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="finalEtapa_"]').each(function()
+    {
+        $(this).attr('id','finalEtapa_'+i);
+        $(this).attr('name','finalEtapa_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="mesesEtapa_"]').each(function()
+    {
+        $(this).attr('id','mesesEtapa_'+i);
+        $(this).attr('name','mesesEtapa_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="descripcionEtapa_"]').each(function()
+    {
+        $(this).attr('id','descripcionEtapa_'+i);
+        $(this).attr('name','descripcionEtapa_'+i);
+        i++;
+    });
+    i=1;
+    $('textarea[id*="metasEtapa_"]').each(function()
+    {
+        $(this).attr('id','metasEtapa_'+i);
+        $(this).attr('name','metasEtapa_'+i);
+        i++;
+    });
+    i=1;
+    $('textarea[id*="actividadesEtapa_"]').each(function()
+    {
+        $(this).attr('id','actividadesEtapa_'+i);
+        $(this).attr('name','actividadesEtapa_'+i);
+        i++;
+    });
+    i=1;
+    $('textarea[id*="productosEtapa_"]').each(function()
+    {
+        $(this).attr('id','productosEtapa_'+i);
+        $(this).attr('name','productosEtapa_'+i);
+        i++;
+    });
+}
+
 function palabrasClave(e) {
     var tecla = (document.all) ? e.keyCode : e.which;
     patron = /[A-Z,a-z,á,é,í,ó,ú,Á,É,Í,Ó,Ú]/;
@@ -398,7 +472,7 @@ function cambiarFecha(){
     $('#fechaFin').val(fechaSQLm); 
 }
 
-/*function ajaxPreregistro(id)
+function ajaxPreregistro(id)
 {
     //console.log($('form[id="'+id+'"]').serializeArray());
     //e.preventDefault();
@@ -406,6 +480,7 @@ function cambiarFecha(){
     e.preventDefault();
     var url = "controladores/preregistro/insertar.php";
     var form = $('#'+id).serializeArray();
+    // console.log(form);
     $.ajax(
     {
         async: true,
@@ -419,7 +494,7 @@ function cambiarFecha(){
         error: function(data) {}
       });
     });
-}*/
+}
 
 function prevenir(event){
     event.preventDefault();
