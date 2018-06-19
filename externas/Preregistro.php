@@ -1,6 +1,6 @@
 <div class="container">
     <div class="col-lg-9" >
-        <!-- <nav class="navbar navbar-inverse">
+        <nav class="navbar navbar-inverse">
             <div class="container-fluid col-lg-12">
                 <ul class="nav navbar-nav col-lg-12" id="myNav">
                     <li id="navStep1" class="li-nav active  col-lg-1 barra" step="#step-1">
@@ -15,6 +15,7 @@
                             <span class="sec-text">Responsable</span>
                         </a>    
                     </li>
+                    <!--class="li-nav disabled col-lg-1 barra"-->
                     <li id="navStep3" class="li-nav disabled col-lg-1 barra"  step="#step-3">
                         <a href="#" id="navPre">
                             <span class="glyphicon glyphicon-arrow-right"></span>
@@ -59,7 +60,7 @@
                     </li>
                 </ul>
             </div>
-        </nav> -->
+        </nav>
             <div class="col-md-12">
                 <div class="panel-group">
                     <div class="panel panel-default">
@@ -75,10 +76,13 @@
                                             <div class="row">
                                                 <input type="hidden" value="recepcionForm" name="accion">
                                                 <div class="form-group col-md-3 col-lg-6">
-                                                <div class="input-group date">
-                                                <div id="resp">
-                                                </div>
-                                                <input type="hidden" name="folio_proyecto" value="PRE2">
+                                                <div class="input-group date">                                 
+                                                <?php
+                                                    $res = $miConn->consultaFolio();
+                                                    $r = pg_fetch_array($res);
+                                                    $prefolio = $r[0]+1;                                  
+                                                ?> 
+                                                <input type="hidden" id="folio_proyecto1" name="folio_proyecto" readonly value=<?php echo "PRE".$prefolio ?>>
                                                 <input type="hidden" name="recepcion" value="recepcion">
                                                 <label>*Fecha de presentación</label>   
                                                 <input type="date" class="form-control" id="fechaPresentacion" required name = "fecha_presentacion" min='2018-06-09' readonly>
@@ -112,8 +116,7 @@
                                                             while($r = pg_fetch_array($res)){
                                                                 echo "<option value='".$r[0]."'>".$r[1]."</option>";       
                                                             }
-                                                        ?>                                                           
-                                                        <option value="0">Otro</option>
+                                                        ?>                             
                                                         </select>                                                      
                                                         <br>
                                                         <br>
@@ -157,7 +160,7 @@
                                                 <div class="col-md-5 form-group">
                                                 <div class="input-group date">
                                                 <label>Inicio</label>    
-                                                <input type="date" class="form-control" required name="fecha_inicio" id="fechaInicio">
+                                                <input type="date" class="form-control" onchange="cambiarFecha()" required name="fecha_inicio" id="fechaInicio">
                                                 </div>                                               
                                                 </label>
                                                 </div>
@@ -167,111 +170,30 @@
                                                 </div>
                                                 </div>                                           
                                                 <div class="row">
-                                                <input id="btnSig" class="btn btn-primary" value="Siguiente" name="btnSgt" type="submit" style="float: right;" >
+                                                <input id="btnSig1" class="btn btn-primary" value="Siguiente" name="btnSgt" type="submit" style="float: right;" onclick="anexarFolio()" >
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </form>
                             
-                            <!--RESPONSABLE-->
-                            <form id="colaborador_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
-                                <div class="row setup-content" id="step-3">
-                                <input type="text" name="form-0-folio_proyecto"  readonly>
-                                    <div class="col-md-12">
-                                        <div class="col-md-12">
-                                            <div class="form-group col-md-12">
-                                                <input type="hidden" value="reponsableForm" name="accion">
-                                                <select class="form-control" id="cantidad_colaboradores" onchange="muestra_colaborador(this.id)" name="select_colaborador">
-                                                    <option>N° de colaboradores a participar en el proyecto</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                </select>                                                
-                                            </div>
-                                            <div id="colaborador">                                            
-                                                <div class="form-group col-md-12">
-                                                    <h3 style="text-align: center;" id="tituloColaborador">Colaborador 1</h3>
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Apellido Paterno</label>
-                                                    <input type="text" class="form-control" id="apPaternoCol_1" name="apPaternoCol_1">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Apellido Materno</label>
-                                                    <input type="text" class="form-control" id="apMaternoCol_1" name="apMaternoCol_1">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Nombre(s)</label>
-                                                    <input type="text" class="form-control" id="nombreCol_1" name="nombreCol_1">
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label>Grado maximo de estudios</label>
-                                                    <input type="text" class="form-control" id="gradMaximoCol_1" name="gradMaximoCol_1">
-                                                </div>
-                                                <div class="form-group col-md-6">
-                                                    <label>Academia a la que pertenece</label>
-                                                    <select class="form-control" id="academiaCol_1" name="academiaCol_1">
-                                                        <option value="0">Ingenieria industrial</option>
-                                                        <option value="1">Ingenieria en industrias alimentarias</option>
-                                                        <option value="2">Ingenieria civil</option>
-                                                        <option value="3">Ingenieria electronica</option>
-                                                        <option value="4">Ingenieria electromecanica</option>
-                                                        <option value="5">Ingenieria bioquimica</option>
-                                                        <option value="6">Ingenieria en gestion empresarial</option>
-                                                        <option value="7">Ingeneiria mecatronica</option>
-                                                        <option value="8">Gastronomia</option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label>N° personal</label>
-                                                    <input type="number" class="form-control" id="numPersonalCol_1" name="numPersonalCol_1">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>Movil</label>
-                                                    <input type="number" class="form-control" pattern="^\d{10}$" id="movilCol_1" name="movilCol_1">
-                                                </div>
-                                                <div class="form-grup col-md-3">
-                                                    <label>Correo intitucional</label>
-                                                    <input type="email" class="form-control" id="correoInstCol_1" name="correoInstCol_1">
-                                                </div>
-                                                <div class="form-grup col-md-3">
-                                                    <label>Correo alternativo</label>
-                                                    <input type="email" class="form-control" id="correoAltCol_1" name="correoAltCol_1">
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <label>Descripción de las principales actividades a desarrollar en el proyecto</label>
-                                                    <textarea class="form-control" rows="6" style="resize: none;" required name="form-0-actividades_colaborador" id="principalesActCol_1" name="principalesActCol_1"></textarea>
-                                                </div>
-                                                <div class="form-group col-md-12">
-                                                    <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                    <input onclick="step3Next()" class="btn btn-primary" value="Siguiente" type="submit" style="float: right;">
-                                                </div>
-                                            </div>
-                                            <div id="colaboradores">    
-                                            </div>
-                                        </div>
-                                    </div>
-                              </div>
-                        </form>
-
- <!--RESPONSABLE-->
-                            <form id="responsable_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                        <!--RESPONSABLE-->
+                            <form id="responsable_form" name="form2" onsubmit="ajaxPreregistro(this.id)" class="container" method="POST" style="margin-left: 10px; width: 100%;">
                                 <div class="row setup-content" id="step-2">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <input type="hidden" value="responsableForm" name="accion">
+                                            <input type="hidden" id="folio_proyecto2" name="folio_proyecto" readonly>
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Responsable</h2>
-                                            <div class="form-group col-md-5" readonly>
-                                                <label>*Apellido Paterno</label>
+                                            <div class="form-group col-md-4" readonly>
+                                                <label>*Apellido paterno</label>
                                                 <input type="text" class="form-control" readonly value="" id="apellidoPatResp" name="apellidoPatResp" > 
                                             </div>
-                                            <div class="form-group col-md-5" readonly>
-                                                <label>*Apellido Materno</label>
+                                            <div class="form-group col-md-4" readonly>
+                                                <label>*Apellido materno</label>
                                                 <input type="text" class="form-control" readonly value="" id="apellidoMaternoResp" name="apellidoMaternoResp" > 
                                             </div>
-                                            <div class="form-group col-md-5" readonly >
+                                            <div class="form-group col-md-4" readonly >
                                                 <label>*Nombre(s)</label>
                                                 <input type="text" class="form-control" readonly value=""id="nombreResp" name="nombreResp">
                                             </div>
@@ -300,26 +222,26 @@
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Descripción de las principales actividades a desarrollar en el proyecto</label>
-                                                <textarea class="form-control" name="actividades_responsable" id="actividades_responsable" required rows="5" cols="200" id="" ></textarea>
+                                                <textarea class="form-control" name="actividades_responsable" id="actividades_responsable" required rows="5" cols="200" id="" style="text-transform: uppercase;" ></textarea>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>*Palabras clave:</label>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>*(1)</label>
-                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave1" name="palabra_clave1" type="text" required/>
+                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave1" name="palabra_clave1" type="text" style="text-transform: uppercase;" required/>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>*(2)</label>
-                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave2" name="palabra_clave2" type="text" required/>
+                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave2" name="palabra_clave2" type="text" style="text-transform: uppercase;" required/>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>*(3)</label>
-                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave3" name="palabra_clave3" type="text" required/>
+                                                <input class="form-control" onKeyPress="return palabrasClave(event);" id="palabra_clave3" name="palabra_clave3" type="text" style="text-transform: uppercase;" required/>
                                             </div>
                                             <div class="row">
                                                 <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                <input type="button" class="btn btn-primary" value="Siguiente" name="botonS2" style="float: right;" id="responsable_form" onclick="ajaxPreregistro(this.id)">
+                                                <input type="submit" class="btn btn-primary" value="Siguiente" name="botonS2" style="float: right;">
                                             </div>
                                         </div>
                                     </div>
@@ -328,14 +250,15 @@
                             
                             <!--COLABORADORES-->
                             
-                           <form id="colaborador_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                           <form id="colaborador_form" name="form2" class="container" method="POST" style="margin-left: 10px; width: 100%;" onsubmit="ajaxPreregistro(this.id)">
                                 <div class="row setup-content" id="step-3">
-                                <input type="text" name="form-0-folio_proyecto"  readonly>
+                                    <input type="hidden" id="folio_proyecto3" name="folio_proyecto" readonly>
+                                    <input type="hidden" value="colaboradorForm" name="accion">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <div class="form-group col-md-12">
+                                                <label>N° de colaboradores a participar en el proyecto</label>
                                                 <select class="form-control" id="cantidad_colaboradores" onchange="muestra_colaborador(this.id)" name="select_colaborador">
-                                                    <option>N° de colaboradores a participar en el proyecto</option>
                                                     <option>1</option>
                                                     <option>2</option>
                                                     <option>3</option>
@@ -347,63 +270,60 @@
                                                     <h3 style="text-align: center;" id="tituloColaborador">Colaborador 1</h3>
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label>Apellido Paterno</label>
-                                                    <input type="text" class="form-control" id="apPaternoCol_1" name="apPaternoCol_1">
+                                                    <label>*Apellido paterno</label>
+                                                    <input type="text" class="form-control" required id="apPaternoCol_1" name="apPaternoCol_1">
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label>Apellido Materno</label>
+                                                    <label>Apellido materno</label>
                                                     <input type="text" class="form-control" id="apMaternoCol_1" name="apMaternoCol_1">
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label>Nombre(s)</label>
-                                                    <input type="text" class="form-control" id="nombreCol_1" name="nombreCol_1">
+                                                    <label>*Nombre(s)</label>
+                                                    <input type="text" class="form-control" required id="nombreCol_1" name="nombreCol_1">
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label>Grado maximo de estudios</label>
-                                                    <input type="text" class="form-control" id="gradMaximoCol_1" name="gradMaximoCol_1">
+                                                    <label>*Grado máximo de estudios</label>
+                                                    <input type="text" class="form-control" required id="gradMaximoCol_1" name="gradMaximoCol_1">
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label>Academia a la que pertenece</label>
-                                                    <select class="form-control" id="academiaCol_1" name="academiaCol_1">
-                                                        <option value="0">Ingenieria industrial</option>
-                                                        <option value="1">Ingenieria en industrias alimentarias</option>
-                                                        <option value="2">Ingenieria civil</option>
-                                                        <option value="3">Ingenieria electronica</option>
-                                                        <option value="4">Ingenieria electromecanica</option>
-                                                        <option value="5">Ingenieria bioquimica</option>
-                                                        <option value="6">Ingenieria en gestion empresarial</option>
-                                                        <option value="7">Ingeneiria mecatronica</option>
-                                                        <option value="8">Gastronomia</option>
+                                                    <label>*Academia a la que pertenece</label>
+                                                    <select class="form-control" id="academiaCol_1" required name="academiaCol_1">
+                                                        <?php
+                                                            $res = $miConn->cboCarrera();
+                                                            while($r = pg_fetch_array($res)){
+                                                                echo "<option value='".$r[0]."'>".$r[1]."</option>";       
+                                                            }
+                                                        ?>  
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-2">
-                                                    <label>N° personal</label>
-                                                    <input type="number" class="form-control" id="numPersonalCol_1" name="numPersonalCol_1">
+                                                    <label>*N° de personal</label>
+                                                    <input type="number" class="form-control" required id="numPersonalCol_1" name="numPersonalCol_1">
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label>Movil</label>
+                                                    <label>Móvil</label>
                                                     <input type="number" class="form-control" pattern="^\d{10}$" id="movilCol_1" name="movilCol_1">
                                                 </div>
                                                 <div class="form-grup col-md-3">
-                                                    <label>Correo intitucional</label>
-                                                    <input type="email" class="form-control" id="correoInstCol_1" name="correoInstCol_1">
+                                                    <label>*Correo institucional</label>
+                                                    <input type="email" class="form-control" required id="correoInstCol_1" name="correoInstCol_1">
                                                 </div>
                                                 <div class="form-grup col-md-3">
                                                     <label>Correo alternativo</label>
                                                     <input type="email" class="form-control" id="correoAltCol_1" name="correoAltCol_1">
                                                 </div>
                                                 <div class="form-group col-md-12">
-                                                    <label>Descripción de las principales actividades a desarrollar en el proyecto</label>
-                                                    <textarea class="form-control" rows="6" style="resize: none;" required name="form-0-actividades_colaborador" id="principalesActCol_1" name="principalesActCol_1"></textarea>
+                                                    <label>*Descripción de las principales actividades a desarrollar en el proyecto</label>
+                                                    <textarea class="form-control" rows="6" style="resize: none;" required name="principalesActCol_1" id="principalesActCol_1" name="principalesActCol_1"></textarea>
                                                 </div>
-                                                <div class="form-group col-md-12">
-                                                    <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                    <input onclick="step3Next()" class="btn btn-primary" value="Siguiente" type="submit" style="float: right;">
                                                 </div>
-                                            </div>
                                             <div id="colaboradores">    
                                             </div>
-                                        </div>
+                                            <div class="form-group col-md-12">
+                                                <input onclick="prevStep()" class="btn btn-default" value="Regresar">
+                                                <input class="btn btn-primary" value="Siguiente" type="submit" style="float: right;">
+                                                </div>
+                                            </div>
                                     </div>
                               </div>
                         </form>

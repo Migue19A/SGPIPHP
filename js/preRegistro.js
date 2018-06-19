@@ -30,25 +30,6 @@ function ValidaMaximo() {
         document.getElementById("totalA").focus();
     }
 }
-function ajaxPreregistro(id)
-{
-    console.log($('form[id="'+id+'"]').serializeArray());
-
-    $.ajax(
-    {
-        async: true,
-        type: 'POST',
-        url: 'controladores/preregistro/insertar.php',
-        data: $('#'+id).serializeArray(),
-        beforeSend: function()
-        {
-        },
-        success: function(data)
-        {
-        },
-                 error: function(data) {}
-      });
-}
 
 function TAlum() {
     var elmtTable = document.getElementById("tablaAlu");
@@ -206,15 +187,6 @@ function validate_importe(value, decimal) {
     return false;
 }
 
-function habilitarEspecifique() {
-    if (document.getElementById('id_tipoSector_5').checked) {
-        document.getElementById('id_especifique').removeAttribute('readonly');
-    } else {
-        //document.getElementById('id_especifique').readonly = "readonly";
-        $('#id_especifique').attr('readonly', true);
-    }
-}
-
 function vinculacionConvenio() {
     var $elegido = $("input[name=convenio]:checked");
     var r = $elegido.val();
@@ -344,7 +316,7 @@ function step8Next() {
     }
 }
 
-$(document).ready(function(){
+/*$(document).ready(function(){
      $('#recepcion_form').on('submit', function(e){
         e.preventDefault();
         var url = "controladores/preregistro/insertar.php";
@@ -360,10 +332,10 @@ $(document).ready(function(){
            }
         });
      });
-});
+});*/
 
 function habilitarEspecifique() {
-    if($('#tipo_sector').val()==0){
+    if($('#tipo_sector').val()==6){
         document.getElementById('id_especifique').removeAttribute('readonly');
         $('#id_especifique').attr('required', false);
     }else{
@@ -373,14 +345,13 @@ function habilitarEspecifique() {
 }
 
 function validarNombre(){
-    var namep = $('#nombre_proyecto').val();   
+    var namep = $('#nombre_proyecto').val().trim();
     var url = "controladores/preregistro/ValidacionesAjax.php";
     $.ajax({                        
            type: "POST",                 
            url: url,                     
            data: {accion:'validarNombre', nombreP:namep},
            success: function(data){
-                console.log(data);
                 $('#error_nombre').text(data);
                 if(data== "Proyecto existente"){
                     $('#nombre_proyecto').focus();
@@ -389,3 +360,92 @@ function validarNombre(){
            }
         });
 }
+
+Date.prototype.mes = function() {
+  var m = this.getMonth() + 1; // getMonth() is zero-based
+  return (m>9 ? '' : '0') + m;
+};
+
+Date.prototype.segundos = function() {
+  var s = this.getSeconds();
+  return (s>9 ? '' : '0') + s;
+};
+
+function cambiarFecha(){
+    var fechaIni= $('#fechaFin').val();
+    console.log(fechaIni);                  
+    var diasMaximo = 730;
+    var diasMinimo = 182;
+    var fechaMax = new Date(fechaIni);
+    var fechaMin = new Date(fechaIni);
+    fechaMax.setDate(fechaMax.getDate()+diasMaximo);
+    fechaMin.setDate(fechaMin.getDate()+diasMinimo);
+    var fechaSQLM = fechaMax.getFullYear()+"-"+ fechaMax.mes()+"-"+fechaMax.getDate();
+    var fechaSQLm = fechaMin.getFullYear()+"-"+ fechaMin.mes()+"-"+fechaMin.getDate();
+    console.log("Fecha Máxima: "+ fechaSQLM);
+    console.log("Fecha Mínima: "+ fechaSQLm);
+    $('#fechaFin').attr('min', fechaSQLm);
+    $('#fechaFin').attr('max', fechaSQLM);  
+    $('#fechaFin').val(fechaSQLm); 
+}
+
+/*function ajaxPreregistro(id)
+{
+    //console.log($('form[id="'+id+'"]').serializeArray());
+    //e.preventDefault();
+    $('#'+id).on('submit', function(e){
+    e.preventDefault();
+    var url = "controladores/preregistro/insertar.php";
+    var form = $('#'+id).serializeArray();
+    $.ajax(
+    {
+        async: true,
+        type: 'POST',
+        url: url,
+        data: form,
+        beforeSend: function()
+        {
+        },
+        success: step1Next(),
+        error: function(data) {}
+      });
+    });
+}*/
+
+function prevenir(event){
+    event.preventDefault();
+}
+
+function ajaxPreregistro(id)
+{
+    console.log($('form[id="'+id+'"]').serializeArray());
+    prevenir(event);
+    $.ajax(
+    {
+        async: true,
+        type: 'POST',
+        url: 'controladores/preregistro/insertar.php',
+        data: $('#'+id).serializeArray(),
+        beforeSend: function()
+        {
+        },
+        success: function(data){
+                console.log(data);
+                step1Next()
+        },
+        error: function(data) {}
+      });
+}
+
+function anexarFolio(){
+    var folio = $('#folio_proyecto1').val();
+    var i=2;
+    while (i<=3){        
+        var anexar= 'folio_proyecto'+i;
+        $('#'+ anexar).val(folio); 
+        i++;
+    }
+
+}
+
+

@@ -29,6 +29,20 @@ class Consultas extends ClassConn
         return $result;
 	}	
 
+	function consultaFolio(){
+		$miConn=new ClassConn();
+		$consulta= "SELECT COUNT(folio_proyecto) from proyecto";        
+        $result = pg_query($miConn->conexion(), $consulta);
+        return $result;
+	}
+
+	function cboCarrera(){
+		$miConn=new ClassConn();
+		$consulta= "SELECT * from carrera";        
+        $result = pg_query($miConn->conexion(), $consulta);
+        return $result;
+	}
+
 
 }
 ?>

@@ -104,6 +104,29 @@ $miConn= new consultas();
                 document.getElementById("fechaInicio").setAttribute("value", today);
                 document.getElementById("fechaFin").setAttribute("min", today);
                 document.getElementById("fechaFin").setAttribute("value", today);
-            });
+
+                Date.prototype.mes = function() {
+                  var m = this.getMonth() + 1; // getMonth() is zero-based
+                  return (m>9 ? '' : '0') + m;
+                };
+                Date.prototype.segundos = function() {
+                  var s = this.getSeconds();
+                  return (s>9 ? '' : '0') + s;
+                };
+
+                var fechaIni= $('#fechaFin').val();      
+                var diasMaximo = 730;
+                var diasMinimo = 182;
+                var fechaMax = new Date(fechaIni);
+                var fechaMin = new Date(fechaIni);
+                fechaMax.setDate(fechaMax.getDate()+diasMaximo);
+                fechaMin.setDate(fechaMin.getDate()+diasMinimo);
+                var fechaSQLM = fechaMax.getFullYear()+"-"+ fechaMax.mes()+"-"+fechaMax.getDate();
+                var fechaSQLm = fechaMin.getFullYear()+"-"+ fechaMin.mes()+"-"+fechaMin.getDate();
+                $('#fechaFin').attr('min', fechaSQLm);
+                $('#fechaFin').attr('max', fechaSQLM);  
+                $('#fechaFin').val(fechaSQLm);
+                
+        });
     </script>
 </head> 
