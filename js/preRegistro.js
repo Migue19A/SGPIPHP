@@ -548,6 +548,72 @@ function crearEtapas(id)
         i++;
     });
 }
+function crearAlumnos(id)
+{
+    $('#alumnos').html('');
+    var numeroAlumnos=$('#'+id).val();
+    var alumno=$('#alumno').html();
+    var i=1;
+    for (var i = 0; i < (numeroAlumnos-1); i++) 
+    {
+        $('#alumnos').prepend('<div class="well col-lg-12">'+alumno+'</div>');
+    }
+    i=1;
+    $('h2[id*="tituloAlumno_1"]').each(function()
+    {
+        $(this).text('Alumno Colaborador  '+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="nombreAlumnoCol_"]').each(function()
+    {
+        $(this).attr('id','nombreAlumnoCol_'+i);
+        $(this).attr('name','nombreAlumnoCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="apPaternoAlumnoCol_"]').each(function()
+    {
+        $(this).attr('id','apPaternoAlumnoCol_'+i);
+        $(this).attr('name','apPaternoAlumnoCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="apMaternoAlumnoCol_"]').each(function()
+    {
+        $(this).attr('id','apMaternoAlumnoCol_'+i);
+        $(this).attr('name','apMaternoAlumnoCol_'+i);
+        i++;
+    });
+    i=1;
+    $('input[id*="noControlAlumnoCol_"]').each(function()
+    {
+        $(this).attr('id','noControlAlumnoCol_'+i);
+        $(this).attr('name','noControlAlumnoCol_'+i);
+        i++;
+    });
+    i=1;
+    $('select[id*="cboCarreraAlumno_"]').each(function()
+    {
+        $(this).attr('id','cboCarreraAlumno_'+i);
+        $(this).attr('name','cboCarreraAlumno_'+i);
+        i++;
+    });
+    i=1;
+    $('select[id*="cboSemestreAlumnoCol_"]').each(function()
+    {
+        $(this).attr('id','cboSemestreAlumnoCol_'+i);
+        $(this).attr('name','cboSemestreAlumnoCol_'+i);
+        i++;
+    });
+    i=1;
+    $('textarea[id*="actividadesAlumnoCol_"]').each(function()
+    {
+        $(this).attr('id','actividadesAlumnoCol_'+i);
+        $(this).attr('name','actividadesAlumnoCol_'+i);
+        i++;
+    });
+}
 
 
 

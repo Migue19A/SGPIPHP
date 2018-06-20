@@ -15,7 +15,6 @@
                             <span class="sec-text">Responsable</span>
                         </a>    
                     </li>
-                    <!--class="li-nav disabled col-lg-1 barra"-->
                     <li id="navStep3" class="li-nav disabled col-lg-1 barra"  step="#step-3">
                         <a href="#" id="navPre">
                             <span class="glyphicon glyphicon-arrow-right"></span>
@@ -757,89 +756,90 @@
                             
                             <!--ALUMNOS COLABORADORES-->
                             
-                            <form class="container" style="width: 100%;">
-                                <div class="row setup-content" id="step-9">
+                            <form class="container" id="alumnos_form" style="width: 100%;">
+                                <div class="setup-content" id="step-9">
                                     <div class="col-md-12">
-                                    <input type="text" name="folio_proyecto"  readonly>
                                         <div class="col-md-12">
-                                            <div class="form-group col-md-4">
-                                                <label>Total de alumnos colaboradores</label>
-                                                <input type="number" id="totalAlumnosCol" name="totalAlumnosCol" min="0" max="50">
-                                            </div>
-                                             <div class=" form-group col-md-2">
-                                                <a aria-pressed="true" class="btn btn-primary" onclick="TAlum()" role="button" style="margin-top: 25px;">Aceptar</a>
+                                            <div class="form-group col-md-12">
+                                                <h2 class="col-lg-8" align="right">Alumnos Colaboradores</h2>
+                                                <h4 class="col-lg-2" align="right">Total</h4>
+                                                <input class="col-lg-2" type="number" id="totalAlumnosCol" name="totalAlumnosCol" min="1" max="50" onchange="crearAlumnos(this.id)" value="1">
+                                                <input type="hidden" name="accion" id="accion" value="alumnos_form">
                                             </div>
                                         </div>
-                                        <table>
-                                            <tbody id="tablaAlu">
-                                                <tr>
-                                                    <td></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-group col-md-8" style="margin-top: 30px;">
-                                                        </div>
-                                                        <div class="form-group col-md-12">
-                                                             <h2 style="text-align: center;">Alumno colaborador 1°</h2>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="form-group col-md-6">
-                                                                <label>*Nombre del alumno</label>
-                                                                <input type="text" id="nombreAlumnoCol_1" name="nombreAlumnoCol_1">
-                                                            </div>
-                                                            <div class="form-group col-md-5">
-                                                                
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="form-group col-md-4">
-                                                                <label>*N° control</label>
-                                                                <input type="text" id="noControlAlumnoCol_1" name="noControlAlumnoCol_1">
-                                                            </div>
-                                                            <div class="form-group col-md-3">
-                                                                <label>*Semestre</label>
-                                                                <select name="cboSemestreAlumnoCol_1" id="cboSemestreAlumnoCol_1"></select>
-                                                                <option value="1">Primero</option>
-                                                                <option value="2">Segundo</option>
-                                                                <option value="3">Tercero</option>
-                                                                <option value="4">Cuarto</option>
-                                                                <option value="5">Quinto</option>
-                                                                <option value="6">Sexto</option>
-                                                                <option value="7">Septimo</option>
-                                                                <option value="8">Octavo</option>
-                                                                <option value="9">Noveno</option>
-                                                                <option value="10">D&eacute;cimo</option>
-                                                                <option value="11">Onceavo</option>
-                                                                <option value="12">Doceavo</option>
-                                                            </div>
-                                                            <div class="form-group col-md-5">
-                                                                <label>*Carrera</label>
-                                                                    <select name="cboCarreraAlumno_1" id="cboCarreraAlumno_1">
-                                                                    <?php 
-                                                                    $result=$miConn->cboCarrera();
-                                                                    while($row = pg_fetch_array($result))
-                                                                    {
-                                                                        echo "<option value='".$row[0]."'>".$row[1]."</option>";       
-                                                                    }
-                                                                    ?>
-                                                                    </select>
-                                                            </div>
-                                                            <div class="form-group col-md-12">
-                                                                <label>*Detalle de actividades (máximo 256 caracteres)</label>
-                                                                <textarea name="actividadesAlumnoCol_1" id="actividadesAlumnoCol_1" cols="30" rows="10"></textarea>
-                                                            </div>
-                                                            <div class="form-group col-md-12">
-                                                                <h5><b>NOTA:</b>La cantidad de alumnos colaboradores depende de la complejidad del proyecto, como máximo 20 alumnos.</h5>
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="form-group col-md-12">
-                                                <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                <input class="btn btn-primary" value="Finalizar" style="float: right;" onclick="Finalizar()">
-                                                <a class="btn btn-info view-pdf" style="float: right; margin-right: 10px;">Vista previa</a>
-                                            </div>    
+                                        <div id="alumno" class="well col-lg-12">
+                                            <div class="form-group col-md-8" style="margin-top: 30px;">
+                                            </div>
+                                            <div class="form-group col-md-12 ">
+                                                 <h2 style="text-align: center;" id="tituloAlumno_1">Alumno colaborador 1°</h2>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-12">
+                                                    <div class="col-lg-4"><label>*Nombre</label>
+                                                    <input class="form-control" type="text" id="nombreAlumnoCol_1" name="nombreAlumnoCol_1" size="15">
+                                                    </div>
+                                                    <div class="col-lg-4"><label>*Apellido Paterno</label>
+                                                    <input class="form-control" type="text" id="apPaternoAlumnoCol_1" name="apPaternoAlumnoCol_1" size="15">
+                                                    </div>
+                                                    <div class="col-lg-4"><label>*Apellido Materno</label>
+                                                    <input class="form-control" type="text" id="apMaternoAlumnoCol_1" name="apMaternoAlumnoCol_1" size="15">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-4">
+                                                    <label>*N° control</label>
+                                                    <input type="text" id="noControlAlumnoCol_1" name="noControlAlumnoCol_1" class="form-control">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-lg-4">*Carrera</label>
+                                                        <select class="col-lg-8 form-control" name="cboCarreraAlumno_1" id="cboCarreraAlumno_1">
+                                                        <?php 
+                                                        $result=$miConn->cboCarrera();
+                                                        while($row = pg_fetch_array($result))
+                                                        {
+                                                            echo "<option value='".$row[0]."'>".$row[1]."</option>";       
+                                                        }
+                                                        ?>
+                                                        </select>
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label>*Semestre</label>
+                                                    <select name="cboSemestreAlumnoCol_1" id="cboSemestreAlumnoCol_1" class="form-control">
+                                                        <option value="1">Primero</option>
+                                                        <option value="2">Segundo</option>
+                                                        <option value="3">Tercero</option>
+                                                        <option value="4">Cuarto</option>
+                                                        <option value="5">Quinto</option>
+                                                        <option value="6">Sexto</option>
+                                                        <option value="7">Septimo</option>
+                                                        <option value="8">Octavo</option>
+                                                        <option value="9">Noveno</option>
+                                                        <option value="10">D&eacute;cimo</option>
+                                                        <option value="11">Onceavo</option>
+                                                        <option value="12">Doceavo</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <div class="col-lg-4">
+                                                        <label class="col-lg-12">*Detalle de actividades <br>(máximo 256 caracteres)</label>
+                                                    </div>
+                                                    <div class="col-lg-8">
+                                                        <textarea class="form-control col-md-10 col-lg-10" name="actividadesAlumnoCol_1" id="actividadesAlumnoCol_1" cols="90" rows="5" maxlength="256"></textarea>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-12">
+                                                    <h5><b>NOTA:</b>La cantidad de alumnos colaboradores depende de la complejidad del proyecto, como máximo 20 alumnos.</h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div id="alumnos">
+                                        </div>
+                                        <div class="form-group col-md-12">
+                                            <input onclick="prevStep()" class="btn btn-default" value="Regresar">
+                                            <input type="button" onclick="ajaxPreregistro(this.id)" id="alumnos_form" value="Guardar" class="btn btn-info">
+                                            <input class="btn btn-primary" value="Finalizar" style="float: right;" onclick="Finalizar()">
+                                            <a class="btn btn-info view-pdf" style="float: right; margin-right: 10px;">Vista previa</a>
                                         </div>
                                     </div>
                                 </div>

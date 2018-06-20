@@ -38,7 +38,7 @@ class Consultas extends ClassConn
 
 	function cboCarrera(){
 		$miConn=new ClassConn();
-		$consulta= "SELECT * from carrera";        
+		$consulta= "SELECT * from seguimiento_proy_carrera";        
         $result = pg_query($miConn->conexion(), $consulta);
         return $result;
 	}

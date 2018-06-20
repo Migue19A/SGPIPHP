@@ -1,6 +1,6 @@
 <?php 
 	include('../../externas/conexion.php');
-	echo $_POST['accion'];
+	// echo $_POST['accion'];
 	$accion=$_POST['accion'];
 			
 			//echo "<script>jQuery(function(){swal(\"¡Guardado con éxito!\", \"Datos guardados correctamente\", \"success\");});</script>";*/
@@ -192,11 +192,27 @@
                     $productosEtapa=$_POST['productosEtapa_'.$i];
                     $sql="INSERT INTO etapas (id_etapa, nombre_etapa, fecha_inicio_etapa, fecha_fin_etapa, meses , descripcion_etapa, metas, actividades_etapa, productos) 
                         VALUES(".$i.",'".$nombreEtapa."','".$inicioEtapa."','".$finEtapa."',".$mesesEtapa.",'".$descripcioEtapa."','".$metasEtapa."','".$actividadeEtapa."','".$productosEtapa."');";
-                    echo $sql;
+                    // echo $sql;
                     $resultado=pg_query($conexion, $sql);
                 }
             	break;
-
+            	case 'alumnos_form':
+            	$alumnos=$_POST['totalAlumnosCol'];
+            	for ($i=1; $i <= $alumnos ; $i++) 
+            	{ 
+            		$nombreAlumno=$_POST['nombreAlumnoCol_'.$i];
+            		$apPaterno=$_POST['apPaternoAlumnoCol_'.$i];
+            		$apMaterno=$_POST['apMaternoAlumnoCol_'.$i];
+            		$noControl=$_POST['noControlAlumnoCol_'.$i];
+            		$carrera=$_POST['cboCarreraAlumno_'.$i];
+            		$semestre=$_POST['cboSemestreAlumnoCol_'.$i];
+            		$actividades=$_POST['actividadesAlumnoCol_'.$i];
+            		$sql="INSERT INTO seguimiento_proy_alumno(numero_control, semestre, nombre_alumno, apellido_paterno_alumno, apellido_materno_alumno, actividades_alumno, id_carrera_id) 
+            				VALUES ('".$noControl."',".$semestre.",'".$nombreAlumno."','".$apPaterno."','".$apMaterno."','".$actividades."',".$carrera.");";
+    				echo $sql;
+            		$resultado=pg_query($conexion, $sql);
+            	}
+            	break;
 
 				default: echo "XD";
 
