@@ -7,8 +7,8 @@
  ?>
 <title>Pre-Registro</title>	 
 	<?php 
-		include('externas/Preregistro.php')
-	?>
-	<?php 
+		include('externas/finalizarContenido.php')
+?>
+<?php 
 		include('externas/footer.php');
-	 ?>
+?>

@@ -1,4 +1,3 @@
-
 function palabrasClave(e) {
     var tecla = (document.all) ? e.keyCode : e.which;
     patron = /[A-Z,a-z,á,é,í,ó,ú,Á,É,Í,Ó,Ú]/;
@@ -157,30 +156,34 @@ function muestra_etapas() {
     }
 }
 
-function sumar() {
-    var valor1 = verificar("infraestructura");
-    var valor2 = verificar("consumibles");
-    var valor3 = verificar("licencias");
-    var valor4 = verificar("viáticos");
-    var valor5 = verificar("publicaciones");
-    var valor6 = verificar("equipo");
-    var valor7 = verificar("patentes");
-    var valor8 = verificar("otros");
-    document.getElementById("total").value = parseFloat(valor1) + parseFloat(valor2) + parseFloat(valor3) + parseFloat(valor4) + parseFloat(valor5) + parseFloat(valor6) + parseFloat(valor7) + parseFloat(valor8);
-    console.log(document.getElementById("total").value);
-}
+function sumar() {    
+    var infra = $('#infraestructura').val();
+    var cons = $('#consumibles').val();
+    var lic = $('#licencias').val();
+    var via= $('#viaticos').val();
+    var publi = $('#publicaciones').val();
+    var equipo = $('#equipo').val();
+    var paten = $('#patentes').val();
+    var otros = $('#otros_finan').val();
 
-function verificar(id) {
-    var obj = document.getElementById(id);
-    if (obj.value == "") value = "0";
-    else value = obj.value;
-    if (validate_importe(value, 1)) {
-        obj.style.borderColor = "#808080";
-        return value;
-    } else {
-        obj.style.borderColor = "#f00";
-        return 0;
+    var valor1 = parseFloat(infra);
+    var valor2 = parseFloat(cons);
+    var valor3 = parseFloat(lic);
+    var valor4 = parseFloat(via);
+    var valor5 = parseFloat(publi);
+    var valor6 = parseFloat(equipo);
+    var valor7 = parseFloat(paten);
+    var valor8 = parseFloat(otros);
+
+    if(valor8 != 0){
+        $('#otro_especificar').attr('readonly', false);
+        $('#otro_especificar').attr('required', true);
+    }else{
+        $('#otro_especificar').attr('readonly', true);
+        $('#otro_especificar').attr('required', false);
     }
+    var total = valor1 + valor2 + valor3 + valor4 + valor5 + valor6 + valor7 + valor8;
+    $('#total').val(total);
 }
 
 function validate_importe(value, decimal) {
@@ -233,17 +236,56 @@ function respuestaF() {
 }
 
 function muestraFina() {
-    var $elegido = $("input[name=financi]:checked");
+    var $elegido = $("input[name=financiamientoR]:checked");
     var r = $elegido.val();
     if (r == "si") {
         document.getElementById('financiamientoSi').className = "row";
+        $('#fSi').attr("required", true);
+        $('#fSI').attr("required", true);
+        financiar();
+        $('#infraestructura').attr('readonly', true);
+        $('#consumibles').attr('readonly', true);
+        $('#licencias').attr('readonly', true);
+        $('#viaticos').attr('readonly', true);
+        $('#publicaciones').attr('readonly', true);
+        $('#equipo').attr('readonly', true);
+        $('#patentes').attr('readonly', true);
+        $('#otros_finan').attr('readonly', true);
+        $('#total').attr('readonly', true);
+        $('#otro_especificar').attr('readonly', true);
     }
     if (r == "no") {
         document.getElementById('financiamientoSi').className = "row hidden";
+        $('#fSi').attr("required", false);
+        $('#fSI').attr("required", false);
+        $('#infraestructura').attr('readonly', false);
+        $('#consumibles').attr('readonly', false);
+        $('#licencias').attr('readonly', false);
+        $('#viaticos').attr('readonly', false);
+        $('#publicaciones').attr('readonly', false);
+        $('#equipo').attr('readonly', false);
+        $('#patentes').attr('readonly', false);
+        $('#otros_finan').attr('readonly', false);
+        $('#total').attr('readonly', false);        
+        $('#especificarF').attr('readonly', true);
+        $('#especificarF').attr('required', false);
     }
 }
 
+
+function financiar(){
+    var radioFinan= $("input[name=fsi]:checked").val();
+    if(radioFinan== "interno" || radioFinan=="externo"){
+        $('#especificarF').attr('readonly', false);
+        $('#especificarF').attr('required', true);
+    }else{
+        $('#especificarF').attr('readonly', true);
+        $('#especificarF').attr('required', false);
+    }   
+}
+
 function Finalizar() {
+    // TÉCNICO, LICENCIATURA, ESPECIALIDAD, MAESTRÍA, DOCTORADO, POSDOCTORADO
     swal({
         title: '¿Finalizar pre-registro?',
         text: "",
@@ -255,7 +297,7 @@ function Finalizar() {
     }).then(function() {
         swal('Solicitud enviada', '', 'success').then(function(dimiss) {
             if (dimiss == true) {
-                location.href = "Finalizar"
+                location.href = "finalizar.php"
             }
         })
     })
@@ -449,7 +491,7 @@ function ajaxPreregistro(id)
 function anexarFolio(){
     var folio = $('#folio_proyecto1').val();
     var i=2;
-    while (i<=6){        
+    while (i<=9){        
         var anexar= 'folio_proyecto'+i;
         $('#'+ anexar).val(folio); 
         i++;
@@ -552,67 +594,72 @@ function crearAlumnos(id)
 {
     $('#alumnos').html('');
     var numeroAlumnos=$('#'+id).val();
-    var alumno=$('#alumno').html();
-    var i=1;
-    for (var i = 0; i < (numeroAlumnos-1); i++) 
-    {
-        $('#alumnos').prepend('<div class="well col-lg-12">'+alumno+'</div>');
-    }
-    i=1;
-    $('h2[id*="tituloAlumno_1"]').each(function()
-    {
-        $(this).text('Alumno Colaborador  '+i);
-        i++;
-    });
-    i=1;
-    $('input[id*="nombreAlumnoCol_"]').each(function()
-    {
-        $(this).attr('id','nombreAlumnoCol_'+i);
-        $(this).attr('name','nombreAlumnoCol_'+i);
-        i++;
-    });
-    i=1;
-    $('input[id*="apPaternoAlumnoCol_"]').each(function()
-    {
-        $(this).attr('id','apPaternoAlumnoCol_'+i);
-        $(this).attr('name','apPaternoAlumnoCol_'+i);
-        i++;
-    });
-    i=1;
-    $('input[id*="apMaternoAlumnoCol_"]').each(function()
-    {
-        $(this).attr('id','apMaternoAlumnoCol_'+i);
-        $(this).attr('name','apMaternoAlumnoCol_'+i);
-        i++;
-    });
-    i=1;
-    $('input[id*="noControlAlumnoCol_"]').each(function()
-    {
-        $(this).attr('id','noControlAlumnoCol_'+i);
-        $(this).attr('name','noControlAlumnoCol_'+i);
-        i++;
-    });
-    i=1;
-    $('select[id*="cboCarreraAlumno_"]').each(function()
-    {
-        $(this).attr('id','cboCarreraAlumno_'+i);
-        $(this).attr('name','cboCarreraAlumno_'+i);
-        i++;
-    });
-    i=1;
-    $('select[id*="cboSemestreAlumnoCol_"]').each(function()
-    {
-        $(this).attr('id','cboSemestreAlumnoCol_'+i);
-        $(this).attr('name','cboSemestreAlumnoCol_'+i);
-        i++;
-    });
-    i=1;
-    $('textarea[id*="actividadesAlumnoCol_"]').each(function()
-    {
-        $(this).attr('id','actividadesAlumnoCol_'+i);
-        $(this).attr('name','actividadesAlumnoCol_'+i);
-        i++;
-    });
+    if(numeroAlumnos >20){
+        alert("Has excedido el número máximo de colaboradores por proyecto");
+    }else{
+        var alumno=$('#alumno').html();
+        var i=1;
+        for (var i = 0; i < (numeroAlumnos-1); i++) 
+        {
+            $('#alumnos').prepend('<div class="col-lg-12">'+alumno+'</div>');
+        }
+        i=1;
+        $('h2[id*="tituloAlumno_1"]').each(function()
+        {
+            $(this).text('Alumno Colaborador  '+i);
+            i++;
+        });
+        i=1;
+        $('input[id*="nombreAlumnoCol_"]').each(function()
+        {
+            $(this).attr('id','nombreAlumnoCol_'+i);
+            $(this).attr('name','nombreAlumnoCol_'+i);
+            i++;
+        });
+        i=1;
+        $('input[id*="apPaternoAlumnoCol_"]').each(function()
+        {
+            $(this).attr('id','apPaternoAlumnoCol_'+i);
+            $(this).attr('name','apPaternoAlumnoCol_'+i);
+            i++;
+        });
+        i=1;
+        $('input[id*="apMaternoAlumnoCol_"]').each(function()
+        {
+            $(this).attr('id','apMaternoAlumnoCol_'+i);
+            $(this).attr('name','apMaternoAlumnoCol_'+i);
+            i++;
+        });
+        i=1;
+        $('input[id*="noControlAlumnoCol_"]').each(function()
+        {
+            $(this).attr('id','noControlAlumnoCol_'+i);
+            $(this).attr('name','noControlAlumnoCol_'+i);
+            i++;
+        });
+        i=1;
+        $('select[id*="cboCarreraAlumno_"]').each(function()
+        {
+            $(this).attr('id','cboCarreraAlumno_'+i);
+            $(this).attr('name','cboCarreraAlumno_'+i);
+            i++;
+        });
+        i=1;
+        $('select[id*="cboSemestreAlumnoCol_"]').each(function()
+        {
+            $(this).attr('id','cboSemestreAlumnoCol_'+i);
+            $(this).attr('name','cboSemestreAlumnoCol_'+i);
+            i++;
+        });
+        i=1;
+        $('textarea[id*="actividadesAlumnoCol_"]').each(function()
+        {
+            $(this).attr('id','actividadesAlumnoCol_'+i);
+            $(this).attr('name','actividadesAlumnoCol_'+i);
+            i++;
+        });
+        }
+    
 }
 
 

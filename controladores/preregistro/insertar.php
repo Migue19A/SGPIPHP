@@ -56,7 +56,6 @@
 
 					if($cel== ""){
 						$cel= 0;
-						$folio='PRE2';
 					}
 
 					$sqlI = "INSERT INTO colaboradordocente VALUES 
@@ -165,7 +164,7 @@
         		$result = pg_fetch_array($result);
         		$registro = $result[0]+1;
 
-				$sqlIP= "INSERT INTO metas VALUES(1, 
+				$sqlIP= "INSERT INTO metas VALUES(".$registro.", 
 						".$servicio.",
 						".$residencia.",
 						".$tesis.",
@@ -180,26 +179,75 @@
 				break;
 			case 'etapasForm':
                 $etapas=$_POST['opcion_etapas'];
+                $consulta= "SELECT count (id_etapa) from etapas;";        
+        		$result = pg_query($conexion, $consulta);
+        		$result = pg_fetch_array($result);
+        		$registro = $result[0]+1;
                 for ($i=1; $i <= $etapas; $i++) 
                 { 
                     $nombreEtapa=$_POST['nombreEtapa_'.$i];
                     $inicioEtapa=$_POST['inicioEtapa_'.$i];
+                    $folio = $_POST['folio_proyecto'];
                     $finEtapa=$_POST['finalEtapa_'.$i];
                     $mesesEtapa=$_POST['mesesEtapa_'.$i];
                     $descripcioEtapa=$_POST['descripcionEtapa_'.$i];
                     $metasEtapa=$_POST['metasEtapa_'.$i];
                     $actividadeEtapa=$_POST['actividadesEtapa_'.$i];
                     $productosEtapa=$_POST['productosEtapa_'.$i];
-                    $sql="INSERT INTO etapas (id_etapa, nombre_etapa, fecha_inicio_etapa, fecha_fin_etapa, meses , descripcion_etapa, metas, actividades_etapa, productos) 
-                        VALUES(".$i.",'".$nombreEtapa."','".$inicioEtapa."','".$finEtapa."',".$mesesEtapa.",'".$descripcioEtapa."','".$metasEtapa."','".$actividadeEtapa."','".$productosEtapa."');";
+                    $sql="INSERT INTO etapas (id_etapa, nombre_etapa, fecha_inicio_etapa, fecha_fin_etapa, meses , descripcion_etapa, metas, actividades_etapa, productos, f_proyecto) 
+                        VALUES(".$registro.",'".$nombreEtapa."','".$inicioEtapa."','".$finEtapa."',".$mesesEtapa.",'".$descripcioEtapa."','".$metasEtapa."','".$actividadeEtapa."','".$productosEtapa."', '".$folio."');";
                     // echo $sql;
                     $resultado=pg_query($conexion, $sql);
                 }
             	break;
-            	case 'alumnos_form':
+            case 'financiamientoForm':
+            	$fol= $_POST['folio_proyecto'];
+            	$existeActual = $_POST['financiamientoR'];
+            	$consulta= "SELECT count (id) from financiamiento;";        
+        		$result = pg_query($conexion, $consulta);
+        		$result = pg_fetch_array($result);
+        		$registro = $result[0]+1;
+            	if($existeActual== 'si'){
+            		$financ_actual= 'true';
+            		$externIntern = $_POST['fsi'];
+            		if($externIntern == 'interno'){
+            			$interno= 'true';
+            			$externo = 'false'; 
+            		}else{
+            			$externo= 'true';
+            			$interno = 'false'; 
+            		}            		
+            		$finan_espe= $_POST['financia_especificar'];
+
+            		$sql = $sql="INSERT INTO financiamiento (id, financ, interno, externo, especificar, folio_proyecto_id) 
+                        VALUES(".$registro.",'".$financ_actual."',".$interno.",".$externo.",'".$finan_espe."', '".$fol."');";
+                    echo $sql;
+                    $resultado=pg_query($conexion, $sql);
+            	}else{
+            		$financ_actual= 'false';
+            		$infra= $_POST['infraestructura'];
+            		$consu= $_POST['consumibles'];
+            		$lice= $_POST['licencias'];
+            		$viatic = $_POST['viaticos'];
+            		$public = $_POST['publicaciones'];
+            		$equipo = $_POST['equipo'];
+            		$patente = $_POST['patentes'];
+            		$otros = $_POST['otros_finan'];
+            		$total = $_POST['total'];
+            		$otro_text = $_POST['otro_especificar'];
+
+            		$sql = $sql="INSERT INTO financiamiento (id, financ, infraestructura, consumibles, licencias, viaticos, publicaciones, equipo, patentes, otros, especifique, folio_proyecto_id) 
+                        VALUES(".$registro.",".$financ_actual.",".$infra.",".$consu.",".$lice.",".$viatic.",".$public.",".$equipo.",".$patente.",".$otros.",'".$otro_text."','".$fol."');";
+                    echo $sql;
+                    $resultado=pg_query($conexion, $sql);
+
+            	}
+            	break;
+            case 'alumnos_form':
             	$alumnos=$_POST['totalAlumnosCol'];
             	for ($i=1; $i <= $alumnos ; $i++) 
             	{ 
+            		$folio = $_POST['folio_proyecto'];
             		$nombreAlumno=$_POST['nombreAlumnoCol_'.$i];
             		$apPaterno=$_POST['apPaternoAlumnoCol_'.$i];
             		$apMaterno=$_POST['apMaternoAlumnoCol_'.$i];
@@ -207,8 +255,8 @@
             		$carrera=$_POST['cboCarreraAlumno_'.$i];
             		$semestre=$_POST['cboSemestreAlumnoCol_'.$i];
             		$actividades=$_POST['actividadesAlumnoCol_'.$i];
-            		$sql="INSERT INTO seguimiento_proy_alumno(numero_control, semestre, nombre_alumno, apellido_paterno_alumno, apellido_materno_alumno, actividades_alumno, id_carrera_id) 
-            				VALUES ('".$noControl."',".$semestre.",'".$nombreAlumno."','".$apPaterno."','".$apMaterno."','".$actividades."',".$carrera.");";
+            		$sql="INSERT INTO alumno(numero_control, semestre, nombre_alumno, apellido_paterno_alumno, apellido_materno_alumno, actividades_alumno, id_carrera_id, folio_proy) 
+            				VALUES ('".$noControl."',".$semestre.",'".$nombreAlumno."','".$apPaterno."','".$apMaterno."','".$actividades."',".$carrera.", '".$folio."');";
     				echo $sql;
             		$resultado=pg_query($conexion, $sql);
             	}

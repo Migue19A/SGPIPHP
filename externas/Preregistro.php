@@ -1,3 +1,96 @@
+<script type="text/javascript">
+$(document).ready(function () {
+                var currentStep = 1;
+                $('.li-nav').click(function () {
+                    var $targetStep = $($(this).attr('step'));
+                    currentStep = parseInt($(this).attr('id').substr(7));
+                    if (!$(this).hasClass('disabled')) {
+                        $('.li-nav.active').removeClass('active');
+                        $(this).addClass('active');
+                        $('.setup-content').hide();
+                        $targetStep.show();
+                    }
+                });
+                $('#navStep1').click();
+
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth()+1; //January is 0!
+                var yyyy = today.getFullYear();
+                 if(dd<10){
+                        dd='0'+dd
+                    } 
+                    if(mm<10){
+                        mm='0'+mm
+                    } 
+
+                today = yyyy+'-'+mm+'-'+dd;
+                document.getElementById("fechaPresentacion").setAttribute("min", today);
+                document.getElementById("fechaPresentacion").setAttribute("value", today);
+                document.getElementById("fechaInicio").setAttribute("min", today);
+                document.getElementById("fechaInicio").setAttribute("value", today);
+                document.getElementById("fechaFin").setAttribute("min", today);
+                document.getElementById("fechaFin").setAttribute("value", today);
+
+                Date.prototype.mes = function() {
+                  var m = this.getMonth() + 1; // getMonth() is zero-based
+                  return (m>9 ? '' : '0') + m;
+                };
+                Date.prototype.segundos = function() {
+                  var s = this.getSeconds();
+                  return (s>9 ? '' : '0') + s;
+                };
+
+                var fechaIni= $('#fechaFin').val();      
+                var diasMaximo = 730;
+                var diasMinimo = 182;
+                var fechaMax = new Date(fechaIni);
+                var fechaMin = new Date(fechaIni);
+                fechaMax.setDate(fechaMax.getDate()+diasMaximo);
+                fechaMin.setDate(fechaMin.getDate()+diasMinimo);
+                var fechaSQLM = fechaMax.getFullYear()+"-"+ fechaMax.mes()+"-"+fechaMax.getDate();
+                var fechaSQLm = fechaMin.getFullYear()+"-"+ fechaMin.mes()+"-"+fechaMin.getDate();
+                $('#fechaFin').attr('min', fechaSQLm);
+                $('#fechaFin').attr('max', fechaSQLM);  
+                $('#fechaFin').val(fechaSQLm);
+
+                //Área de texto en caso de que seleccione sí al principio del financiamiento
+                $('#especificarF').attr('readonly', true);
+                $('#especificarF').attr('required', false);
+
+                //Desglosar en financiamiento
+                $('#otro_especificar').attr('readonly', true);
+                $('#otro_especificar').attr('required', false);
+
+
+                $('#infraestructura').val(0);
+                $('#consumibles').val(0);
+                $('#licencias').val(0);
+                $('#viaticos').val(0);
+                $('#publicaciones').val(0);
+                $('#equipo').val(0);
+                $('#patentes').val(0);
+                $('#otros_finan').val(0);
+                $('#total').val(0);
+                $('#otro_especificar').attr('readonly', false);
+                $('#otro_especificar').attr('required', true);
+
+                var acc = document.getElementsByClassName("accordion");
+                var i;
+                for (i = 0; i < acc.length; i++) {
+                    acc[i].onclick = function() {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.maxHeight){
+                      panel.style.maxHeight = null;
+                    } else {
+                      panel.style.maxHeight = panel.scrollHeight + "px";
+                    } 
+                  }
+            }                
+                
+});
+</script>
 <div class="container">
     <div class="col-lg-9" >
         <nav class="navbar navbar-inverse">
@@ -186,38 +279,38 @@
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Responsable</h2>
                                             <div class="form-group col-md-4" readonly>
                                                 <label>*Apellido paterno</label>
-                                                <input type="text" class="form-control" readonly value="" id="apellidoPatResp" name="apellidoPatResp" > 
+                                                <input type="text" class="form-control" disabled value="" id="apellidoPatResp" name="apellidoPatResp" value="VALDIVIA" > 
                                             </div>
                                             <div class="form-group col-md-4" readonly>
                                                 <label>*Apellido materno</label>
-                                                <input type="text" class="form-control" readonly value="" id="apellidoMaternoResp" name="apellidoMaternoResp" > 
+                                                <input type="text" class="form-control" readonly value="" id="apellidoMaternoResp" name="apellidoMaternoResp" value="CRUZ" > 
                                             </div>
                                             <div class="form-group col-md-4" readonly >
                                                 <label>*Nombre(s)</label>
-                                                <input type="text" class="form-control" readonly value=""id="nombreResp" name="nombreResp">
+                                                <input type="text" class="form-control" readonly value=""id="nombreResp" name="nombreResp" value="ANA PATRICIA">
                                             </div>
                                             <div class="form-group col-md-4" readonly>      
                                                 <label>*Grado máximo de estudios</label>
-                                                <input type="text" class="form-control" readonly value="" id="gradoMaximoResp" name="gradoMaximoResp" >
+                                                <input type="text" class="form-control" readonly value="" id="gradoMaximoResp" name="gradoMaximoResp" value="LICENCIATURA">
                                             </div>
                                             <div class="form-group col-md-6" readonly>
                                                 <label>*Academia a la que pertenece</label>
-                                                <input type="text" class="form-control" readonly value="" id="academiaResp" name="academiaResp" >                  
+                                                <input type="text" class="form-control" readonly value="" id="academiaResp" name="academiaResp" value="Ingeniería en sistema computacionales">                  
                                             </div>
                                             <div class="form-group col-md-2" readonly>
                                                 <label>*N° de personal</label>
-                                                <input type="text" class="form-control" readonly value="" id="NumeroPersonalResp" name="NumeroPersonalResp" >
+                                                <input type="text" class="form-control" readonly value="" id="NumeroPersonalResp" name="NumeroPersonalResp" value="123">
                                             </div>
                                             <div class="form-group col-md-3" readonly>
                                                 <label>Móvil</label>
                                                 <input type="text" class="form-control" readonly value="" id="movilResp" name="movilResp" ></div>
                                             <div class="form-group col-md-4">
                                                 <label>*Correo institucional</label>
-                                                <input type="email" class="form-control" readonly value="" id="correoInstResp" name="correoInstResp" >    
+                                                <input type="email" class="form-control" readonly value="" id="correoInstResp" name="correoInstResp" value="patty_itx@hotmail.com">    
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <label>Correo alternativo</label>
-                                                <input type="email" class="form-control" id="emailAltResp" name="emailAltResp" >
+                                                <input type="email" class="form-control" id="emailAltResp" name="emailAltResp" readonly>
                                             </div>
                                             <div class="form-group col-md-12">
                                                 <label>*Descripción de las principales actividades a desarrollar en el proyecto</label>
@@ -618,28 +711,36 @@
                             
                             <!--FINANCIAMIENTO-->
                             
-                            <form class="container" style="width: 100%;">
+                            <form id="financiamiento_form" name="financiamiento_form" onsubmit="ajaxPreregistro(this.id)" class="container" method="POST" style="margin-left: 10px; width: 100%;">
                                 <div class="row setup-content" id="step-8">
+                                    <input type="hidden" id="accion" name="accion" value="financiamientoForm">
+                                    <input type="hidden" id="folio_proyecto8" name="folio_proyecto" readonly>
                                     <div class="col-md-12">
-                                    <input type="text" name="folio_proyecto"  readonly>
                                         <div class="col-md-12">
                                             <h2 style="text-align: center; margin-top: -20px; margin-bottom: 50px;">Financiamiento</h2>
                                             <div class="form-group col-md-6">
                                                 <label>*¿Existe actualmente algún financiamiento del proyecto?</label>
                                             </div>
                                             <div class="form-group  col-md-2">
-                                                {{form.financi}}
+                                                <label>Sí</label>
+                                                <input name="financiamientoR" required type="radio" onclick="muestraFina()" value="si">
+                                            </div>
+                                            <div class="form-group  col-md-2">
+                                                <label><input name="financiamientoR" required type="radio" onclick="muestraFina()" value="no" checked="">No</label>
                                             </div>
                                             <div class="row hidden" id="financiamientoSi">
                                                 <div class="form-group col-md-12">
                                                     <label>En caso de que la respuesta sea sí</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
-                                                    {{form.finanSi}}
+                                                    <label><input type="radio" name="fsi" onclick="financiar()" id="fSi" value="interno">Interno</label>
+                                                </div>
+                                                 <div class="form-group col-md-3">
+                                                    <label><input type="radio" name="fsi"  onclick="financiar()" id="fSI" value="externo">Externo</label>
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label>Especifique</label>
-                                                    {{form.fEspeci}}
+                                                    <label>*Especifique</label>
+                                                    <textarea class="form-control" rows="3" id="especificarF" name="financia_especificar"></textarea>
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-12">
@@ -647,21 +748,21 @@
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Infraestructura:</label>
+                                                    <label>*Infraestructura:</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>{{form.fInfra}}
+                                                        <span class="input-group-addon">$</span><input class="form-control"  id="infraestructura" name="infraestructura" onblur="sumar()" type="number" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Consumibles:</label>
+                                                    <label>*Consumibles:</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>{{form.fCon}}
+                                                        <span class="input-group-addon">$</span><input class="form-control" id="consumibles" name="consumibles" onblur="sumar()" type="number" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -672,48 +773,48 @@
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
                                                         <div class="input-group">
-                                                            <span class="input-group-addon">$</span>{{form.fLic}}
+                                                            <span class="input-group-addon">$</span><input class="form-control"  id="licencias" name="licencias" onblur="sumar();" type="number" required>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Viáticos:</label>
+                                                    <label>*Viáticos:</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>{{form.fVia}}
+                                                        <span class="input-group-addon">$</span><input class="form-control"  id="viaticos" name="viaticos" onblur="sumar();" type="number" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Publicaciones:</label>
+                                                    <label>*Publicaciones:</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>{{form.fPubli}}
+                                                        <span class="input-group-addon">$</span><input class="form-control"  id="publicaciones" name="publicaciones" onblur="sumar();" type="number" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Equipo:</label>
+                                                    <label>*Equipo:</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>{{form.fEqui}}
+                                                        <span class="input-group-addon">$</span><input  class="form-control"  id="equipo" name="equipo" onblur="sumar();" type="number" required>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-3">
-                                                    <label>Patentes/derechos de autor:</label>
+                                                    <label>*Patentes/derechos de autor:</label>
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>{{form.fPat}}
+                                                        <span class="input-group-addon">$</span><input class="form-control"  id="patentes" name="patentes" onblur="sumar();" type="number" required>
                                                     </div>
                                                 </div>
                                             </div>
@@ -723,14 +824,14 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>{{form.fOtros}}
+                                                        <span class="input-group-addon">$</span><input class="form-control"  id="otros_finan" name="otros_finan" onblur="sumar();" type="number">
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-1">
-                                                    <label>Desglosar:</label>
+                                                    <label>Desglosar: </label>
                                                 </div>
                                                 <div class="form-group col-md-5">
-                                                    {{form.fDesglo}}
+                                                    <input type="text" id="otro_especificar" name="otro_especificar" class="form-control">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -739,14 +840,14 @@
                                                 </div>
                                                 <div class="form-group col-md-3">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">$</span>{{form.fTot}}
+                                                        <span class="input-group-addon">$</span><input class="form-control" readonly id="total" name="total" type="number">
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-12">
                                                     <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                                    <input onclick="step8Next()" class="btn btn-primary" value="Siguiente" style="float: right;">
+                                                    <input type="submit" class="btn btn-primary" value="Siguiente" style="float: right;">
                                                 </div>
                                             </div>
                                         </div>
@@ -756,76 +857,90 @@
                             
                             <!--ALUMNOS COLABORADORES-->
                             
-                            <form class="container" id="alumnos_form" style="width: 100%;">
+                            <form id="alumnos_form" name="alumnos_form" onsubmit="ajaxPreregistro(this.id)" class="container" method="POST" style="margin-left: 10px; width: 100%;">
                                 <div class="setup-content" id="step-9">
                                     <div class="col-md-12">
                                         <div class="col-md-12">
                                             <div class="form-group col-md-12">
-                                                <h2 class="col-lg-8" align="right">Alumnos Colaboradores</h2>
-                                                <h4 class="col-lg-2" align="right">Total</h4>
-                                                <input class="col-lg-2" type="number" id="totalAlumnosCol" name="totalAlumnosCol" min="1" max="50" onchange="crearAlumnos(this.id)" value="1">
+                                                <h2 class="text-center">Alumnos Colaboradores</h2><br>
+                                                <h4 class="text-left">Selecciona el total de alumnos colaboradores</h4>
+                                                <input class="form-control text-center" type="number" id="totalAlumnosCol" name="totalAlumnosCol" min="1" max="50" onchange="crearAlumnos(this.id)" value="1" class="form-control">
                                                 <input type="hidden" name="accion" id="accion" value="alumnos_form">
+                                                <input type="hidden" id="folio_proyecto9" name="folio_proyecto" readonly>
                                             </div>
                                         </div>
-                                        <div id="alumno" class="well col-lg-12">
+                                        <div id="alumno" class="col-lg-12">
                                             <div class="form-group col-md-8" style="margin-top: 30px;">
+                                                <label>* S.S.= Servicio Social, R.P.= Residencia Profesional, T= Tesis</label>
                                             </div>
                                             <div class="form-group col-md-12 ">
-                                                 <h2 style="text-align: center;" id="tituloAlumno_1">Alumno colaborador 1°</h2>
+                                                 <h3 style="text-align: center;" id="tituloAlumno_1">Alumno colaborador 1°</h3>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-12">
-                                                    <div class="col-lg-4"><label>*Nombre</label>
-                                                    <input class="form-control" type="text" id="nombreAlumnoCol_1" name="nombreAlumnoCol_1" size="15">
+                                                    <div class="col-lg-6"><label>*Nombre</label>
+                                                    <input class="form-control" required type="text" id="nombreAlumnoCol_1" name="nombreAlumnoCol_1" size="15">
                                                     </div>
-                                                    <div class="col-lg-4"><label>*Apellido Paterno</label>
-                                                    <input class="form-control" type="text" id="apPaternoAlumnoCol_1" name="apPaternoAlumnoCol_1" size="15">
+                                                    <div class="col-lg-6"><label>*Apellido Paterno</label>
+                                                    <input class="form-control" required type="text" id="apPaternoAlumnoCol_1" name="apPaternoAlumnoCol_1" size="15">
                                                     </div>
-                                                    <div class="col-lg-4"><label>*Apellido Materno</label>
+                                                    <div class="col-lg-6"><label>*Apellido Materno</label>
                                                     <input class="form-control" type="text" id="apMaternoAlumnoCol_1" name="apMaternoAlumnoCol_1" size="15">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label>*N° control</label>
+                                                        <input type="text" required id="noControlAlumnoCol_1" name="noControlAlumnoCol_1" class="form-control" maxlength="9">
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label class="col-lg-4">*Carrera</label>
+                                                            <select class="col-lg-8 form-control" name="cboCarreraAlumno_1" id="cboCarreraAlumno_1" required>
+                                                            <?php 
+                                                            $result=$miConn->cboCarrera();
+                                                            while($row = pg_fetch_array($result))
+                                                            {
+                                                                echo "<option value='".$row[0]."'>".$row[1]."</option>";       
+                                                            }
+                                                            ?>
+                                                            </select>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <label>*Semestre</label>
+                                                            <select name="cboSemestreAlumnoCol_1" id="cboSemestreAlumnoCol_1" class="form-control" required>
+                                                                <option value="1">Primero</option>
+                                                                <option value="2">Segundo</option>
+                                                                <option value="3">Tercero</option>
+                                                                <option value="4">Cuarto</option>
+                                                                <option value="5">Quinto</option>
+                                                                <option value="6">Sexto</option>
+                                                                <option value="7">Septimo</option>
+                                                                <option value="8">Octavo</option>
+                                                                <option value="9">Noveno</option>
+                                                                <option value="10">Décimo</option>
+                                                                <option value="11">Onceavo</option>
+                                                                <option value="12">Doceavo</option>
+                                                            </select>
+                                                    </div>                                                    
+
+                                                    <div class="row text-center">
+                                                        <div class="form-group col-md-2">
+                                                            <label><input type="checkbox" required style="margin-top: 35px;">S.S</label>
+                                                        </div>
+                                                        <div class="form-group col-md-2">
+                                                            <label><input type="checkbox" style="margin-top: 35px;">R.P</label>
+                                                        </div>
+                                                        <div class="form-group col-md-2">
+                                                            <label><input type="checkbox" style="margin-top: 35px;">T</label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="form-group col-md-4">
-                                                    <label>*N° control</label>
-                                                    <input type="text" id="noControlAlumnoCol_1" name="noControlAlumnoCol_1" class="form-control">
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-lg-4">*Carrera</label>
-                                                        <select class="col-lg-8 form-control" name="cboCarreraAlumno_1" id="cboCarreraAlumno_1">
-                                                        <?php 
-                                                        $result=$miConn->cboCarrera();
-                                                        while($row = pg_fetch_array($result))
-                                                        {
-                                                            echo "<option value='".$row[0]."'>".$row[1]."</option>";       
-                                                        }
-                                                        ?>
-                                                        </select>
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label>*Semestre</label>
-                                                    <select name="cboSemestreAlumnoCol_1" id="cboSemestreAlumnoCol_1" class="form-control">
-                                                        <option value="1">Primero</option>
-                                                        <option value="2">Segundo</option>
-                                                        <option value="3">Tercero</option>
-                                                        <option value="4">Cuarto</option>
-                                                        <option value="5">Quinto</option>
-                                                        <option value="6">Sexto</option>
-                                                        <option value="7">Septimo</option>
-                                                        <option value="8">Octavo</option>
-                                                        <option value="9">Noveno</option>
-                                                        <option value="10">D&eacute;cimo</option>
-                                                        <option value="11">Onceavo</option>
-                                                        <option value="12">Doceavo</option>
-                                                    </select>
-                                                </div>
+                                            <div class="row">                                       
                                                 <div class="form-group col-md-12">
                                                     <div class="col-lg-4">
                                                         <label class="col-lg-12">*Detalle de actividades <br>(máximo 256 caracteres)</label>
                                                     </div>
                                                     <div class="col-lg-8">
-                                                        <textarea class="form-control col-md-10 col-lg-10" name="actividadesAlumnoCol_1" id="actividadesAlumnoCol_1" cols="90" rows="5" maxlength="256"></textarea>
+                                                        <textarea class="form-control col-md-10 col-lg-10" name="actividadesAlumnoCol_1" id="actividadesAlumnoCol_1" cols="90" rows="5" maxlength="256" required></textarea>
                                                     </div>
                                                 </div>
                                                 <div class="form-group col-md-12">
@@ -836,9 +951,11 @@
                                         <div id="alumnos">
                                         </div>
                                         <div class="form-group col-md-12">
+                                            <br>
+                                            <br>
                                             <input onclick="prevStep()" class="btn btn-default" value="Regresar">
-                                            <input type="button" onclick="ajaxPreregistro(this.id)" id="alumnos_form" value="Guardar" class="btn btn-info">
-                                            <input class="btn btn-primary" value="Finalizar" style="float: right;" onclick="Finalizar()">
+                                            <input type="submit" value="Guardar" class="btn btn-primary">
+                                            <input class="btn btn-success" value="Finalizar" style="float: right;" onclick="Finalizar()">
                                             <a class="btn btn-info view-pdf" style="float: right; margin-right: 10px;">Vista previa</a>
                                         </div>
                                     </div>
