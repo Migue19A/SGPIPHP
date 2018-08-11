@@ -1,5 +1,5 @@
 <?php 
-include('../../externas/Clases/classConn.php');
+	include('../../externas/Clases/classConn.php');
 	$accion = $_POST['accion'];
 
 	switch ($accion) {

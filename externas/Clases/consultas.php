@@ -4,8 +4,19 @@ include('classConn.php');
 /**
  * 
  */
-class Consultas extends ClassConn
+if($_POST){	
+	$x = $_POST['botonVer'];
+	$miConn=new ClassConn();
+	$consulta= "SELECT * from proyecto WHERE folio_proyecto='".$x."';";        
+    $result = pg_query($miConn->conexion(), $consulta);	
+	echo "Chingon: ".$x;
+	return $result;
+}
+
+class Consultas
 {
+	// PreRegistro Docente
+
 	function cboInvestigacion()
 	{
         
@@ -42,6 +53,19 @@ class Consultas extends ClassConn
         $result = pg_query($miConn->conexion(), $consulta);
         return $result;
 	}
+
+	//PreRegistro Gestión
+
+	function todosProyectos(){
+		$miConn = new ClassConn();
+		$consulta = "SELECT UPPER(nombre_proyecto), fecha_presentacion, folio_proyecto FROM proyecto;";
+		$result = pg_query($miConn->conexion(), $consulta);
+		return $result;
+	}
+
+
+
+
 
 }
 ?>

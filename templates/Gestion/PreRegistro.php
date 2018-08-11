@@ -7,7 +7,7 @@
  ?>
 	<title>Pre-Registro</title>	 
 <?php 
-	include('../../externas/contenido.php')
+	include('../../externas/PreRegistroGestion.php')
 ?>
 <?php 
 	include('../../externas/footer.php');

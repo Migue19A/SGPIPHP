@@ -1,11 +1,11 @@
 <?php  
-include('conexion.php');
 include('Clases/consultas.php');
 $miConn= new consultas();
 ?>
 <head>
-	<meta charset="utf-8">
-	<script src="../../MenuIzquierdo/moment.js">
+	    <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <meta charset="utf-8">
+	    <script src="../../MenuIzquierdo/moment.js">
         </script>
         <script src="../../MenuIzquierdo/angular.js">
         </script>
@@ -23,17 +23,18 @@ $miConn= new consultas();
         <script src="../../MenuIzquierdo/example.js">
         </script>
         <script src="../../MenuIzquierdo/helpers.js">
-        </script>
+        </script> 
         <script src="../../js/moment.js" type="text/javascript"></script>
         <link href="../../css/nuevoestilo.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/bootstrap.css" rel="stylesheet"/>
         <link href="../../css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/styles.css" rel="stylesheet" type="text/css"/>
+        <link href="../../css/arcordeonG.css" rel="stylesheet" type="text/css"/>
         <link href="../../css/estilos.css" rel="stylesheet" type="text/css"/>
-        <script src="../../js/sweetalert2.min.js"></script> 
         <link href="../../img/itsx.ico" rel="shortcut icon" type="image/x-icon"/>
 		<script type="text/javascript" src="../../js/jquery-3.2.0.js"></script>
 		<script type="text/javascript" src="../../js/jquery-3.2.0.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
         <link href="../../css/calendario.css" rel="stylesheet" type="text/css"/>
         <script src="../../js/calendario.js" type="text/javascript">
         </script>
@@ -47,6 +48,7 @@ $miConn= new consultas();
         </script>     
         <script src="../../js/preRegistro.js" type="text/javascript"></script>
         <link href="../../css/sweetalert2.css" rel="stylesheet" type="text/css"/>
+        <script src="../../js/sweetalert2.min.js"></script>
 		<script type="text/javascript" src="../../js/funciones.js"></script>
 
 

@@ -1,17 +1,17 @@
 <script type="text/javascript">
 $(document).ready(function () {
-                var currentStep = 1;
-                $('.li-nav').click(function () {
-                    var $targetStep = $($(this).attr('step'));
-                    currentStep = parseInt($(this).attr('id').substr(7));
-                    if (!$(this).hasClass('disabled')) {
-                        $('.li-nav.active').removeClass('active');
-                        $(this).addClass('active');
-                        $('.setup-content').hide();
-                        $targetStep.show();
-                    }
-                });
-                $('#navStep1').click();
+    var currentStep = 1;
+    $('.li-nav').click(function () {
+    var $targetStep = $($(this).attr('step'));
+    currentStep = parseInt($(this).attr('id').substr(7));
+    if (!$(this).hasClass('disabled')) {
+        $('.li-nav.active').removeClass('active');
+        $(this).addClass('active');
+        $('.setup-content').hide();
+        $targetStep.show();
+    }
+    });
+    $('#navStep1').click();
 
                 var today = new Date();
                 var dd = today.getDate();
@@ -25,12 +25,8 @@ $(document).ready(function () {
                     } 
 
                 today = yyyy+'-'+mm+'-'+dd;
-                document.getElementById("fechaPresentacion").setAttribute("min", today);
                 document.getElementById("fechaPresentacion").setAttribute("value", today);
-                document.getElementById("fechaInicio").setAttribute("min", today);
                 document.getElementById("fechaInicio").setAttribute("value", today);
-                document.getElementById("fechaFin").setAttribute("min", today);
-                document.getElementById("fechaFin").setAttribute("value", today);
 
                 Date.prototype.mes = function() {
                   var m = this.getMonth() + 1; // getMonth() is zero-based
@@ -41,15 +37,34 @@ $(document).ready(function () {
                   return (s>9 ? '' : '0') + s;
                 };
 
-                var fechaIni= $('#fechaFin').val();      
+                var fechaIni= $('#fechaInicio').val();      
                 var diasMaximo = 730;
                 var diasMinimo = 182;
                 var fechaMax = new Date(fechaIni);
                 var fechaMin = new Date(fechaIni);
                 fechaMax.setDate(fechaMax.getDate()+diasMaximo);
                 fechaMin.setDate(fechaMin.getDate()+diasMinimo);
-                var fechaSQLM = fechaMax.getFullYear()+"-"+ fechaMax.mes()+"-"+fechaMax.getDate();
-                var fechaSQLm = fechaMin.getFullYear()+"-"+ fechaMin.mes()+"-"+fechaMin.getDate();
+                var diam = fechaMin.getDate();
+                var mesm = fechaMin.getMonth()+1;
+                var aniom = fechaMin.getFullYear();
+                    if(diam<10){
+                        diam='0'+diam
+                    } 
+                    if(mesm<10){
+                        mesm='0'+mesm
+                    } 
+                var diaM = fechaMax.getDate();
+                var mesM = fechaMax.getMonth()+1;
+                var anioM = fechaMax.getFullYear();
+                    if(diaM<10){
+                        diaM='0'+diaM
+                    } 
+                    if(mesM<10){
+                        mesM='0'+mesM
+                    } 
+
+                var fechaSQLM = anioM+"-"+ mesM+"-"+diaM;
+                var fechaSQLm = aniom+"-"+ mesm+"-"+diam; 
                 $('#fechaFin').attr('min', fechaSQLm);
                 $('#fechaFin').attr('max', fechaSQLM);  
                 $('#fechaFin').val(fechaSQLm);
@@ -172,7 +187,7 @@ $(document).ready(function () {
                                                 <?php
                                                     $res = $miConn->consultaFolio();
                                                     $r = pg_fetch_array($res);
-                                                    $prefolio = $r[0]+1;                                  
+                                                    $prefolio = $r[0]+2;                                  
                                                 ?> 
                                                 <input type="hidden" id="folio_proyecto1" name="folio_proyecto" readonly value=<?php echo "PRE".$prefolio ?>>
                                                 <input type="hidden" name="recepcion" value="recepcion">

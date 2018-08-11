@@ -304,8 +304,20 @@ function Finalizar() {
 }
 
 function step1Next() {
-    //You can make only one function for next, and inside you can check the current step
-    if (true) { //Insert here your validation of the first step
+    var currentStep = 1;
+    $('.li-nav').click(function () {
+    var $targetStep = $($(this).attr('step'));
+    currentStep = parseInt($(this).attr('id').substr(7));
+    if (!$(this).hasClass('disabled')) {
+        $('.li-nav.active').removeClass('active');
+        $(this).addClass('active');
+        $('.setup-content').hide();
+        $targetStep.show();
+    }
+    });
+    $('#navStep1').click();
+                //You can make only one function for next, and inside you can check the current step
+    if (true) {//Insert here your validation of the first step
         currentStep += 1;
         $('#navStep' + currentStep).removeClass('disabled');
         $('#navStep' + currentStep).click();
@@ -397,7 +409,7 @@ function habilitarEspecifique() {
 
 function validarNombre(){
     var namep = $('#nombre_proyecto').val().trim();
-    var url = "controladores/preregistro/ValidacionesAjax.php";
+    var url = "../../controladores/preregistro/ValidacionesAjax.php";
     $.ajax({                        
            type: "POST",                 
            url: url,                     
@@ -475,7 +487,7 @@ function ajaxPreregistro(id)
     {
         async: true,
         type: 'POST',
-        url: 'controladores/preregistro/insertar.php',
+        url: '../../controladores/preregistro/insertar.php',
         data: $('#'+id).serializeArray(),
         beforeSend: function()
         {
@@ -662,5 +674,116 @@ function crearAlumnos(id)
     
 }
 
+// ----------------- PreRegistro Gestion -------------------------
+
+function EnviarSubdireccion(){
+      swal({
+      title: '¿Seguro que desea enviar la solicitud?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then(function () {
+      swal(
+        'Solicitud enviada',
+        '',
+        'success'
+      )
+      $('#myModal').modal('hide');
+      })
+  }
+
+  function RegresarDocente(){
+      swal({
+      title: '¿Seguro que desea enviar la revisión a docente responsable?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then(function () {
+      swal(
+        'Solicitud enviada',
+        '',
+        'success'
+      )
+      $('#myModal').modal('hide');
+      })
+} 
+
+
+function Finalizar(){
+    swal({
+      title: '¿Enviar al departamento de investigación?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Enviar'
+    }).then(function () {
+      swal(
+        'Enviado correctamente',
+        '',
+        'success'
+
+      ).then(function(dimiss){
+       
+          
+    if(dimiss==true)
+      {
+        location.href="PreRegistro.html"
+      }
+      })
+  })
+}
+
+ function Finalizar2(){
+    swal({
+      title: '¿Regresar revisión al docente responsable?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Enviar'
+    }).then(function () {
+  swal(
+    'Enviado correctamente',
+    '',
+    'success'
+
+  ).then(function(dimiss){      
+    if(dimiss==true)
+      {
+        location.href="PreRegistro.html"
+      }
+  })
+})}
+
+function ajaxPreregistroConsultas(id)
+{
+    botonVer= id;
+    prevenir(event);
+    $.ajax(
+    {
+        async: true,
+        type: 'POST',
+        url: '../../Ajax/ajax_consultas_proyectos.php',
+        data: {botonVer: botonVer, accion:'consultarProyecto'},
+        beforeSend: function()
+        {
+        },
+        success: function(data){
+            console.log(data);                                
+        },
+        error: function(data) {       
+        }
+      });
+}
+    
 
 
