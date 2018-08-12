@@ -18,10 +18,10 @@
 				$inicio = $_POST['fecha_inicio'];
 				$fin = $_POST['fecha_fin'];
 				$boton= $_POST['recepcion'];
-				$sqlInsertar = "INSERT INTO proyecto(folio_proyecto, fecha_presentacion, convocatoria_CPR, inicio, fin, nombre_proyecto, lineaInvestigacion_id, tipoInvestigacion_id, tipoSector_id,
-					especificar) VALUES ('".$fp."', '".$fpresent."', '".$ccpr."', '".$inicio."', '".$fin."','".$nombreProy."',
+				$sqlInsertar = "INSERT INTO proyecto(\"FolioProyecto\", \"FechaPresentacion\", \"ConvocatoriaCPR\",  \"Inicio\", \"Fin\", \"NombreProyecto\", \"LineaInvestigacion\", \"TipoInvestigacion\", \"TipoSector\", \"Especificar\") VALUES ('".$fp."', '".$fpresent."', '".$ccpr."', '".$inicio."', '".$fin."','".$nombreProy."',
 					".$linea.", ".$tipoInvest.", ".$tipoSec.", '".$especific."');";
 				$resultado=pg_query($conexion, $sqlInsertar);
+				// echo $sqlInsertar;
 				break;
 			case 'responsableForm':
 				$fp= $_POST['folio_proyecto'];
@@ -30,12 +30,12 @@
 				$palabra2=$_POST['palabra_clave2'];
 				$palabra3=$_POST['palabra_clave3'];
 				$sqlUpdate= "UPDATE proyecto SET 
-							actividades_responsable='".$actividades."',
-							palabra_clave1='".$palabra1."',
-							palabra_clave2='".$palabra2."',
-							palabra_clave3='".$palabra3."',
-							id_responsable= 1 WHERE folio_proyecto='".$fp."';";
-				echo $sqlUpdate;
+							\"actividadesResponsable\"='".$actividades."',
+							\"PalabraClave1\"='".$palabra1."',
+							\"PalabraClave2\"='".$palabra2."',
+							\"PalabraClave3\"='".$palabra3."',
+							\"Responsable\"= 1 WHERE \"FolioProyecto\"='".$fp."';";
+				// echo $sqlUpdate;
 				$resultado=pg_query($conexion, $sqlUpdate);
 				break;
 			case 'colaboradorForm':
@@ -70,7 +70,7 @@
 							'".$activ."',
 							".$carrera.",
 							'".$folio."');";
-					echo $sqlI;	
+					// echo $sqlI;	
 					$resultado=pg_query($conexion, $sqlI);
 					$cont= $cont+1;
 				}
@@ -81,10 +81,10 @@
 				$especifico=$_POST['obj_especif'];
 				$resultados=$_POST['resultados'];
 				$sqlUpdate= "UPDATE proyecto SET 
-							objetivo_general='".$general."',
-							objetivo_especifico='".$especifico."',
-							resultados='".$resultados."',
-							id_responsable= 1 WHERE folio_proyecto='".$fol."';";
+							\"ObjetivoGeneral\"='".$general."',
+							\"ObjetivoEspecifico\"='".$especifico."',
+							\"Resultados\"='".$resultados."',
+							\"Responsable\"= 1 WHERE \"FolioProyecto\"='".$fol."';";
 				echo $sqlUpdate;
 				$resultado=pg_query($conexion, $sqlUpdate);
 				break;			
@@ -159,7 +159,7 @@
 				}else{
 					$libros='true';
 				}
-				$consulta= "SELECT count (id) from metas;";        
+				$consulta= "SELECT count(\"PkMetas\") from metas;";        
         		$result = pg_query($conexion, $consulta);
         		$result = pg_fetch_array($result);
         		$registro = $result[0]+1;
@@ -194,7 +194,7 @@
                     $metasEtapa=$_POST['metasEtapa_'.$i];
                     $actividadeEtapa=$_POST['actividadesEtapa_'.$i];
                     $productosEtapa=$_POST['productosEtapa_'.$i];
-                    $sql="INSERT INTO etapas (id_etapa, nombre_etapa, fecha_inicio_etapa, fecha_fin_etapa, meses , descripcion_etapa, metas, actividades_etapa, productos, f_proyecto) 
+                    $sql="INSERT INTO etapas (\"PkEtapas\", \"NombreEtapa\", \"fechaInicio\", \"FechaFin\", \"Meses\" , \"Descripcion\", \"Metas\", \"Actividades\", \"Productos\", \"FolioProyecto\") 
                         VALUES(".$registro.",'".$nombreEtapa."','".$inicioEtapa."','".$finEtapa."',".$mesesEtapa.",'".$descripcioEtapa."','".$metasEtapa."','".$actividadeEtapa."','".$productosEtapa."', '".$folio."');";
                     // echo $sql;
                     $resultado=pg_query($conexion, $sql);
