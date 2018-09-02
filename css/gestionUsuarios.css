@@ -1,0 +1,10 @@
+#divTablaDocentes
+{
+	overflow: scroll;
+	height:400px;
+    width:100%;
+}
+#divTablaDocentes,table
+{
+	width:100%;
+} 
