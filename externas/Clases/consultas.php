@@ -58,7 +58,7 @@ class Consultas
 
 	function todosProyectos(){
 		$miConn = new ClassConn();
-		$consulta = "SELECT UPPER('NombreProyecto'), 'fechaPresentacion', 'folioProyecto' FROM proyecto;";
+		$consulta = "SELECT UPPER(\"NombreProyecto\"), \"FechaPresentacion\", \"FolioProyecto\" FROM proyecto;";
 		$result = pg_query($miConn->conexion(), $consulta);
 		return $result;
 	}

@@ -1,3 +1,6 @@
+<?php 
+    //session_start();
+ ?>
 <script type="text/javascript">
 $(document).ready(function () {
     var currentStep = 1;
@@ -187,7 +190,7 @@ $(document).ready(function () {
                                                 <?php
                                                     $res = $miConn->consultaFolio();
                                                     $r = pg_fetch_array($res);
-                                                    $prefolio = $r[0]+2;                                  
+                                                    $prefolio = $r[0]+1;                                  
                                                 ?> 
                                                 <input type="hidden" id="folio_proyecto1" name="folio_proyecto" readonly value=<?php echo "PRE".$prefolio ?>>
                                                 <input type="hidden" name="recepcion" value="recepcion">
@@ -938,13 +941,13 @@ $(document).ready(function () {
 
                                                     <div class="row text-center">
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" required style="margin-top: 35px;">S.S</label>
+                                                            <label><input type="checkbox" id="alumno_servicio_1" name="alumno_servicio_1" required style="margin-top: 35px;">S.S</label>
                                                         </div>
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" style="margin-top: 35px;">R.P</label>
+                                                            <label><input type="checkbox" id="alumno_residencia_1" name="alumno_residencia_1" style="margin-top: 35px;">R.P</label>
                                                         </div>
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" style="margin-top: 35px;">T</label>
+                                                            <label><input type="checkbox" id="alumno_tesis_1" name="alumno_tesis_1" style="margin-top: 35px;">T</label>
                                                         </div>
                                                     </div>
                                                 </div>
