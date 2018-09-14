@@ -43,7 +43,6 @@
 		$accion=$_GET['accion'];
 	}
 	$miConn = new ClassConn();
-
 	switch ($accion) {
 		case 'login':
 			$usuario=$_GET['usuario'];
@@ -96,6 +95,1249 @@
 			}
 			$resultado=json_encode($resultado, JSON_FORCE_OBJECT);
 			echo $resultado;
+		break;
+		case 'consultaProyectoRevision':
+			$proyecto=$_GET['proyecto'];
+			$sql='select proy."FechaPresentacion", proy."FolioProyecto", tipoInv."descripcion" descinv, tiposec."descripcion" tiposector, lineaInvest."descripcion" lineaInvestigacion, proy."NombreProyecto" nombreproyecto, proy."FechaPresentacion" fechapresentacion,
+				recep."No.Solicitud" numerosolrecepcion, recep."FechaRecepcion" fechaRecep, 
+				recep."NombreRecibio" nombrerecibio, usu."Nombre" nombreResponsable, 
+				usu."ApellidoP" apellidoPatResponsable, usu."ApellidoM" apellidoMatResponsable,
+				docente."GradoMaximoEstudios" gradoMaxEst, carr."Descripcion" carrdescr,
+				docente."noPersonal" nopersonaldocproy,docente."TelefonoMovil" movil,
+				usu."CorreoInstitucional" correodocenteresp,proy."actividadesResponsable" actresp,
+				proy."PalabraClave1" palabra1, proy."PalabraClave2" palabra2, proy."PalabraClave3" palabra3,
+				proy."ObjetivoGeneral" objgral,proy."ObjetivoEspecifico" objesp, proy."Resultados" res,
+				vincul."NombreOrganizacion" nombreorg, vincul."Direccion" dirvinc, vincul."Area" areavinc,
+				vincul."Telefono" telvinc, vincul."NombreCompleto" nombrecontvinc,
+				vincul."DescripcionOrganizacion" descorgvinc, vincul."DescripcionAportaciones" descapvinc,
+				metas."Servicio" metaserv, metas."Residencia" metares, metas."Tesis" metastesis,
+				metas."Ponencia" metaspone, metas."Articulos" metasart, metas."Libros" metaslib,
+				metas."PropiedadesIntelectual" metasprop, metas."Otros" metasotros,
+				financ."Financiamiento" financiamiento, financ."Interno" financinter, financ."Externo" finanext,
+				financ."Especificar" financesp, financ."Infraestructura" financinfraest, 
+				financ."Consumibles" financons, financ."Licencias" finanlicen, financ."Viaticos" financviat,
+				financ."Publicaciones" financpubl, financ."Equipo" finsncequipo, financ."Patentes" financpat,
+				financ."Otros" financotros, financ."Especifique" financotrosesp
+				from "proyecto" proy
+				inner join "tipoinvestigacion" tipoInv on proy."TipoInvestigacion"=tipoInv."id"
+				inner join "tiposector" tipoSec on tipoSec."id"=proy."TipoSector"
+				inner join "lineainvestigacion" lineaInvest on lineaInvest."id"=proy."LineaInvestigacion"
+				left join "recepcion" recep on recep."Proyecto_FolioProyecto"=proy."FolioProyecto"
+				inner join "docente" docente on docente."noPersonal"=proy."Responsable"
+				inner join "usuario" usu on usu."NoPersonal"=docente."noPersonal"
+				inner join "vinculacion" vincul on vincul."FolioProyecto"=proy."FolioProyecto"
+				inner join "metas" metas on metas."FkFolioProyecto"=proy."FolioProyecto"
+				inner join "financiamientorequerido" financ on financ."FolioProyecto"=proy."FolioProyecto"
+				inner join "carrera" carr on carr."idCarrera"=docente."Carrera_idCarrera"
+				where proy."FolioProyecto"=\''.$proyecto.'\'';
+			$resultados = pg_query($miConn->conexion(), $sql);
+			$result=pg_fetch_array($resultados);
+			$sql='select "FkNoControl","Semestre", "Nombre","Paterno", "Materno", "Actividades", al."servicio" servicio,
+				al."tesis" tesis, carr."Descripcion",al."residencia" residencia
+				from alumnoscolaboradoresdetalle as aldet
+				inner join alumno as al on al."NoControl"=aldet."FkNoControl"
+				inner join carrera carr on carr."idCarrera"=al."id_carrera"
+				where "folioproyecto"=\''.$result['FolioProyecto'].'\'';
+			$consulta = pg_query($miConn->conexion(), $sql);
+			$json=array();
+			$arregloConsulta=array();
+			$alumnosCol=array();
+			$i=0;
+			while ($fila = pg_fetch_row($consulta)) 
+			{ 
+				$arregloConsulta[$i]=$fila;
+				$i++;
+			}
+			$i=1;
+			foreach ($arregloConsulta as $row) 
+			{
+				$Numero=$i;
+				$NoControl=$row[0];
+				$Semestre=$row[1];
+				$Nombre=$row[2];
+				$Paterno=$row[3];
+				$Materno=$row[4];
+				$Actividades=$row[5];
+				$Servicio=$row[6];
+				$Tesis=$row[7];
+				$Carrera=$row[8];
+				$Residencia=$row[9];
+				$json=array("Numero"=>$Numero, "NoControl"=>$NoControl, "Semestre"=>$Semestre,"Nombre"=>$Nombre,"Paterno"=>$Paterno,"Materno"=>$Materno,"Actividades"=>$Actividades,"Servicio"=>$Servicio,"Tesis"=>$Tesis,"Carrera"=>$Carrera,"Residencia"=>$Residencia);
+				array_push($alumnosCol,$json);
+				$i++;
+			}
+			$sql='select "noEtapa","NombreEtapa","FechaInicio","FechaFin","Meses","Actividades","Descripcion","Metas","Productos" 
+				from etapas 
+				where "FolioProyecto"=\''.$result['FolioProyecto'].'\'';
+			$consulta = pg_query($miConn->conexion(), $sql);
+			$json=array();
+			$arregloConsulta=array();
+			$etapas=array();
+			$i=0;
+			while ($fila = pg_fetch_row($consulta)) 
+			{ 
+				$arregloConsulta[$i]=$fila;
+				$i++;
+			}
+			$i=1;
+			foreach ($arregloConsulta as $row) 
+			{
+				$Numero=$i;
+				$NoEtapa=$row[0];
+				$NombreEtapa=$row[1];
+				$FechaInicio=$row[2];
+				$FechaFin=$row[3];
+				$Meses=$row[4];
+				$Actividades=$row[5];
+				$Descripcion=$row[6];
+				$Metas=$row[7];
+				$Productos=$row[8];
+				$json=array("Numero"=>$Numero, "NoEtapa"=>$NoEtapa, "NombreEtapa"=>$NombreEtapa,"FechaInicio"=>$FechaInicio,"FechaFin"=>$FechaFin,"Meses"=>$Meses,"Actividades"=>$Actividades,"Descripcion"=>$Descripcion,"Metas"=>$Metas,"Productos"=>$Productos);
+				array_push($etapas,$json);
+				$i++;
+			}
+			?>
+			<div class="container" style="margin-top: 0;">
+                <div class="col-lg-12 " style="margin-top: 10px;">
+                    <div class="col-lg-8 well">
+                        <div class="row">
+                            <h3 class="text-center" id="inicioP" style="font-weight: bold;">
+                                Proyecto
+                            </h3>
+                            <div class="col-lg-4 form-group">
+                                <label>
+                                    Fecha de presentación
+                                </label>
+                                <input class="form-control" name="fechaPresentacion" readonly="" type="date" id="fechaPresentacion" value="<?php echo $result['FechaPresentacion'] ?>">
+                            </div>
+                            <div class="col-lg-5 form-group">
+                                <label>
+                                    Convocatoria CPR
+                                </label>
+                                <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['FolioProyecto'] ?>">
+                            </div>
+                        </div>
+                        <div class="row container col-lg-6">
+                            <div class=" form-group">
+                                <label>
+                                    Tipo de investigación
+                                </label>
+                                <div class="">
+                                    <input class="form-control" name="Aplicada" readonly="" type="text" value="<?php echo $result['descinv'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row container col-lg-6">
+                            <div class="form-group">
+                                <label>
+                                    Tipo de Sector
+                                </label>
+                                <div class="">
+                                    <input name="Aplicada" class="form-control" readonly="" type="text" value="<?php echo $result['tiposector'] ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <label>
+                                        Linea de investigación
+                                    </label>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input name="01" class="form-control" readonly="" type="text" value="<?php echo $result['lineainvestigacion'] ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 form-group">
+                                    <label>
+                                        Nombre del proyecto
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['nombreproyecto']?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label>
+                                        Duración:
+                                    </label>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Inicio
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="date" value="<?php echo $result['fechapresentacion'] ?>">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Fin
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="date">
+                                </div>
+                                <div class="col-lg-12" style="background:#000">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h3 class="text-center" id="recep" style="font-weight: bold;">
+                                    Recepción
+                                </h3>
+                                <div class="col-lg-5 form-group">
+                                    <label>
+                                        Numero de Recepción
+                                    </label>
+                                    <input class="form-control" value="<?php echo $result['numerosolrecepcion'] ?>" readonly="" type="text">
+                                </div>
+                                <div class="col-lg-5 form-group">
+                                    <label>
+                                        Fecha de Recepción
+                                    </label>
+                                    <input class="form-control" value="<?php echo $result['fechaRecep'] ?>" readonly="" type="date">
+                                </div>
+                                <div class="col-lg-9" style="text-align: left;">
+                                    <label>
+                                        Recibió
+                                    </label>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Nombre(s)
+                                    </label>
+                                    <input class="form-control" value="<?php echo $result['nombrerecibio'] ?>" readonly="" type="text">
+                                  
+                                </div>
+                                <div class="col-lg-5 form-group">
+                                    <label>
+                                        Firma
+                                    </label>
+                                    <input class="form-control" readonly="" type="text">
+                                
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label>
+                                        Sello
+                                    </label>
+                                    <input class="form-control" readonly="" style="height: 150px" type="text">
+                                   
+                                </div>
+                            </div>
+                            <div class="col-lg-12" style="background:#000">
+                            </div>
+                            <div class="row">
+                                <h3 class="text-center" style="font-weight: bold;">
+                                    Responsable
+                                </h3>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Apellido paterno
+                                    </label>
+                                    <input class="form-control" value="<?php echo $result['apellidopatresponsable'] ?>" readonly="" type="text">
+                                
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Apellido materno
+                                    </label>
+                                    <input class="form-control" value="<?php echo $result['apellidomatresponsable'] ?>" readonly="" type="text">
+                                  
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Nombre(s)
+                                    </label>
+                                    <input class="form-control" value="<?php echo $result['nombreresponsable'] ?>" readonly="" type="text">
+                                 
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    <label>
+                                        Grado máximo de estudios:
+                                    </label>
+                                    <input class="form-control" readonly="" style="width:100%;" type="text" value="<?php echo $result['gradomaxest'] ?>">
+                                 
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    <label>
+                                        Academia a la que pertenece
+                                    </label>
+                                    <input class="form-control" readonly="" type="text" value="<?php echo $result['carrdescr'] ?>">
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        No. de personal
+                                    </label>
+                                    <input class="form-control" readonly="" type="text" value="<?php echo $result['nopersonaldocproy'] ?>">
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label>
+                                        Móvil
+                                    </label>
+                                    <input class="form-control" readonly="" type="text" value="<?php echo $result['movil'] ?>" >
+                                </div>
+                                <div class="col-lg-3" form-group="">
+                                    <label>
+                                        Correo institucional
+                                    </label>
+                                    <input class="form-control" readonly="" type="text" value="<?php echo $result['correodocenteresp'] ?>">
+                                </div>
+                                <div class="col-lg-4" form-group="">
+                                    <label>
+                                        Correo alternativo
+                                    </label>
+                                    <input class="form-control" readonly="" type="text">
+                                </div>
+                                <div class="col-lg-12" form-group="">
+                                    <label>
+                                        Firma del responsable del proyecto
+                                    </label>
+                                    <input class="form-control" readonly="" type="text">
+                                    
+                                </div>
+                                <div class="col-lg-12" form-group="">
+                                    <label>
+                                        Descripción de las principales actividades a desarrollar en el proyecto
+                                    </label>
+                                </div>
+                                <div class="col-lg-12" form-group="">
+                                    <input class="form-control" readonly="" style="height: 150px;" tabindex="4" type="text" value="<?php echo $result['actresp'] ?>">
+                           
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label>
+                                        Palabras clave:
+                                    </label>
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label>
+                                        (1)
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['palabra1'] ?>">
+                              
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label>
+                                        (2)
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['palabra2'] ?>">
+                                   
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <label>
+                                        (3)
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['palabra3'] ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" style="background:#000">
+                                </div>
+                            </div>
+                            <h3 class="text-center" id="colab1" style="font-weight: bold;">
+                                Colaborador
+                            </h3>
+                            <div class="row">
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Apellido paterno
+                                    </label>
+                                    <input class="form-control" readonly="" type="text">
+                                 
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Apellido materno
+                                    </label>
+                                    <input class="form-control" readonly="" type="text">
+                                   
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Nombre(s)
+                                    </label>
+                                    <input class="form-control" readonly="" type="text">
+                                 
+                                </div>
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label>
+                                    Grado máximo de estudios
+                                </label>
+                                <input class="form-control" readonly="" type="text">
+                             
+                            </div>
+                            <div class="col-lg-8 form-group">
+                                <label>
+                                    Academia a la que pertenece
+                                </label>
+                                <input class="form-control" readonly="" type="text">
+                             
+                            </div>
+                            <div class="col-lg-2 form-group">
+                                <label>
+                                    N°. personal
+                                </label>
+                                <input class="form-control" readonly="" type="text">
+                        
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <label>
+                                    Móvil
+                                </label>
+                                <input class="form-control" pattern="^\d{10}$" readonly="" type="text">
+                            
+                            </div>
+                            <div class="col-lg-4 form-group">
+                                <label>
+                                    Correo institucional
+                                </label>
+                                <input class="form-control" readonly="" type="email">
+                               
+                            </div>
+                            <div class="col-lg-3 form-group">
+                                <label>
+                                    Correo alternativo
+                                </label>
+                                <input class="form-control" readonly="" type="text">
+                            
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label>
+                                    Firma del responsable
+                                </label>
+                                <input class="form-control" readonly="" type="text">
+                            
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label>
+                                    Descripción de las principales actividades a desarrollar en el proyecto
+                                </label>
+                                <textarea class="form-control" readonly="" rows="4" style="resize:none;">
+                                </textarea>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" style="background:#000">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h3 class="text-center" id="objetivos" style="font-weight: bold;">
+                                    Objetivos
+                                </h3>
+                                <div class="col-lg-12 form-group">
+                                    <label>
+                                        Indique el objetivo general(No más de 512 caracteres)
+                                    </label>
+                                    <textarea class="form-control" readonly="" rows="4" style="resize:none;"><?php echo $result['objgral'] ?>
+                                    </textarea>
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label>
+                                        Establezca los objetivos específicos, científicos y tecnológicos subyacentes en el proyecto(No más de 512 caracteres)
+                                    </label>
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <textarea class="form-control" readonly="" rows="4" style="resize:none;"><?php echo $result['objesp'] ?>
+                                    </textarea>
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label>
+                                        Indique los resultados esperados en términos concretos(No más de 512 Caracteres)
+                                    </label>
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <textarea class="form-control" readonly="" rows="4" style="resize:none;"><?php echo $result['res'] ?>
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" style="background:#000">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h3 class="text-center" id="vinculacion" style="font-weight: bold;">
+                                    Vinculación
+                                </h3>
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Existe convenio:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Si
+                                    </label>
+                                    <input name="" readonly="" type="checkbox">
+                                    
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        No
+                                    </label>
+                                    <input name="" readonly="" type="checkbox">
+                                   
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label>
+                                        Nombre de la organización
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['nombreorg'] ?>">
+                                    
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label>
+                                        Dirección
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['dirvinc'] ?>">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Área
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['areavinc'] ?>">
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Teléfono
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['telvinc'] ?>">
+                                    
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <label>
+                                        Nombre del contacto
+                                    </label>
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['nombrecontvinc'] ?>">
+                                    
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label>
+                                        Descripción de la organización(No más de 256 caracteres)
+                                    </label>
+                                    <textarea class="form-control" name="" readonly="" rows="5" style="resize:none;"><?php echo $result['descorgvinc'] ?>
+                                    </textarea>
+                                </div>
+                                <div class="col-lg-7 form-group">
+                                    <label>
+                                        Existen aportaciones financieras o en especie de la vinculación:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Si
+                                    </label>
+                                    <input name="" readonly="" type="checkbox">
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        No
+                                    </label>
+                                    <input name="" readonly="" type="checkbox">
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <label>
+                                        Si la respuesta es si, describa cuales son(No más de 256 caracteres)
+                                    </label>
+                                    <textarea class="form-control" name="" readonly="" rows="5" style="resize:none;"><?php echo $result['descapvinc'] ?>
+                                    </textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" style="background:#000">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h3 class="text-center" id="metas" style="font-weight: bold;">
+                                    Productos academicos
+                                </h3>
+                                <div class="col-lg-3 form-group">
+                                    <input class="form-group" name="" disabled style="margin-left: 18px;" type="checkbox" <?php if ($result['metaserv']==true){?>checked <?php } ?>>
+                                        <label>
+                                            Servicio social
+                                        </label>
+                                </div>
+                                <div class="col-lg-4 form-group">
+                                    <input class="form-group" name="" readonly="" style="margin-left: 18px;" type="checkbox"<?php if ($result['metares']==true){?>checked <?php } ?>>
+                                        <label>
+                                            Residencia profesional
+                                        </label>
+                                   
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <input class="form-group" name="" readonly="" style="margin-left: 18px;" type="checkbox"<?php if ($result['metastesis']==true){?>checked <?php } ?>>
+                                        <label>
+                                            Tesis
+                                        </label>
+                                 
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <input class="form-group" name="" readonly="" style="margin-left: 18px;" type="checkbox"<?php if ($result['metaspone']==true){?>checked <?php } ?>>
+                                        <label>
+                                            Ponencias/Conferencias
+                                        </label>
+                                 
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <input class="form-group" name="" readonly="" style="margin-left: 18px;" type="checkbox"<?php if ($result['metasart']==true){?>checked <?php } ?>>
+                                        <label>
+                                            Artículos
+                                        </label>
+                              
+                                </div>
+                                <div class="col-lg-12 form-group">
+                                    <input class="form-group" name="" readonly="" style="margin-left: 18px;" type="checkbox"<?php if ($result['metaslib']==true){?>checked <?php } ?>>
+                                        <label>
+                                            Libros/Manuales
+                                        </label>
+                                  
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <input class="form-group" name="" readonly="" style="margin-left: 18px;" type="checkbox"<?php if (isset($result['metasprop'])){?>checked <?php } ?>>
+                                        <label>
+                                            Propiedad intelectual
+                                        </label>
+                           
+                                </div>
+                                <div class="col-lg-1">
+                                    <label>
+                                        Especificar:
+                                    </label>
+                                </div>
+                                <div class="col-lg-7 form-group">
+                                    <input class="form-control" name="" readonly="" style="margin-left: 18px;" type="text" value="<?php echo $result['metasprop'] ?>">
+                               
+                                </div>
+                                <div class="col-lg-3 form-group">
+                                    <input class="form-group" name="" readonly="" style="margin-left: 18px;" type="checkbox"<?php if (isset($result['metasotros'])){?>checked <?php } ?>>
+                                        <label>
+                                            Otros
+                                        </label>
+                                 
+                                </div>
+                                <div class="col-lg-1">
+                                    <label>
+                                        Especificar:
+                                    </label>
+                                </div>
+                                <div class="col-lg-7 form-group">
+                                    <input class="form-control" name="" readonly="" style="margin-left: 18px;" type="text" value="<?php echo $result['metasotros'] ?>">
+                                
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12" style="background:#000">
+                                    </div>
+                                </div>
+                                <?php foreach ($etapas as $etapa) {
+                                	?>
+                                <h1 class="text-center" id="etapa1" style="font-weight: Yu Gothic UI Light; margin-top: 2px">
+                                    Etapa <?php echo $etapa['Numero'] ?>
+                                </h1>
+                                <div class="row">
+                                    <div class="col-lg-12 form-group">
+                                        <label>
+                                            Nombre de la etapa:
+                                        </label>
+                                        <input class="form-control" name="" readonly="" style="margin-left: 18px;" type="text" value="<?php echo $etapa['NombreEtapa'] ?>">
+                                    </div>                                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 form-group">
+                                        <label>
+                                            Fecha de inicio:
+                                        </label>
+                                        <input class="form-control" name="" readonly="" style="margin-left: 18px;" type="date" value="<?php echo $etapa['FechaInicio'] ?>">
+                                    </div>
+                                    
+                                    <div class="col-lg-4 form-group">
+                                        <label>
+                                            Fecha de fin:
+                                        </label>
+                                        <input class="form-control" name="" readonly="" style="margin-left: 18px;" type="date" value="<?php echo $etapa['FechaFin'] ?>">
+                                    </div>
+                                    
+                                    <div class="col-lg-4 form-group">
+                                        <label>
+                                            Total de meses:
+                                        </label>
+                                        <input class="form-control" name="" readonly="" style="margin-left: 18px;" type="text" value="<?php echo $etapa['Meses'] ?>">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 form-group">
+                                        <label>
+                                            Descripción
+                                        </label>
+                                        <input class="form-control" name="" readonly="" type="text" value="<?php echo $etapa['Descripcion'] ?>">
+                                    </div>                                                    
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2 form-group">
+                                        <label>
+                                            Metas
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-10 form-group">
+                                        <textarea class="form-control" readonly="" rows="4" style="resize:none;"><?php echo $etapa['Metas'] ?>
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2 form-group">
+                                        <label>
+                                            Actividades
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-10 form-group">
+                                        <textarea class="form-control" readonly="" rows="4" style="resize:none;"><?php echo $etapa['Descripcion'] ?>
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2 form-group">
+                                        <label>
+                                            Productos
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-10 form-group">
+                                        <textarea class="form-control" readonly="" rows="4" style="resize:none;"><?php echo $etapa['Productos'] ?>
+                                        </textarea>
+                                    </div>
+                                </div>
+                                	<?php
+                                } ?>
+                                <div class="row">
+                                    <div class="col-lg-12" style="background:#000">
+                                    </div>
+                                </div>
+                                <h3 class="text-center" id="financ" style="font-weight: bold; margin-bottom: 9px;">
+                                    Financiamiento requerido
+                                </h3>
+                                <div class="row">
+                                    <div class="col-lg-5 form-group">
+                                        <label>
+                                            ¿Existe actualmente algún financiamiento del proyecto?
+                                        </label>
+                                    </div>
+                                    <div class="col-lg-2 form-group">
+                                        <label>
+                                            Si
+                                        </label>
+                                        <input name="" readonly="" type="checkbox" <?php if ($result['financiamiento']==true){?>checked <?php }?> >
+                                    </div>
+                                    <div class="col-lg-2 form-group">
+                                        <label>
+                                            No
+                                        </label>
+                                        <input name="" readonly="" type="checkbox" <?php if ($result['financiamiento']==false){?>checked <?php }?> >
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h5>
+                                            En caso de que la respuesta sea sí
+                                        </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Interno
+                                    </label>
+                                    <input name="" readonly="" type="checkbox"<?php if ($result['financinter']==true){?>checked <?php }?> >
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Externo
+                                    </label>
+                                    <input name="" readonly="" type="checkbox" <?php if ($result['finanext']==true){?>checked <?php }?>>
+                                
+                                </div>
+                                <div class="col-lg-1 form-group">
+                                    <label>
+                                        Especificar:
+                                    </label>
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    <input class="form-control" name="" readonly="" style="margin-left: 18px;" type="text" value="<?php echo $result['financesp'] ?>">
+                                  
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h5>
+                                        En caso de que la respuesta sea no desglose($)
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Infraestructura:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['financinfraest'] ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Consumibles:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['financons'] ?>">
+                             
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Licencias:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['finanlicen'] ?>">
+                           
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Viáticos:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['financviat'] ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Publicaciones:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['financpubl'] ?>">
+                                
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Equipo:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['finsncequipo'] ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Patentes/derechos de autor:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['financpat'] ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Otros(Especifique):
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text" value="<?php echo $result['financotrosesp'] ?>">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2 form-group">
+                                    <label>
+                                        Total:
+                                    </label>
+                                </div>
+                                <div class="col-lg-2 form-group">
+                                    <input class="form-control" name="" readonly="" type="text">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12" style="background:#000">
+                                </div>
+                            </div>
+                             <div class="row">
+                                <?php foreach ($alumnosCol as $row) {
+                                ?>
+                                <div class="col-lg-12">
+                                    <h5>
+                                        <b>
+                                            *
+                                        </b>
+                                        S.S.= Servicio Social, R.P.= Residencia Profesional, T= Tesis
+                                    </h5>
+                                    <h3 class="text-center" id="alumnos" style="font-weight: bold; margin-bottom: 9px;">
+                                        Alumno colaborador <?php echo $row['Numero'] ?>
+                                    </h3>
+                                    <div class="row">
+                                        <div class="col-lg-6 form-group">
+                                            <label>
+                                                Nombre del Alumno
+                                            </label>
+                                            <input class="form-control" name="" type="text" value="<?php echo $row['Nombre'].' '.$row['Paterno'].' '.$row['Materno']?>" disabled>
+                                        </div>                                                        
+                                        <div class="col-lg-2 form-group" style="margin-top: 30px;">
+                                            <label>
+                                                S.S.
+                                            </label>
+                                            <input class="form-group" name="" type="checkbox" <?php if ($row['Servicio']==true) {?>checked <?php }?> >
+                                        </div>
+                                        <div class="col-lg-2 form-group" style="margin-top: 30px;">
+                                            <label>
+                                                R.P.
+                                            </label>
+                                            <input class="form-group" name="" type="checkbox" <?php if ($row['Residencia']==true) {?>checked <?php }?> >
+                                      
+                                        </div>
+                                        <div class="col-lg-2 form-group" style="margin-top: 30px;">
+                                            <label>
+                                                T
+                                            </label>
+                                            <input class="form-group" name="" type="checkbox" <?php if ($row['Tesis']==true) {?>checked <?php }?> >
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-4 form-group">
+                                            <label>
+                                                No. control
+                                            </label>
+                                            <input class="form-control" name="" readonly="" type="text" value="<?php echo $row['NoControl'] ?>">
+                                        </div>                                                        
+                                        <div class="col-lg-4 form-group">
+                                            <label>
+                                                Semestre:
+                                            </label>
+                                             <input class="form-control" name="" readonly="" type="text" value="<?php echo $row['Semestre'] ?>">
+                                        </div>                                                        
+                                        <div class="col-lg-4 form-group">
+                                            <label>
+                                                Carrera
+                                            </label>
+                                            <input class="form-control" name="" readonly="" type="text" value="<?php echo $row['Carrera'] ?>">
+                                        </div>
+                                        
+                                        <div class=" col-lg-12 form-group">
+                                            <label>
+                                                Detalle de actividades
+                                            </label>
+                                            <textarea class="form-control" readonly="" rows="3" style="resize:none;"><?php echo $row['Actividades'] ?>
+                                            </textarea>
+                                        </div>
+                                    </div>
+                                </div> 
+                                <?php 	
+                                } ?>
+                            </div>
+                        </div>
+                    </div>
+		            <div class="col-lg-4" role="complementary">
+		                <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix">
+		                    <ul class="nav bs-docs-sidenav">
+		                        <div class="container" id="navObserv">
+		                            <h3>
+		                                Observaciones
+		                            </h3>
+		                            <div class="panel panel-primary panel-default">
+		                                <div class="panel-heading">
+		                                    <h5 class="panel-title">
+		                                        Realizar Observaciones
+		                                    </h5>
+		                                    <span class="pull-right clickable panel-collapsed">
+		                                        <i class="glyphicon glyphicon-chevron-down">
+		                                        </i>
+		                                    </span>
+		                                </div>
+		                               <div class="panel-body" style="display: none;">
+		                                    <form id="obs-Inv" method="_POST">
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#inicioP" style="color: #337ab7">
+		                                            Proyecto
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" name="obsInvestProy" id="obsInvestProy" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#recep" style="color: #337ab7">
+		                                            Recepción
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsInvestRecep" name="obsInvestRecep" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#colab1" style="color: #337ab7">
+		                                            Colaboradores
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsInvestColab" name="obsInvestColab" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#objetivos" style="color: #337ab7">
+		                                            Objetivos
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsInvestObj" name="obsInvestObj" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#vinculacion" style="color: #337ab7">
+		                                            Vinculación
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsInvestVinc" name="obsInvestVinc" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#metas" style="color: #337ab7">
+		                                            Metas
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsInvestMetas" name="obsInvestMetas" rows="5" style="resize:none"></textarea>
+		                                            
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#etapa1" style="color: #337ab7">
+		                                            Etapas
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsInvestEtapas" name="obsInvestEtapas" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#financ" style="color: #337ab7">
+		                                            Financiamiento
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsInvestFinanc" name="obsInvestFinanc" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#al1" style="color: #337ab7">
+		                                            Alumnos
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsInvestAlumnos" name="obsInvestAlumnos" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                </div> 
+		                                </form>
+		                            </div>
+		                            <div class="panel panel-primary panel-default" id="navObserv">
+		                                <div class="panel-heading">
+		                                    <h5 class="panel-title">
+		                                        Oficina de Seguimiento de Proyectos de Invest.
+		                                    </h5>
+		                                    <span class="pull-right clickable panel-collapsed">
+		                                        <i class="glyphicon glyphicon-chevron-down">
+		                                        </i>
+		                                    </span>
+		                                </div>
+		                                <div class="panel-body" style="display: none;">
+		                                    <form id="obs-Gest" method="_POST">
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#inicioP" style="color: #337ab7">
+		                                            Proyecto
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" name="obsGestionProy" id="obsGestionProy" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#recep" style="color: #337ab7">
+		                                            Recepción
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsGestionRecep" name="obsGestionRecep" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#colab1" style="color: #337ab7">
+		                                            Colaboradores
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsGestionColab" name="obsGestionColab" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#objetivos" style="color: #337ab7">
+		                                            Objetivos
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsGestionObj" name="obsGestionObj" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#vinculacion" style="color: #337ab7">
+		                                            Vinculación
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsGestionVinc" name="obsGestionVinc" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#metas" style="color: #337ab7">
+		                                            Metas
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsGestionMetas" name="obsGestionMetas" rows="5" style="resize:none"></textarea>
+		                                            
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#etapa1" style="color: #337ab7">
+		                                            Etapas
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsGestionEtapas" name="obsGestionEtapas" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#financ" style="color: #337ab7">
+		                                            Financiamiento
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsGestionFinanc" name="obsGestionFinanc" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#al1" style="color: #337ab7">
+		                                            Alumnos
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsGestionAlumnos" name="obsGestionAlumnos" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                </div>
+		                            	</form>
+		                            </div>
+		                            <div class="panel panel-primary panel-default" id="navObserv">
+		                                <div class="panel-heading">
+		                                    <h5 class="panel-title">
+		                                        Comité Evaluador
+		                                    </h5>
+		                                    <span class="pull-right clickable panel-collapsed">
+		                                        <i class="glyphicon glyphicon-chevron-down">
+		                                        </i>
+		                                    </span>
+		                                </div>
+		                                <div class="panel-body" style="display: none;">
+		                                    <form id="obs-Com" method="_POST">
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#inicioP" style="color: #337ab7">
+		                                            Proyecto
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" name="obsComiteProy" id="obsComiteProy" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#recep" style="color: #337ab7">
+		                                            Recepción
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsComiteRecep" name="obsComiteRecep" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#colab1" style="color: #337ab7">
+		                                            Colaboradores
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsComiteColab" name="obsComiteColab" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#objetivos" style="color: #337ab7">
+		                                            Objetivos
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsComiteObj" name="obsComiteObj" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#vinculacion" style="color: #337ab7">
+		                                            Vinculación
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsComiteVinc" name="obsComiteVinc" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#metas" style="color: #337ab7">
+		                                            Metas
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsComiteMetas" name="obsComiteMetas" rows="5" style="resize:none"></textarea>
+		                                            
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#etapa1" style="color: #337ab7">
+		                                            Etapas
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsComiteEtapas" name="obsComiteEtapas" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#financ" style="color: #337ab7">
+		                                            Financiamiento
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsComiteFinanc" name="obsComiteFinanc" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                    <li class="">
+		                                        <a class="accordion col-lg-4" href="#al1" style="color: #337ab7">
+		                                            Alumnos
+		                                        </a>
+		                                        <div class="panel2">
+		                                            <textarea class="form-control" id="obsComiteAlumnos" name="obsComiteAlumnos" rows="5" style="resize:none"></textarea>
+		                                        </div>
+		                                    </li>
+		                                </div>
+		                            </form>
+		                            </div>
+		                            <li class="">
+		                                <a href="#" onclick="enin();">
+		                                    Aceptar Proyecto
+		                                </a>
+		                            </li>
+		                            <li class="">
+		                                <a href="#" onclick="enin();">
+		                                    Rechazar Proyecto
+		                                </a>
+		                            </li>
+		                            <li class="">
+		                                <a href="#" onclick="enin();">
+		                                    Regresar por correcciones
+		                                </a>
+		                            </li>
+		                            <li class="">
+		                                <a data-dismiss="modal" href="">
+		                                    Enviar revisión a Consejo de Investigación
+		                                </a>
+		                            </li>
+		                            <li class="">
+		                                <a data-dismiss="modal" href="">
+		                                    Cerrar
+		                                </a>
+		                            </li>
+		                        </div>
+		                    </ul>
+		                </nav>
+		            </div>
+        		</div>
+            </div>
+			<?php
 		break;
 		case 'altaUsuario': 
 			$resultado=new stdClass;
