@@ -1,11 +1,11 @@
 <?php 
 	session_start();
 	include('../../externas/conexion.php');
-	// echo $_POST['accion'];
+	//echo $_POST['accion'];
 	$accion=$_POST['accion'];
 			
 			//echo "<script>jQuery(function(){swal(\"¡Guardado con éxito!\", \"Datos guardados correctamente\", \"success\");});</script>";*/
-	switch ($accion) {
+	switch ($accion) {            	
 
 			case 'recepcionForm':
 				$fp= $_POST['folio_proyecto'];
@@ -276,8 +276,10 @@
 						$tesis= 'false';
 					}else{
 						$tesis='true';
-            		$sql="INSERT INTO alumno(\"NoControl\", \"Semestre\", \"Nombre\", \"Paterno\", \"Materno\", \"Actividades\", \"id_carrera\", \"Folio_proyecto\") 
-            				VALUES ('".$noControl."',".$semestre.",'".$nombreAlumno."','".$apPaterno."','".$apMaterno."','".$actividades."',".$carrera.",'".$folio"', ".$servicio.", ".$residencia.", ".$tesis.");";
+					}
+					echo "Entra";
+            		$sql="INSERT INTO alumno(\"NoControl\", \"Semestre\", \"Nombre\", \"Paterno\", \"Materno\", \"Actividades\", \"id_carrera\", \"Folio_proyecto\", \"servicio\", \"residencia\", \"tesis\")	 
+            				VALUES ('".$noControl."',".$semestre.",'".$nombreAlumno."','".$apPaterno."','".$apMaterno."','".$actividades."',".$carrera.",'".$folio."', ".$servicio.", ".$residencia.", ".$tesis.");";
     				echo $sql;
             		$resultado=pg_query($conexion, $sql);
             		$sql="INSERT INTO alumnoscolaboradoresdetalle VALUES (".$registro.",'".$noControl."','".$folio."');";
@@ -287,10 +289,32 @@
             	}
             	break;
 
+            	case 'observacionesPreregistro':
+            		$folio= $_POST['folio_obs'];	
+            		$ob_proyecto = $_POST['obs_proyecto'];
+            		$ob_recepcion = $_POST['obs_recepcion'];
+            		$ob_colaboradores = $_POST['obs_colaboradores'];
+            		$ob_objetivos = $_POST['obs_objetivos'];
+            		$ob_vinculacion = $_POST['obs_vinculacion'];
+            		$ob_metas = $_POST['obs_metas'];
+            		$ob_etapas = $_POST['obs_etapas'];
+            		$ob_fto =  $_POST['obs_financiamiento'];
+            		$ob_alumnos = $_POST['obs_alumnos'];
+            		$observaciones = array($ob_proyecto, $ob_recepcion, $ob_colaboradores, $ob_objetivos, $ob_vinculacion, $ob_metas, $ob_etapas, $ob_fto, $ob_alumnos);
+					//var_dump($observaciones);
+            		$conta = 1;
+            		while($conta<=9){
+            		$sqlInsertObs = "INSERT INTO \"observaciones\" (\"ObservacionesGestion\",\"Proyecto_FolioProyecto\",\"CatObservaciones_idObservaciones\") VALUES ('".$observaciones[$conta-1]."','".$folio."',".$conta." );";
+            		$resultado=pg_query($conexion, $sqlInsertObs);        		
+
+            		echo "Insert: ".$sqlInsertObs; 
+            		$conta++;
+            		}            		
+            		$s = array("folio" => $folio); 
+            		echo json_encode($s);
+            	break;
+
 				default: echo "XD";
-
-
-
 				break;
 		}	
 

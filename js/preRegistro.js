@@ -483,20 +483,37 @@ function prevenir(event){
 
 function ajaxPreregistro(id)
 {
-    console.log($('form[id="'+id+'"]').serializeArray());
     prevenir(event);
+    var form_obs = $('form[id="'+id+'"]').serializeArray();
+    //alert(form_obs);
+    console.log($('form[id="'+id+'"]').serializeArray());
+    /*if(form_obs == null){
+        $('#btnEnvSub').attr('disabled', true);
+    }else{
+        $('#btnEnvSub').attr('disabled', false);
+    }*/
     $.ajax(
     {
         async: true,
         type: 'POST',
+        datatype: 'json',
         url: '../../controladores/preregistro/insertar.php',
         data: $('#'+id).serializeArray(),
         beforeSend: function()
         {
         },
-        success: function(data){
-                console.log(data);
-                step1Next()
+        success: function(response){
+                var f = JSON.parse(response); 
+                console.log(f.folio);
+                if(id != 'observaciones_form'){               
+                    step1Next();
+                }else{
+                swal(
+                    'Solicitud enviada',
+                    '',
+                    'success'
+                );
+                }
         },
         error: function(data) {}
       });
@@ -698,6 +715,36 @@ function crearAlumnos(id)
 }
 
 // ----------------- PreRegistro Gestion -------------------------
+
+function Enviar(form, btn){
+    prevenir(event);
+    if(btn=='btnEnvSub'){
+    swal({
+      title: '¿Seguro que desea enviar la solicitud a S.I.P.?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then(function () {
+         ajaxPreregistro(form);
+      });
+    }else{
+      swal({
+      title: '¿Seguro que desea enviar la revisión a docente responsable?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then(function () {
+         ajaxPreregistro(form);
+      });
+    }
+}
+
 
 function EnviarSubdireccion(){
       swal({
@@ -994,7 +1041,7 @@ function consultar_etapas(num, nEtapa, iniEtapa, finEtapa, mesEtapa, descripEtap
 function consultarAlumnos(num, no_control, semestre, nombre, paterno, materno, actividades, carrera)
 {
     $('#alumnos').html('');
-    console.log(num);
+    //console.log(num);
     var numeroAlumnos=num;
     if(numeroAlumnos >20){
         alert("Has excedido el número máximo de colaboradores por proyecto");
@@ -1094,7 +1141,10 @@ function consultarAlumnos(num, no_control, semestre, nombre, paterno, materno, a
 
 function ajaxPreregistroConsultas(id)
 {
+    
     botonVer= id;
+    $('#folio_obs').val(botonVer);
+    console.log(botonVer);
     prevenir(event);
     $.ajax(
     {
@@ -1149,7 +1199,7 @@ function ajaxPreregistroConsultas(id)
             var numero_alumnos=0;
 
             var total = infra + consu + lics + viatic + publica + equipo + patents + otrs;
-            console.log("Total: " + total);
+            //console.log("Total: " + total);
             //console.log(response);
             //alert(json.fechap + json.cpr + " " + json.tipo);
             $('#fechapre').val(json.fechap);
@@ -1288,9 +1338,9 @@ function ajaxPreregistroConsultas(id)
              consultarAlumnos(numero_alumnos, a_nControl, a_sem, a_nombre, a_paterno, a_materno, a_actividades, a_carrera);
             
             for (var i = 0; i < numero_alumnos; i++ ){
-                console.log(a_servicio[i]);
-                console.log(a_residencia[i]);
-                console.log(a_tesis[i]);
+                //console.log(a_servicio[i]);
+                //console.log(a_residencia[i]);
+                //console.log(a_tesis[i]);
                 if(a_servicio[i]== "t"){
                     $('#alumno_servicio_'+ i).attr("checked", true);
                 }

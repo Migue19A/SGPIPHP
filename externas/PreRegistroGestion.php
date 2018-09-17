@@ -4,9 +4,9 @@
 
 <script>
     $(document).ready(function(){
+    $('#btnEnvSub').attr('disabled', true);
     var acc = document.getElementsByClassName("accordion");
     var i;
-
     for (i = 0; i < acc.length; i++) {
       acc[i].onclick = function() {
         this.classList.toggle("active");
@@ -93,7 +93,6 @@
                         <h4 class="modal-title" style="text-align: center;">Pre-Registro</h4>
                     </div>
                     <div class="modal-body">
-                        <form action="" class="ng-pristine ng-valid" method="get">
                             <div class="container" style="margin-top: 0;">
                                     <div class="col-lg-12" style="margin-top: 10px;">
                                         <div class="col-lg-8 well">
@@ -671,6 +670,7 @@
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
                                 </div>
+                                <div id="financ">
                                 <h3 class="text-center" style="font-weight: bold; margin-bottom: 9px;">
                                     Financiamiento Requerido
                                 </h3>
@@ -837,6 +837,7 @@
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
                                 </div>
+                                </div>
                                 <div id="alumno" class="col-lg-12">
                                             <div class="form-group col-md-8" style="margin-top: 30px;">
                                                 <label>* S.S.= Servicio Social, R.P.= Residencia Profesional, T= Tesis</label>
@@ -895,7 +896,11 @@
                                         <div id="alumnos">
                                         </div>
                                         </div>
-                                        <div class="col-lg-4" role="complementary">
+                                       
+                                        <div class="col-lg-4" role="complementary">                                      
+                                            <form id="observaciones_form" name="observaciones_form" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                                            <input type="hidden" value="observacionesPreregistro" name="accion">
+                                            <input type="hidden" id="folio_obs" name="folio_obs">
                                             <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix">
                                                 <ul class="nav bs-docs-sidenav">
                                                     <div class="container" id="navObserv">
@@ -918,7 +923,7 @@
                                                                         Proyecto
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_proyecto" name="obs_proyecto" rows="5" style="resize:none">
                                                                         </textarea>
                                                                     </div>
                                                                 </li>
@@ -927,7 +932,7 @@
                                                                         Recepción
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_recepcion" name="obs_recepcion" rows="5" style="resize:none">
                                                                         </textarea>
 
                                                                     </div>
@@ -937,7 +942,7 @@
                                                                         Colaboradores
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_colaboradores" name="obs_colaboradores" rows="5" style="resize:none">
                                                                         </textarea>
 
                                                                     </div>
@@ -947,7 +952,7 @@
                                                                         Objetivos
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_objetivos" name="obs_objetivos" rows="5" style="resize:none">
                                                                         </textarea>
 
                                                                     </div>
@@ -957,7 +962,7 @@
                                                                         Vinculación
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_vinculacion" name="obs_vinculacion" rows="5" style="resize:none">
                                                                         </textarea>
 
                                                                     </div>
@@ -967,7 +972,7 @@
                                                                         Metas
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_metas" name="obs_metas" rows="5" style="resize:none">
                                                                         </textarea>
 
                                                                     </div>
@@ -977,7 +982,7 @@
                                                                         Etapas
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_etapas" name="obs_etapas" rows="5" style="resize:none">
                                                                         </textarea>
 
                                                                     </div>
@@ -987,7 +992,7 @@
                                                                         Financiamiento
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_financiamiento" name="obs_financiamiento" rows="5" style="resize:none">
                                                                         </textarea>
 
                                                                     </div>
@@ -997,7 +1002,7 @@
                                                                         Alumnos
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" name="" rows="5" style="resize:none">
+                                                                        <textarea class="form-control" id="obs_alumnos" name="obs_alumnos" rows="5" style="resize:none">
                                                                         </textarea>
 
                                                                     </div>
@@ -1007,15 +1012,17 @@
                                                     </div>
                                                 </ul>
                                                 <div class="col-lg-12" >
-                                                <a href="#" onclick="EnviarSubdireccion();" class="btn btn-primary btn-block">Enviar revisión a SI.P</a> 
-                                                <a href="#" onclick="RegresarDocente();" class="btn btn-info btn-block">Regresar revisión a D.R</a>
+                                                <input  id="btnEnvSub" name="btnEnvSub" class="btn btn-primary btn-block" onclick="Enviar(form.id, this.id)" value="Enviar revisión a S.I.P.">
+                                                <input name="btnEnvDoc" id="btnEnvDoc" onclick="Enviar(form.id, this.id)" class="btn btn-info btn-block" type="submit" value="Regresar revisión a D.R.">
+                                                <!--<a href="#" onclick="EnviarSubdireccion();" class="btn btn-primary btn-block">Enviar revisión a SI.P</a> 
+                                                <a href="#" onclick="RegresarDocente();" class="btn btn-info btn-block">Regresar revisión a D.R</a>-->
                                                 <a data-dismiss="modal" href="" class="btn btn-default btn-block">Cerrar</a>
                                             </div>
-                                            </nav>                                            
-                                        </div>                                        
+                                            </nav>
+                                            </form>                                
+                                        </div>                                      
                                     </div>
                                 </div>
-                            </form>
                         </div>
                         <div class="modal-footer">
                         </div>

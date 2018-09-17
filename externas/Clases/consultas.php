@@ -4,14 +4,6 @@ include('classConn.php');
 /**
  * 
  */
-if($_POST){	
-	$x = $_POST['botonVer'];
-	$miConn=new ClassConn();
-	$consulta= "SELECT * from proyecto WHERE folio_proyecto='".$x."';";        
-    $result = pg_query($miConn->conexion(), $consulta);	
-	echo "Chingon: ".$x;
-	return $result;
-}
 
 class Consultas
 {
