@@ -290,7 +290,14 @@
             	break;
 
             	case 'observacionesPreregistro':
-            		$folio= $_POST['folio_obs'];	
+            		$presionado= 0;
+            		if (isset(_POST['btnEnvDoc'])){
+            			$presionado= 1;
+            		}else{
+            			$presionado= 2;
+            		}
+            		$folio= $_POST['folio_obs'];
+            		echo $folio;	
             		$ob_proyecto = $_POST['obs_proyecto'];
             		$ob_recepcion = $_POST['obs_recepcion'];
             		$ob_colaboradores = $_POST['obs_colaboradores'];
@@ -304,14 +311,21 @@
 					//var_dump($observaciones);
             		$conta = 1;
             		while($conta<=9){
-            		$sqlInsertObs = "INSERT INTO \"observaciones\" (\"ObservacionesGestion\",\"Proyecto_FolioProyecto\",\"CatObservaciones_idObservaciones\") VALUES ('".$observaciones[$conta-1]."','".$folio."',".$conta." );";
+            		$sqlInsertObs = "INSERT INTO \"observaciones\" (\"ObservacionesGestion\",\"Proyecto_FolioProyecto\",\"CatObservaciones_idObservaciones\") VALUES ('".$observaciones[$conta-1]."','".$folio."',".$conta." );";      		
+            		
             		$resultado=pg_query($conexion, $sqlInsertObs);        		
 
-            		echo "Insert: ".$sqlInsertObs; 
+            		//echo "Insert: ".$sqlInsertObs; 
             		$conta++;
-            		}            		
-            		$s = array("folio" => $folio); 
-            		echo json_encode($s);
+            		}   
+            		if($presionado== 1){
+            			$sqlActEstado= "UPDATE \"proyecto\" SET idEstado=1 WHERE FolioProyecto='".$folio."';"
+            		}else{
+            			$sqlActEstado= "UPDATE \"proyecto\" SET idEstado=2 WHERE FolioProyecto='".$folio."';"
+            		}
+            		$resultado2 = pg_query($conexion, $sqlActEstado);         		
+            		//$s = array("folio" => $folio); 
+            		//echo json_encode($s);
             	break;
 
 				default: echo "XD";

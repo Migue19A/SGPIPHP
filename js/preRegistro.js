@@ -496,15 +496,14 @@ function ajaxPreregistro(id)
     {
         async: true,
         type: 'POST',
-        datatype: 'json',
         url: '../../controladores/preregistro/insertar.php',
         data: $('#'+id).serializeArray(),
         beforeSend: function()
         {
         },
-        success: function(response){
-                var f = JSON.parse(response); 
-                console.log(f.folio);
+        success: function(data){
+                //var f = JSON.parse(response); 
+                console.log(data);
                 if(id != 'observaciones_form'){               
                     step1Next();
                 }else{
@@ -512,8 +511,9 @@ function ajaxPreregistro(id)
                     'Solicitud enviada',
                     '',
                     'success'
-                );
-                }
+                ); 
+                $('#myModal').modal('hide');              
+            }
         },
         error: function(data) {}
       });
@@ -720,26 +720,32 @@ function Enviar(form, btn){
     prevenir(event);
     if(btn=='btnEnvSub'){
     swal({
-      title: '¿Seguro que desea enviar la solicitud a S.I.P.?',
+      title: 'Ya no podrá hacer cambios, ¿Seguro que desea enviar la solicitud a S.I.P.?',
       text: "",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Aceptar'
-      }).then(function () {
-         ajaxPreregistro(form);
+      }).then(function (data) {        
+        $('#'+data).text('En revisión');
+        $('#'+data).attr('class','btn btn-warning');
+        $('#'+data).attr('disabled', true); 
+         ajaxPreregistro(form);         
       });
     }else{
       swal({
-      title: '¿Seguro que desea enviar la revisión a docente responsable?',
+      title: 'Ya no podrá hacer cambios, ¿Seguro que desea enviar la revisión a docente responsable?',
       text: "",
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Aceptar'
-      }).then(function () {
+      }).then(function () {         
+        $('#'+data).text('En correción');
+        $('#'+data).attr('class','btn btn-warning');
+        $('#'+data).attr('disabled', true); 
          ajaxPreregistro(form);
       });
     }
@@ -1144,7 +1150,7 @@ function ajaxPreregistroConsultas(id)
     
     botonVer= id;
     $('#folio_obs').val(botonVer);
-    console.log(botonVer);
+    //console.log(botonVer);
     prevenir(event);
     $.ajax(
     {

@@ -4,7 +4,7 @@
 
 <script>
     $(document).ready(function(){
-    $('#btnEnvSub').attr('disabled', true);
+    //$('#btnEnvSub').attr('disabled', true);
     var acc = document.getElementsByClassName("accordion");
     var i;
     for (i = 0; i < acc.length; i++) {
