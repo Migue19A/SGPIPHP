@@ -1,4 +1,8 @@
 var currentStep = 1;   
+function prevenir(event){
+    event.preventDefault();
+}
+
 function palabrasClave(e) {
     var tecla = (document.all) ? e.keyCode : e.which;
     patron = /[A-Z,a-z,á,é,í,ó,ú,Á,É,Í,Ó,Ú]/;
@@ -477,10 +481,6 @@ function cambiarFecha(){
     });
 }*/
 
-function prevenir(event){
-    event.preventDefault();
-}
-
 function ajaxPreregistro(id)
 {
     prevenir(event);
@@ -503,7 +503,7 @@ function ajaxPreregistro(id)
         },
         success: function(data){
                 //var f = JSON.parse(response); 
-                console.log(data);
+                //console.log(data);
                 if(id != 'observaciones_form'){               
                     step1Next();
                 }else{
@@ -511,8 +511,9 @@ function ajaxPreregistro(id)
                     'Solicitud enviada',
                     '',
                     'success'
-                ); 
-                $('#myModal').modal('hide');              
+                ).then(function () {  
+                  location.reload();         
+                });             
             }
         },
         error: function(data) {}
@@ -718,6 +719,8 @@ function crearAlumnos(id)
 
 function Enviar(form, btn){
     prevenir(event);
+    console.log("Este es form: " + form);
+    console.log("Este es el boton: " +btn);
     if(btn=='btnEnvSub'){
     swal({
       title: 'Ya no podrá hacer cambios, ¿Seguro que desea enviar la solicitud a S.I.P.?',
@@ -727,10 +730,7 @@ function Enviar(form, btn){
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Aceptar'
-      }).then(function (data) {        
-        $('#'+data).text('En revisión');
-        $('#'+data).attr('class','btn btn-warning');
-        $('#'+data).attr('disabled', true); 
+      }).then(function () {  
          ajaxPreregistro(form);         
       });
     }else{
@@ -743,9 +743,6 @@ function Enviar(form, btn){
       cancelButtonColor: '#d33',
       confirmButtonText: 'Aceptar'
       }).then(function () {         
-        $('#'+data).text('En correción');
-        $('#'+data).attr('class','btn btn-warning');
-        $('#'+data).attr('disabled', true); 
          ajaxPreregistro(form);
       });
     }
@@ -769,6 +766,16 @@ function EnviarSubdireccion(){
       )
       $('#myModal').modal('hide');
       })
+  }
+
+  function imprimir(){
+    swal(
+        'Realizado con éxito',
+        '',
+        'success'
+    ).then(function(){
+        window.open('http://localhost/SGPIPHP/js/PreRegistro.pdf', '_blank');
+    });
   }
 
   function RegresarDocente(){
@@ -1145,9 +1152,7 @@ function consultarAlumnos(num, no_control, semestre, nombre, paterno, materno, a
     
 }
 
-function ajaxPreregistroConsultas(id)
-{
-    
+/*function ajaxPreregistroObservaciones(){
     botonVer= id;
     $('#folio_obs').val(botonVer);
     //console.log(botonVer);
@@ -1159,7 +1164,34 @@ function ajaxPreregistroConsultas(id)
         //ContentType = "application/json; charset=utf-8",        
         datatype: 'json',
         url: '../../Ajax/ajax_consultas_proyectos.php',
-        data: {botonVer: botonVer, accion:'consultarProyecto'},
+        data: {botonVer: botonVer, accion:'obs_preregistro'},
+        beforeSend: function()
+        {
+        },
+        success: function(response){  
+        },
+        error: function(data) {       
+        }
+      });
+
+}*/
+
+
+function ajaxPreregistroConsultas(id)
+{
+    botonVer= id;
+    $('#folio_obs').val(botonVer);
+    var usr= $('#tituloPre').text();
+    //console.log(botonVer);
+    prevenir(event);
+    $.ajax(
+    {
+        async: true,
+        type: 'POST',
+        //ContentType = "application/json; charset=utf-8",        
+        datatype: 'json',
+        url: '../../Ajax/ajax_consultas_proyectos.php',
+        data: {botonVer: botonVer, accion:'consultarProyecto', usr:usr},
         beforeSend: function()
         {
         },
@@ -1357,6 +1389,39 @@ function ajaxPreregistroConsultas(id)
                     $('#alumno_tesis_'+ i).attr("checked", true);                    
                 }
 
+                if(usr == 'Pre-Registro de Proyectos'){
+                    var observG = json.obs_gestion;
+                    var observI = json.obs_investigacion;
+                    var observC = json.obs_comite;
+                    var cons = 1;
+                    console.log("Observaciones: " + observG[1]);
+                    if (observG[0] != null){                        
+                        $('#panel_obs_ges').attr('class', 'panel panel-danger panel-default');
+                        while (cons < 9){
+                            $('#obsGes_' + cons).val(observG[cons-1]);
+                            cons++;
+                        }
+
+                    }else{
+                          $('#span_obs_gest').attr('class', '');
+                    }
+
+                    if (observI[0] != null){                        
+                        $('#panel_obs_ges').attr('class', 'panel panel-danger panel-default');
+
+                    }else{
+                        $('#span_obs_inv').attr('class', '');
+
+                    }
+
+                    if (observC[0] != null){                        
+                        $('#panel_obs_ges').attr('class', 'panel panel-danger panel-default');
+
+                    }else{
+                        $('#span_obs_com').attr('class', '');
+                    }
+
+                }
                 /*console.log("Nombre: " + nombre_colaborador[i]);
                 console.log("Paterno: " + paterno_colaborador[i]);
                 console.log("Materno:" + materno_colaborador[i]);

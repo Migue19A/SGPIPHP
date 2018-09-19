@@ -31,7 +31,9 @@
 	$arrayA_servicio = array();
 	$arrayA_residencia = array();
 	$arrayA_tesis = array();
-
+	$arrayObsG = array();
+	$arrayObsI = array();
+	$arrayObsC = array();
 	$numColaboradores= 0;
 
 	if (isset($_POST['accion']))
@@ -1367,6 +1369,7 @@
 			$resultado=json_encode($resultado, JSON_FORCE_OBJECT);
 			echo $resultado;
 		break;
+
 		case 'editaUsuario':
 			$resultado=new stdClass;
 			$nombre=$_POST['nombre'];
@@ -1434,9 +1437,8 @@
 			$consulta9 = "SELECT \"NoControl\", \"Semestre\", \"Nombre\", \"Paterno\", \"Materno\", 
 				\"Descripcion\" carrera, \"Actividades\", \"servicio\", \"residencia\", \"tesis\" FROM alumno INNER JOIN carrera ON \"id_carrera\"= \"idCarrera\" WHERE \"Folio_proyecto\" ='".$folio."' ORDER BY \"Paterno\";";		
 			$consulta10 = "SELECT COUNT(\"Folio_proyecto\") FROM alumno WHERE \"Folio_proyecto\"= '".$folio."';";	  
-			
-
-			//echo "Consulta9: ".$consulta9;
+			$consulta11 = "SELECT \"ObservacionesGestion\", \"ObservacionesInvestigacion\", \"ObservacionesComite\" FROM \"observaciones\" WHERE \"Proyecto_FolioProyecto\" = '".$folio."';";
+			//echo "Consulta9: ".$user;
 			$result5 = pg_query($miConn->conexion(), $consulta2);
 			$result5 = pg_fetch_array($result5);			
 			$result6 = pg_query($miConn->conexion(), $consulta3);
@@ -1452,6 +1454,7 @@
 			$result12 = pg_query($miConn->conexion(), $consulta9);
 			$result12B = pg_query($miConn->conexion(), $consulta10);
 			$result12B = pg_fetch_array($result12B);
+			$resultObs = pg_query($miConn->conexion(), $consulta11);
 			while ($r = pg_fetch_array($result6)){
 				$arrayC_nombre[]=  $r['nombre'];
 				$arrayC_paterno[]=  $r['ap_paterno'];
@@ -1489,6 +1492,12 @@
 				$arrayA_servicio[] = $fila['servicio'];
 				$arrayA_residencia[] = $fila['residencia'];
 				$arrayA_tesis[] =$fila['tesis'];
+			}
+
+			while ($record = pg_fetch_array($resultObs)){
+				$arrayObsG[] = $record['ObservacionesGestion'];
+				$arrayObsI[] = $record['ObservacionesInvestigacion'];
+				$arrayObsC[] = $record['ObservacionesComite'];
 			}
 
 			//$result10 = pg_fetch_array($result10);
@@ -1567,7 +1576,10 @@
 				"carrera" => $arrayA_carrera,
 				"a_servicio" => $arrayA_servicio,
 				"a_residencia" => $arrayA_residencia,
-				"a_tesis" => $arrayA_tesis
+				"a_tesis" => $arrayA_tesis,
+				"obs_gestion" => $arrayObsG,
+				"obs_investigacion" => $arrayObsI,
+				"obs_comite" => $arrayObsC
 			);
 			//print_r($result6['nombre']);
 			echo json_encode($salida);

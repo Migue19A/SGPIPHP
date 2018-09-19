@@ -47,18 +47,15 @@
                 <div class="panel-group">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h2 class="text-center" style="font-weight: Yu Gothic UI Light; margin-bottom: 4px;">Revisión de Pre-Registro</h2>
+                            <h2 class="text-center" id="tituloPre" style="font-weight: Yu Gothic UI Light; margin-bottom: 4px;">Pre-Registro de Proyectos</h2>
                         </div>
                         <div class="panel-body">
                             <table class="table">
                                 <thead>
                                     <tr>
                                         <th>N° de solicitud</th>
-                                        <th>Nombre del proyecto</th>
-                                        <th>Nombre del docente</th>                                        
+                                        <th>Nombre del proyecto</th>                                       
                                         <th>Estado</th>
-                                        <th>Fecha</th>
-                                        <th>Revisión N°</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -71,14 +68,14 @@
                                             echo "<tr>";
                                             echo "<td>".$cont."</td>";
                                             echo "<td>".$r[0]."</td>";
-                                            echo "<td>FRANCISCO TORRES</td>";
                                             echo "<td>".$estado."</td>";
-                                            echo "<td>".$r[1]."</td>";
-                                            echo "<td>1</td>";
-                                            if($estado == 'EN REVISION' || $estado== 'EN CORRECCION'){
-                                            echo "<td><button class='btn btn-warning' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' disabled id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Ver proyecto</button></td>";
+                                            if($estado== 'EN CORRECCION'){
+                                                echo "<td><button class='btn btn-warning' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Corregir</button></td>";
+                                            }
+                                            else if($estado == 'EN REVISION'){
+                                                echo "<td><button class='btn btn-primary' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>En revisión</button></td>";    
                                             }else{
-                                            echo "<td><button class='btn btn-primary' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Ver proyecto</button></td>";    
+                                                echo "<td><button class='btn btn-success' data-toggle='tooltip' data-placement= 'top' title='Imprimir' onclick='imprimir()' data-toggle='modal' id='".$r[2]."' name='".$r[2]."' method='POST' value='".$r[2]."'/>Aprobado</button></td>";
                                             }
                                             echo "</tr>";                                            
                                             $folio = $r[2];
@@ -88,7 +85,9 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </div>          
+                    <br>          
+                    <a class="btn btn-info" href="ContratoConf.pdf" disabled target="_blank" type="submit">Imprimir acuerdo de confidencialidad</a>
                 </div>
             </div>
         </div>
@@ -97,12 +96,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button class="close" data-dismiss="modal" type="button">×</button>
-                        <h4 class="modal-title" style="text-align: center;">Pre-Registro</h4>
-                    </div>
+                        <h4 class="modal-title" style="text-align: center;">Reporte</h4>
+                    </div>                    
+                    <form id="correcciones_form" name="correcciones_form" class="container" method="POST" style="margin-left: 10px; width: 100%;">
+                    <input type="hidden" id="folio_obs" name="folio_obs">
                     <div class="modal-body">
-                            <div class="container" style="margin-top: 0;">
-                                    <div class="col-lg-12" style="margin-top: 10px;">
-                                        <div class="col-lg-8 well">
+                        <div class="container" style="margin-top: 0;">
+                          <div class="col-lg-12" style="margin-top: 10px;">
+                            <div class="col-lg-8 well">
                                 <div class="row"> 
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Proyecto
@@ -122,19 +123,21 @@
                                         
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row container col-lg-6">    
                                     <div class="col-sm-4">
                                         <label>
                                             *Tipo de investigación
                                         </label>
-                                    </div>
+                                    </div>                                    
                                     <div class="col-sm-6">
-                                        <input id="tipoInvestigacion" disabled type="text" class="form-control">      
-                                    </div>
+                                        <input id="tipoInvestigacion" disabled type="text" class="form-control">
+                                    </div>     
                                     <br>
                                     <br>
                                     <br>
                                     <br>
+                                </div>
+                                <div class="row container col-lg-6"> 
                                     <div class="col-sm-4">
                                         <label>
                                             *Tipo de sector
@@ -146,7 +149,7 @@
                                     <br>
                                     <br>
                                 </div>
-                                <div class="row">
+                                <div class="row container col-lg-6"> 
                                     <div class="col-sm-4">
                                         <label>
                                             *Linea de investigación
@@ -188,6 +191,7 @@
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
                                 </div>
+
                               <div class="row">
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Recepción
@@ -204,19 +208,17 @@
                                         </label>
                                         <input class="form-control" disabled="" type="date"/>
                                     </div>
-                                </div>
-                                <div class="row form-group">
+                              </div>
+                              <div class="row form-group">
                                     <div class="col-sm-12" style="text-align: left;">
                                         <label>
                                             Recibió *Nombre(s)
                                         </label>
                                         <input class="form-control" disabled type="text"/>
                                     </div>
-                                </div>
-                                <div class="col-sm-12" style="background:#000">
-                                </div>
-                    
-                    
+                              </div>
+                              <div class="col-sm-12" style="background:#000">
+                              </div>         
                     
                     
                                 <div class="row">
@@ -253,8 +255,7 @@
                                         </label>
                                         <input class="form-control" disabled type="text"/>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-2 form-group">
+                                    <div class="col-sm-2 form-group">
                                         <label>
                                             *No. Personal
                                         </label>
@@ -272,12 +273,11 @@
                                         </label>
                                         <input class="form-control" disabled type="text"/>
                                     </div>
-                                        <div class="col-sm-3" form-group="">
+                                    <div class="col-sm-3" form-group="">
                                         <label>
                                             *Correo alternativo
                                         </label>
                                         <input class="form-control" disabled type="text"/>
-                                    </div>
                                     </div>
                                     <div class="col-sm-12" form-group="">
                                         <label>
@@ -358,7 +358,7 @@
                                         <label>*Descripción de las principales actividades a desarrollar en el proyecto</label>
                                         <textarea class="form-control" rows="6" style="resize: none;" required id="principalesActCol_1" name="principalesActCol_1"></textarea>
                                     </div>
-                                    </div>
+                                </div>
                                 <div id="colaboradores">    
                                 </div>            
                                 <div class="row">
@@ -490,12 +490,7 @@
                                 <div class="row">
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
-                                </div>
-    
-    
-    
-    
-    
+                                </div>  
                                 <div class="row">
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Productos académicos
@@ -587,7 +582,6 @@
                                                 </div>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" name="nombreEtapa_1" id="nombreEtapa_1" style="margin-left: 18px;" type="text">
-                                                    </input>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -603,7 +597,6 @@
                                                 </div>
                                                 <div class="col-sm-2 form-group">
                                                     <input class="form-control" name="inicioEtapa_1" id="inicioEtapa_1" style="margin-left: 18px;" required type="date">
-                                                    </input>
                                                 </div>
                                                 <div class="col-sm-1 form-group">
                                                     <label>
@@ -612,7 +605,6 @@
                                                 </div>
                                                 <div class="col-sm-2 form-group">
                                                     <input class="form-control" name="finalEtapa_1" id="finalEtapa_1" style="margin-left: 18px;" require type="date">
-                                                    </input>
                                                 </div>
                                                 <div class="col-sm-1 form-group">
                                                     <label>
@@ -621,7 +613,6 @@
                                                 </div>
                                                 <div class="col-sm-2 form-group">
                                                     <input class="form-control" name="mesesEtapa_1" id="mesesEtapa_1" style="margin-left: 18px;" require type="number">
-                                                    </input>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -632,7 +623,6 @@
                                                 </div>
                                                 <div class="col-sm-10">
                                                     <input class="form-control" name="descripcionEtapa_1" id="descripcionEtapa_1" required type="text">
-                                                    </input>
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -669,11 +659,11 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="container col-sm-9" id="etapas">
-                                        </div>
-                                    </div>                 
+                                    </div> 
+                                    <div class="container col-sm-9" id="etapas">
+                                    </div>               
 
-                                 <div class="row">
+                                <div class="row">
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
                                 </div>
@@ -748,8 +738,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input class="form-control" readonly id="f_infra" name="" type="number">
-                    
+                                        <input class="form-control" readonly id="f_infra" name="" type="number">                    
                                     </div>
                                 </div>
                                 <div class="row">
@@ -899,27 +888,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div id="alumnos">
-                                        </div>
-                                        </div>
-                                       
-                                        <div class="col-lg-4" role="complementary">                                      
-                                            <form id="observaciones_form" name="observaciones_form" class="container" method="POST" style="margin-left: 10px; width: 100%;">
-                                            <input type="hidden" value="observacionesPreregistro" name="accion">
-                                            <input type="hidden" id="folio_obs" name="folio_obs">
-                                            <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs affix">
+                                </div>
+                                <div id="alumnos">
+                                </div>                   
+                            </div>
+
+                  <div class="col-lg-4" role="complementary">
+                                            <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs ">
                                                 <ul class="nav bs-docs-sidenav">
                                                     <div class="container" id="navObserv">
-                                                        <h3>
-                                                            Observaciones
-                                                        </h3>
-                                                        <div class="panel panel-primary panel-default">
+                                                        <div id="panel_obs_com" class="panel panel-primary panel-default">
                                                             <div class="panel-heading">
                                                                 <h5 class="panel-title">
-                                                                    Realizar Observaciones
+                                                                    Observaciones del Consejo de Investigación
                                                                 </h5>
-                                                                <span class="pull-right clickable panel-collapsed">
+                                                                <span id="span_obs_com" class="pull-right clickable panel-collapsed">
                                                                     <i class="glyphicon glyphicon-chevron-down">
                                                                     </i>
                                                                 </span>
@@ -930,7 +913,11 @@
                                                                         Proyecto
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_proyecto" name="obs_proyecto" rows="5" style="resize:none"></textarea>
+                                                                        <textarea id="obsCom_1" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                              
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -938,8 +925,11 @@
                                                                         Recepción
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_recepcion" name="obs_recepcion" rows="5" style="resize:none"></textarea>
-
+                                                                        <textarea id="obsCom_2" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                       
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -947,8 +937,11 @@
                                                                         Colaboradores
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_colaboradores" name="obs_colaboradores" rows="5" style="resize:none"></textarea>
-
+                                                                        <textarea id="obsCom_3" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                                
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -956,8 +949,11 @@
                                                                         Objetivos
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_objetivos" name="obs_objetivos" rows="5" style="resize:none"></textarea>
-
+                                                                        <textarea id="obsCom_4" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                            
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -965,8 +961,11 @@
                                                                         Vinculación
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_vinculacion" name="obs_vinculacion" rows="5" style="resize:none"></textarea>
-
+                                                                        <textarea id="obsCom_5" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                             
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -974,8 +973,11 @@
                                                                         Metas
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_metas" name="obs_metas" rows="5" style="resize:none"></textarea>
-
+                                                                        <textarea id="obsCom_6" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                         
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -983,8 +985,11 @@
                                                                         Etapas
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_etapas" name="obs_etapas" rows="5" style="resize:none"></textarea>
-
+                                                                        <textarea id="obsCom_7" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                          
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -992,8 +997,11 @@
                                                                         Financiamiento
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_financiamiento" name="obs_financiamiento" rows="5" style="resize:none"></textarea>
-
+                                                                        <textarea id="obsCom_8" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                        
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -1001,30 +1009,295 @@
                                                                         Alumnos
                                                                     </a>
                                                                     <div class="panel2">
-                                                                        <textarea class="form-control" id="obs_alumnos" name="obs_alumnos" rows="5" style="resize:none"></textarea>
-
+                                                                        <textarea id="obsCom_9" class="form-control" name="" rows="5" style="resize:none">
+                                                                        </textarea>
+                                                                        <br>
+                                                                            <br>
+                                                          
                                                                     </div>
                                                                 </li>
                                                             </div>
-                                                        </div>                                                        
+                                                        </div>
                                                     </div>
                                                 </ul>
-                                                <div class="col-lg-12" >
-                                                <input  id="btnEnvSub" name="btnEnvSub" class="btn btn-primary btn-block" onclick="Enviar(form.id, this.id)" value="Enviar revisión a S.I.P.">
-                                                <input name="btnEnvDoc" id="btnEnvDoc" onclick="Enviar(form.id, this.id)" class="btn btn-info btn-block" type="submit" value="Regresar revisión a D.R.">
-                                                <!--<a href="#" onclick="EnviarSubdireccion();" class="btn btn-primary btn-block">Enviar revisión a SI.P</a> 
-                                                <a href="#" onclick="RegresarDocente();" class="btn btn-info btn-block">Regresar revisión a D.R</a>-->
-                                                <a data-dismiss="modal" href="" class="btn btn-default btn-block">Cerrar</a>
-                                            </div>
                                             </nav>
-                                            </form>                                
-                                        </div>                                      
+                    </div>
+
+    <!-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                    <div class="col-lg-4" role="complementary">
+                        <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs ">
+                            <ul class="nav bs-docs-sidenav">
+                                <div class="container" id="navObserv">
+                                    <div id="panel_obs_ges" class="panel panel-primary panel-default">
+                                        <div class="panel-heading">
+                                            <h5 class="panel-title">
+                                                Observaciones de Oficina de Seguimiento de Proyectos de Investigación
+                                            </h5>
+                                            <span id="span_obs_gest" class="pull-right clickable panel-collapsed">
+                                                <i class="glyphicon glyphicon-chevron-down">
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <div class="panel-body" style="display: none;">
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#inicioP" style="color: #337ab7">
+                                                    Proyecto
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_1" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                               
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#recep" style="color: #337ab7">
+                                                    Recepción
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_2" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                               
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#colab1" style="color: #337ab7">
+                                                    Colaboradores
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_3" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                                
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#objetivos" style="color: #337ab7">
+                                                    Objetivos
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_4" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                             
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#vinculacion" style="color: #337ab7">
+                                                    Vinculación
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_5" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                        
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#metas" style="color: #337ab7">
+                                                    Metas
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_6" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                           
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#etapa1" style="color: #337ab7">
+                                                    Etapas
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_7" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                                  
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#financ" style="color: #337ab7">
+                                                    Financiamiento
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_8" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                         
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#al1" style="color: #337ab7">
+                                                    Alumnos
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsGes_9" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                             
+                                                </div>
+                                            </li>
+                                        </div>
                                     </div>
                                 </div>
+                            </ul>
+                        </nav>
+                    </div>
+
+    <!--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+                    <div class="col-lg-4" role="complementary">
+                        <nav class="bs-docs-sidebar hidden-print hidden-sm hidden-xs ">
+                            <ul class="nav bs-docs-sidenav">
+                                <div class="container" id="navObserv">
+                                    <div id="panel_obs_inv" class="panel panel-primary panel-default">
+                                        <div class="panel-heading">
+                                            <h5 class="panel-title">
+                                                Observaciones de Subdirección de Investigación y Posgrado
+                                            </h5>
+                                            <span id="span_obs_inv" class="pull-right clickable panel-collapsed">
+                                                <i class="glyphicon glyphicon-chevron-down">
+                                                </i>
+                                            </span>
+                                        </div>
+                                        <div class="panel-body" style="display: none;">
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#inicioP" style="color: #337ab7">
+                                                    Proyecto
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_1" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                          
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#recep" style="color: #337ab7">
+                                                    Recepción
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_2" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                       
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#colab1" style="color: #337ab7">
+                                                    Colaboradores
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_3" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                          
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#objetivos" style="color: #337ab7">
+                                                    Objetivos
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_4" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                              
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#vinculacion" style="color: #337ab7">
+                                                    Vinculación
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_5" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                    <br>
+                                  
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#metas" style="color: #337ab7">
+                                                    Metas
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_6" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                 
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#etapa1" style="color: #337ab7">
+                                                    Etapas
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_7" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                            
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#financ" style="color: #337ab7">
+                                                    Financiamiento
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_8" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                          
+                                                </div>
+                                            </li>
+                                            <li class="">
+                                                <a class="accordion col-lg-4" href="#al1" style="color: #337ab7">
+                                                    Alumnos
+                                                </a>
+                                                <div class="panel2">
+                                                    <textarea id="obsInv_9" class="form-control" name="" rows="5" style="resize:none">
+                                                    </textarea>
+                                                    <br>
+                                                        <br>
+                                        
+                                                </div>
+                                            </li>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ul>
+                        </nav>
+                        <div class="col-lg-12">
+                        <input  id="btnEnvSub" name="btnEnvSub" class="btn btn-primary btn-block" type="submit" onclick="Enviar2()" value="Enviar revisión a S.I.P.">
+                        <button data-dismiss="modal" href="" class="btn btn-default btn-block">
+                            Cerrar
+                        </button>
                         </div>
-                        <div class="modal-footer">
-                        </div>
+                    </div>            
+                        </div>                        
                     </div>
                 </div>
-            </div>            
+            </form>   
+
+        <div class="modal-footer">
         </div>
+        </div>       
+      </div>
+    </div>

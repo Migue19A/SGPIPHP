@@ -87,6 +87,16 @@ class Consultas
 		$result = pg_query($miConn->conexion(), $consulta);
 		return $result;
 	}
+
+	function misproyectos(){
+		//$docente = $SESSION['no_control'];
+		$miConn = new ClassConn();
+		$consulta = "SELECT UPPER(\"NombreProyecto\"), \"FechaPresentacion\", \"FolioProyecto\" FROM proyecto;";
+		$result = pg_query($miConn->conexion(), $consulta);
+		return $result;
+	}
+
+
 	function obtenerDocentes()
 	{
 		$miConn = new ClassConn();
@@ -114,9 +124,21 @@ class Consultas
 		return $result;
 	}
 
+	function consultarEstadoProyecto($folio){
+		$miConn = new ClassConn();
+		$sqlEstado = "SELECT \"Descripcion\" estado FROM \"proyecto\" INNER JOIN \"cat_estadoproyecto\" ON \"idEstado\" = \"id_estado\" WHERE \"FolioProyecto\"='".$folio."';";
+		$qry= pg_query($miConn->conexion(), $sqlEstado);
+		$result = pg_fetch_array($qry);	
+		$estado = $result[0];	
+		return $estado;
+	}
 
-
-
-
+	function consultarObservacionesGestion($folio_p){
+		$miConn = new ClassConn();
+		$sqlObsG = "SELECT \"ObservacionesGestion\" FROM \"observaciones\" WHERE \"Proyecto_FolioProyecto\" = '".$folio_p."';";
+		$qry= pg_query($miConn->conexion(), $sqlObsG);
+		return $qry;
+	}
 }
+
 ?>

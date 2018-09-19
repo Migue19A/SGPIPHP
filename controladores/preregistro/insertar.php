@@ -297,7 +297,7 @@
             			$presionado= 2;
             		}
             		$folio= $_POST['folio_obs'];
-            		echo $folio;	
+            		echo $presionado;	
             		$ob_proyecto = $_POST['obs_proyecto'];
             		$ob_recepcion = $_POST['obs_recepcion'];
             		$ob_colaboradores = $_POST['obs_colaboradores'];
@@ -319,9 +319,9 @@
             		$conta++;
             		}   
             		if($presionado== 1){
-            			$sqlActEstado= "UPDATE \"proyecto\" SET idEstado=1 WHERE FolioProyecto='".$folio."';"
+            			$sqlActEstado= "UPDATE \"proyecto\" SET \"id_estado\"=1 WHERE \"FolioProyecto\"='".$folio."';";
             		}else{
-            			$sqlActEstado= "UPDATE \"proyecto\" SET idEstado=2 WHERE FolioProyecto='".$folio."';"
+        				$sqlActEstado= "UPDATE \"proyecto\" SET \"id_estado\"=2 WHERE \"FolioProyecto\"='".$folio."';";
             		}
             		$resultado2 = pg_query($conexion, $sqlActEstado);         		
             		//$s = array("folio" => $folio); 
