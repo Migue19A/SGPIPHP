@@ -75,10 +75,17 @@
                                             echo "<td>".$estado."</td>";
                                             echo "<td>".$r[1]."</td>";
                                             echo "<td>1</td>";
-                                            if($estado == 'EN REVISION' || $estado== 'EN CORRECCION'){
-                                            echo "<td><button class='btn btn-warning' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' disabled id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Ver proyecto</button></td>";
-                                            }else{
-                                            echo "<td><button class='btn btn-primary' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Ver proyecto</button></td>";    
+                                            if($estado== 'EN CORRECCION'){
+                                            echo "<td><button class='btn btn-warning' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' disabled id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>En corrección</button></td>";
+                                            }else if($estado == 'EN REVISION INV.'){
+                                            echo "<td><button class='btn btn-info' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' disabled id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Enviado</button></td>";
+                                            } else if($estado == 'ACEPTADO'){
+                                            echo "<td><button class='btn btn-success' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' disabled id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Aceptado</button></td>";
+                                            }else if($estado == 'RECHAZADO'){
+                                            echo "<td><button class='btn btn-danger' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' disabled id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Rechazado</button></td>";
+                                            }
+                                            else{
+                                            echo "<td><button class='btn btn-primary' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Revisar</button></td>";    
                                             }
                                             echo "</tr>";                                            
                                             $folio = $r[2];
@@ -313,6 +320,7 @@
                                     </div>
                                 </div>
                                  <div id="colaborador"> 
+                                     <input type="hidden" name="numero_colaborador" id="numero_colaborador">
                                      <div class="col-sm-12" style="background:#000">
                                     </div>                                           
                                     <div class="form-group col-md-12">
@@ -452,6 +460,10 @@
                                         </label>
                                         <input class="form-control" readonly id="telefono" name="" type="text">
                                         
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>*Nombre del contacto</label>
+                                        <input class="form-control"  id="nombreV" name="nombreV" readonly type="text">
                                     </div>
                                     <div class="col-sm-12 form-group">
                                         <label>
@@ -826,7 +838,12 @@
                                     </div>
                                     <div class="col-sm-2 form-group">
                                         <input id="f_otros_especif" readonly class="form-control" name="" type="number">
-                                   
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label>Desglosar: </label>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <input type="text" id="otro_especificar" readonly name="otro_especificar" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row">

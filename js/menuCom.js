@@ -1,4 +1,4 @@
-function menu(opcion, inicio, Re, Seg, Pro, Rea, HistorialD, HistorialP, Configuracion, NombreU) {
+function menuCom(opcion, inicio, Re, Seg, Pro, Rea, HistorialD, HistorialP, Configuracion, NombreU) {
     document.write("<div id='cssmenu' style='z-index:1'>");
     document.write("<ul>");
     if (opcion == 1) {

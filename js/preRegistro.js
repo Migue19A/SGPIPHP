@@ -503,7 +503,7 @@ function ajaxPreregistro(id)
         },
         success: function(data){
                 //var f = JSON.parse(response); 
-                //console.log(data);
+                console.log(data);
                 if(id != 'observaciones_form'){               
                     step1Next();
                 }else{
@@ -748,6 +748,23 @@ function Enviar(form, btn){
     }
 }
 
+function Enviar2(form){
+    prevenir(event);
+    var form_obs = $('form[id="'+form+'"]').serializeArray();
+    console.log(form_obs); 
+    swal({
+      title: 'Ya no podrá hacer cambios, ¿Seguro que desea enviar la revisión a docente responsable?',
+      text: "",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Aceptar'
+      }).then(function () {        
+         ajaxPreregistroCorreccion(form);
+      });
+}
+
 
 function EnviarSubdireccion(){
       swal({
@@ -849,6 +866,7 @@ function Finalizar(){
 
 function consulta_colaborador(num, nombre, paterno, materno, maxE, actividades, npersonal, movil, correo1, correo2, academia) {
     var colaboradores= num;
+    $('#numero_colaborador').val(num);
     $('#colaboradores').html('');
     for (var i = 0; i < (colaboradores-1); i++) 
     {
@@ -1152,9 +1170,11 @@ function consultarAlumnos(num, no_control, semestre, nombre, paterno, materno, a
     
 }
 
-/*function ajaxPreregistroObservaciones(){
-    botonVer= id;
-    $('#folio_obs').val(botonVer);
+function ajaxPreregistroCorreccion(id){
+    prevenir(event);
+    var form_obs = $('form[id="'+id+'"]').serializeArray();
+    //alert(form_obs);
+    //console.log($('form[id="'+id+'"]').serializeArray());
     //console.log(botonVer);
     prevenir(event);
     $.ajax(
@@ -1163,18 +1183,24 @@ function consultarAlumnos(num, no_control, semestre, nombre, paterno, materno, a
         type: 'POST',
         //ContentType = "application/json; charset=utf-8",        
         datatype: 'json',
-        url: '../../Ajax/ajax_consultas_proyectos.php',
-        data: {botonVer: botonVer, accion:'obs_preregistro'},
+        url: '../../controladores/preregistro/actualizar.php',
+        data: $('#'+id).serializeArray(),
         beforeSend: function()
         {
         },
-        success: function(response){  
+        success: function(data){
+                swal(
+                    'Solicitud enviada',
+                    '',
+                    'success'
+                );
+                console.log(data);
         },
         error: function(data) {       
         }
       });
 
-}*/
+}
 
 
 function ajaxPreregistroConsultas(id)
@@ -1248,7 +1274,7 @@ function ajaxPreregistroConsultas(id)
             $('#nombre_proyecto').val(json.nombre_p);
             $('#fechaInicio').val(json.fechaI);
             $('#fechaFin').val(json.fechaF);
-            $('#principales_actividades').val(json.actividades);
+            $('#principales_actividades').val(json.actividadesR);
             $('#palabra1').val(json.palabraClave1);
             $('#palabra2').val(json.palabraClave2);
             $('#palabra3').val(json.palabraClave3);
@@ -1276,20 +1302,21 @@ function ajaxPreregistroConsultas(id)
                 $('#aportaciones_si').attr('checked', false);
                 $('#aportaciones_no').attr('checked', false);           
             }else{
-                 if(json.existe == "1"){
+                if(json.existe == "1"){
                 $('#existe_si').attr('checked', true);
                 //$('#existe_no').attr('checked', false);
                 $('#nombreOrganizacion').val(json.nombre_organizacion);
                 $('#direccion').val(json.direccion);
                 $('#area').val(json.area);
                 $('#telefono').val(json.telefonov);
+                $('#nombreV').val(json.contacto);
                 $('#descripcion_organizacion').text(json.descripcion_organizacion);                
             }else{                
                 //$('#existe_si').attr('checked', false);
                 $('#existe_no').attr('checked', true);
             }
 
-            if(json.descripcion_aportaciones != " "){
+            if(json.descripcion_aportaciones != ""){
                 //console.log("QP2");
                 $('#aportaciones_si').attr('checked', true);
                 //$('#aportaciones_no').attr('checked', false);
@@ -1320,11 +1347,11 @@ function ajaxPreregistroConsultas(id)
                 if(json.libros== "t"){
                     $('#libros').attr('checked', true);
                 }
-                if(json.prop_intelectual != ''){
+                if(json.prop_intelectual != ''){ 
                     $('#propiedad_intelectual').attr('checked', true);
                     $('#text_intelectual').val(json.prop_intelectual);
                 }
-                if(json.otros != ""){
+                if(json.otrosP != ''){
                     $('#otros').attr('checked', true);
                     $('#text_otros').val(json.otros);
                 }
@@ -1359,6 +1386,7 @@ function ajaxPreregistroConsultas(id)
                 $('#f_equipo').val(equipo);
                 $('#f_patents').val(patents);
                 $('#f_otros_especif').val(otrs);
+                $('#otro_especificar').val(json.especifique);
                 $('#f_total').val(total);
             }
 
@@ -1367,7 +1395,7 @@ function ajaxPreregistroConsultas(id)
              a_nombre = json.nombre;
              a_paterno = json.apPaterno;
              a_materno = json.apMaterno;
-             a_actividades = json.actividades;
+             a_actividades = json.actividadesA;
              a_carrera = json.carrera;
              a_servicio = json.a_servicio;
              a_residencia = json.a_residencia;
@@ -1394,10 +1422,25 @@ function ajaxPreregistroConsultas(id)
                     var observI = json.obs_investigacion;
                     var observC = json.obs_comite;
                     var cons = 1;
+                    var apartados = ["inicioP", "responsable", "colaborador", "objetivos", 
+                    "vinculacion", "metas", "etapa", "financ", "alumno"];
                     console.log("Observaciones: " + observG[1]);
+                    //Agregar observaciones en los distintos apartados
                     if (observG[0] != null){                        
                         $('#panel_obs_ges').attr('class', 'panel panel-danger panel-default');
-                        while (cons < 9){
+                        while (cons <= 9){
+                            if(observG[cons-1] != ""){
+                                $('#'+apartados[cons-1]).find("*").prop("readonly", false); //deshabilitar el apartado, para editar
+                                if(apartados[cons-1] == "colaborador"){
+                                     $('#colaboradores').find("*").prop("readonly", false);
+                                }
+                                if(apartados[cons-1] == "etapa"){
+                                     $('#etapas').find("*").prop("readonly", false);
+                                }
+                                if(apartados[cons-1] == "alumno"){
+                                     $('#alumnos').find("*").prop("readonly", false);
+                                }
+                            }
                             $('#obsGes_' + cons).val(observG[cons-1]);
                             cons++;
                         }

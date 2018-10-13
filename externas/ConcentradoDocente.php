@@ -4,7 +4,7 @@
 
 <script>
     $(document).ready(function(){
-    //$('#btnEnvSub').attr('disabled', true);
+    //$('#btnEnvSub').attr('readonly', true);
     var acc = document.getElementsByClassName("accordion");
     var i;
     for (i = 0; i < acc.length; i++) {
@@ -72,11 +72,18 @@
                                             if($estado== 'EN CORRECCION'){
                                                 echo "<td><button class='btn btn-warning' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Corregir</button></td>";
                                             }
-                                            else if($estado == 'EN REVISION'){
-                                                echo "<td><button class='btn btn-primary' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>En revisión</button></td>";    
+                                            else if($estado == 'EN REVISION' || $estado == 'EN REVISION INV.'){
+                                                echo "<td><button class='btn btn-info' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Enviado</button></td>";    
+                                            }else if($estado == 'ACEPTADO'){
+                                                echo "<td><button class='btn btn-success' data-toggle='tooltip' data-placement= 'top' title='Imprimir' onclick='imprimir()' data-toggle='modal' id='".$r[2]."' name='".$r[2]."' method='POST' value='".$r[2]."'/>Aprobado</button></td>";    
+                                            }else if($estado == 'RECHAZADO'){
+                                                echo "<td><button class='btn btn-danger' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' disabled method='POST' value='".$r[2]."'/>Rechazado</button></td>";    
                                             }else{
-                                                echo "<td><button class='btn btn-success' data-toggle='tooltip' data-placement= 'top' title='Imprimir' onclick='imprimir()' data-toggle='modal' id='".$r[2]."' name='".$r[2]."' method='POST' value='".$r[2]."'/>Aprobado</button></td>";
+                                                echo "<td><button class='btn btn-primary' data-target='#myModal' data-toggle='modal' onclick='ajaxPreregistroConsultas(this.id)' id='".$r[2]."' name='".$r[2]."' type='submit' method='POST' value='".$r[2]."'/>Revisar</button></td>"; 
                                             }
+                                            /*else{
+                                                echo "<td><button class='btn btn-success' data-toggle='tooltip' data-placement= 'top' title='Imprimir' onclick='imprimir()' data-toggle='modal' id='".$r[2]."' name='".$r[2]."' method='POST' value='".$r[2]."'/>Aprobado</button></td>";
+                                            }*/
                                             echo "</tr>";                                            
                                             $folio = $r[2];
                                             $cont++;
@@ -100,10 +107,12 @@
                     </div>                    
                     <form id="correcciones_form" name="correcciones_form" class="container" method="POST" style="margin-left: 10px; width: 100%;">
                     <input type="hidden" id="folio_obs" name="folio_obs">
+                    <input type="hidden" name="accion" value="correcciones_form">
                     <div class="modal-body">
                         <div class="container" style="margin-top: 0;">
                           <div class="col-lg-12" style="margin-top: 10px;">
                             <div class="col-lg-8 well">
+                                <div id="inicioP">
                                 <div class="row"> 
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Proyecto
@@ -112,14 +121,14 @@
                                         <label>
                                             *Fecha de presentación
                                         </label>
-                                        <input class="form-control" id="fechapre" name="" disabled type="date">
+                                        <input class="form-control" id="fechapre" name="proy1" readonly type="date">
                                         
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>
                                             *Convocatoria CPR
                                         </label>
-                                        <input class="form-control" id="convocatoria" name="" disabled type="text">
+                                        <input class="form-control" id="convocatoria" name="proy2" type="text">
                                         
                                     </div>
                                 </div>
@@ -130,7 +139,7 @@
                                         </label>
                                     </div>                                    
                                     <div class="col-sm-6">
-                                        <input id="tipoInvestigacion" disabled type="text" class="form-control">
+                                        <input id="tipoInvestigacion" name="proy3" readonly type="text" class="form-control">
                                     </div>     
                                     <br>
                                     <br>
@@ -144,7 +153,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input id="tipoSector" disabled type="text" class="form-control">      
+                                        <input id="tipoSector" name="proy4" readonly type="text" class="form-control">      
                                     </div>
                                     <br>
                                     <br>
@@ -156,7 +165,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-6">
-                                        <input id="lineaInvest" disabled type="text" class="form-control">      
+                                        <input id="lineaInvest" name="proy5" readonly type="text" class="form-control">      
                                     </div>
                                 </div>
                                 <div class="row">
@@ -164,7 +173,7 @@
                                         <label>
                                             *Nombre del proyecto
                                         </label>
-                                        <input id="nombre_proyecto" style="text-align: center;" class="form-control" name="" disabled type="text">
+                                        <input id="nombre_proyecto" name="proy6" style="text-align: center;" class="form-control" readonly type="text">
                                         
                                     </div>
                                 </div>
@@ -178,20 +187,21 @@
                                         <label>
                                             *Inicio
                                         </label>
-                                        <input id="fechaInicio"  class="form-control" name="" disabled type="date">
+                                        <input id="fechaInicio"  class="form-control" name="proy7" readonly type="date">
                                         
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>
                                             *Fin
                                         </label>
-                                        <input id="fechaFin" class="form-control" name="" disabled type="date">
-                                        
+                                        <input id="fechaFin" class="form-control" name="proy8" readonly type="date">          
+                                    </div>
                                     </div>
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
                                 </div>
 
+                              <!--<div id="recep">
                               <div class="row">
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Recepción
@@ -218,10 +228,10 @@
                                     </div>
                               </div>
                               <div class="col-sm-12" style="background:#000">
-                              </div>         
+                              </div>
+                              </div>-->         
                     
-                    
-                                <div class="row">
+                              <div class="row" id="responsable">
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Responsable
                                     </h3>
@@ -285,7 +295,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-12" form-group="">
-                                        <input id="principales_actividades"  disabled class="form-control" style="height: 150px;" tabindex="4" type="text">
+                                        <input id="principales_actividades" name="proy9"  readonly class="form-control" style="height: 150px;" tabindex="4" type="text">
                                         
                                     </div>
                                     <div class="col-sm-3 form-group">
@@ -297,22 +307,23 @@
                                         <label>
                                             (1)
                                         </label>
-                                        <input id="palabra1" disabled class="form-control" name="" type="text"/>
+                                        <input id="palabra1" readonly class="form-control" name="proy10" type="text"/>
                                     </div>
                                     <div class="col-sm-3 form-group">
                                         <label>
                                             (2)
                                         </label>
-                                        <input id="palabra2" disabled class="form-control" name="" type="text"/>
+                                        <input id="palabra2" readonlyclass="form-control" name="proy11" type="text"/>
                                     </div>
                                     <div class="col-sm-3 form-group">
                                         <label>
                                             (3)
                                         </label>
-                                        <input id="palabra3" disabled class="form-control" name="" type="text"/>
+                                        <input id="palabra3" readonly class="form-control" name="proy12" type="text"/>
                                     </div>
                                 </div>
                                  <div id="colaborador"> 
+                                    <input type="hidden" name="numero_colaborador" id="numero_colaborador">
                                      <div class="col-sm-12" style="background:#000">
                                     </div>                                           
                                     <div class="form-group col-md-12">
@@ -365,7 +376,7 @@
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" id="objetivos">
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Objetivos
                                     </h3>
@@ -373,7 +384,7 @@
                                         <label>
                                             *Indique el objetivo general(No más de 512 caracteres)
                                         </label>
-                                        <textarea class="form-control" rows="4" id="objetivoGeneral" readonly>
+                                        <textarea class="form-control" name="proy13" rows="4" id="objetivoGeneral" readonly>
                                         </textarea>
                                     </div>
                                     <div class="col-sm-12 form-group">
@@ -382,7 +393,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-12 form-group">
-                                        <textarea class="form-control" rows="4" id="objetivoEspecifico" readonly>
+                                        <textarea class="form-control" name="proy14" rows="4" id="objetivoEspecifico" readonly>
                                         </textarea>
                                     </div>
                                     <div class="col-sm-12 form-group">
@@ -391,18 +402,18 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-12 form-group">
-                                        <textarea class="form-control" rows="4" id="resultados" readonly>
+                                        <textarea class="form-control" name="proy15" rows="4" id="resultados" readonly>
                                         </textarea>
                                     </div>
-                                </div>
                                 <div class="row">
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
                                 </div>
+                                </div>
                                             
                                             
                                             
-                                <div class="row">
+                                <div class="row" id="vinculacion">
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Vinculación
                                     </h3>
@@ -415,49 +426,53 @@
                                         <label>
                                             Si
                                         </label>
-                                        <input name="" disabled type="checkbox" id="existe_si">
+                                        <input name="" value="t" readonly type="checkbox" id="existe_si">
                                         
                                     </div>
                                     <div class="col-sm-2 form-group">
                                         <label>
                                             No
                                         </label>
-                                        <input name="" disabled type="checkbox" id="existe_no">
+                                        <input name="" value="f" readonly type="checkbox" id="existe_no">
                                         
                                     </div>
                                     <div class="col-sm-12 form-group">
                                         <label>
                                             *Nombre de la organización
                                         </label>
-                                        <input class="form-control" readonly id="nombreOrganizacion" name="" type="text">
+                                        <input class="form-control" name="proy16" readonly id="nombreOrganizacion" type="text">
                                         
                                     </div>
                                     <div class="col-sm-12 form-group">
                                         <label>
                                             *Dirección
                                         </label>
-                                        <input class="form-control" readonly id="direccion" name="" type="text">
+                                        <input class="form-control" name="proy17" readonly id="direccion" type="text">
                                         
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>
                                             *Área
                                         </label>
-                                        <input class="form-control" readonly id="area" name="" type="text">
+                                        <input class="form-control" name="proy18" readonly id="area" name="" type="text">
                                         
                                     </div>
                                     <div class="col-sm-4 form-group">
                                         <label>
                                             *Teléfono
                                         </label>
-                                        <input class="form-control" readonly id="telefono" name="" type="text">
+                                        <input class="form-control" readonly id="telefono" name="proy19" type="text">
                                         
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>*Nombre del contacto</label>
+                                        <input class="form-control"  id="nombreV" name="proy20" readonly type="text">
                                     </div>
                                     <div class="col-sm-12 form-group">
                                         <label>
                                             *Descripción de la organización(No más de 256 caracteres)
                                         </label>
-                                        <textarea class="form-control" readonly id="descripcion_organizacion" name="" rows="5">
+                                        <textarea class="form-control" readonly id="descripcion_organizacion" name="proy21" rows="5">
                                         </textarea>
                                     </div>
                                     <div class="col-sm-5 form-group">
@@ -469,74 +484,74 @@
                                         <label>
                                             Si
                                         </label>
-                                        <input name="" disabled type="checkbox" id="aportaciones_si">
+                                        <input name="" value="si" readonly type="checkbox" id="aportaciones_si">
                                         
                                     </div>
                                     <div class="col-sm-2 form-group">
                                         <label>
                                             No
                                         </label>
-                                        <input name="" disabled type="checkbox" id="aportaciones_no">
+                                        <input name="" value="no" readonly type="checkbox" id="aportaciones_no">
                                         
                                     </div>
                                     <div class="col-sm-12 form-group">
                                         <label>
                                             Si la respuesta es si, describa cuales son(No más de 256 caracteres)
                                         </label>
-                                        <textarea class="form-control" readonly id="aportaciones" name="" rows="5">
-                                        </textarea>
+                                        <textarea class="form-control" name="proy22" readonly id="aportaciones" name="" rows="5"></textarea>
                                     </div>
-                                </div>
                                 <div class="row">
                                     <div class="col-sm-12" style="background:#000">
                                     </div>
                                 </div>  
-                                <div class="row">
+                                </div>
+
+                                <div class="row" id="metas">
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Productos académicos
                                     </h3>
                                     <div class="col-sm-3 form-group">
-                                        <input class="form-group" id="servicio" disabled name="" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" id="servicio" readonly name="proy23" style="margin-left: 18px;" type="checkbox">
                                             <label>
                                                 Servicio Social
                                             </label>                                        
                                     </div>
                                     <div class="col-sm-4 form-group">
-                                        <input class="form-group" id="residencia" disabled name="" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" id="residencia" readonly name="proy24" style="margin-left: 18px;" type="checkbox">
                                             <label>
                                                 Residencia profesional
                                             </label>                                        
                                     </div>
                                     <div class="col-sm-3 form-group">
-                                        <input class="form-group" name="" disabled id="tesis" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" name="proy25" readonly id="tesis" style="margin-left: 18px;" type="checkbox" value="t">
                                             <label>
                                                 Tesis
                                             </label>
                                         
                                     </div>
                                     <div class="col-sm-12 form-group">
-                                        <input class="form-group" name="" disabled id="ponencias" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" name="proy26" readonly id="ponencias" style="margin-left: 18px;" type="checkbox" value="t">
                                             <label>
                                                 Ponencias/Conferencias
                                             </label>
                                         
                                     </div>
                                     <div class="col-sm-12 form-group"> 
-                                        <input class="form-group" name="" disabled id="articulos" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" name="proy27" readonly id="articulos" style="margin-left: 18px;" type="checkbox" value="t">
                                             <label>
                                                 Artículos
                                             </label>
                                         
                                     </div>
                                     <div class="col-sm-12 form-group">
-                                        <input class="form-group" name="" disabled id="libros" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" name="proy28" readonly id="libros" style="margin-left: 18px;" type="checkbox" value="t">
                                             <label>
                                                 Libros/Manuales
                                             </label>
                       
                                     </div>
                                     <div class="col-sm-4 form-group">
-                                        <input class="form-group" name="" disabled id="propiedad_intelectual" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" name="" readonly id="propiedad_intelectual" style="margin-left: 18px;" type="checkbox" value="t">
                                             <label>
                                                 Propiedad Intelectual
                                             </label>
@@ -548,11 +563,11 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-7 form-group">
-                                        <input class="form-control" name="" readonly id="text_intelectual" style="margin-left: 18px;" type="text">
+                                        <input class="form-control" name="proy29" readonly id="text_intelectual" style="margin-left: 18px;" type="text">
                                         
                                     </div>
                                     <div class="col-sm-4 form-group">
-                                        <input class="form-group" name="" disabled id="otros" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" name="" readonly id="otros" style="margin-left: 18px;" type="checkbox" value="t">
                                             <label>
                                                 Otros
                                             </label>
@@ -564,7 +579,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-7 form-group">
-                                        <input class="form-control" name="" readonly id="text_otros" style="margin-left: 18px;" type="text">                              
+                                        <input class="form-control" name="proy30" readonly id="text_otros" style="margin-left: 18px;" type="text">                              
                                     </div>
                                 </div>     
 
@@ -681,15 +696,14 @@
                                         <label>
                                             Si
                                         </label>
-                                        <input name="" type="checkbox" id="financiSi" disabled>
+                                        <input name="proy31" type="checkbox" value="t" id="financiSi" readonly>
                                         
                                     </div>
                                     <div class="col-sm-2 form-group">
                                         <label>
                                             No
                                         </label>
-                                        <input name="" type="checkbox" id="financiNo" disable>
-                                      
+                                        <input name="proy31" type="checkbox" value="f" id="financiNo" disable>            
                                     </div>
                                 </div>
                                 <div class="row">
@@ -704,14 +718,14 @@
                                         <label>
                                             Interno
                                         </label>
-                                        <input name="" type="checkbox" id="finanInterno" disabled>
+                                        <input name="proy32" type="checkbox" value="t" id="finanInterno" readonly>
                                 
                                     </div>
                                     <div class="col-sm-2 form-group">
                                         <label>
                                             Externo
                                         </label>
-                                        <input name="" type="checkbox" id="finanExterno" disabled>
+                                        <input name="proy33" type="checkbox" value="t" id="finanExterno" readonly>
                       
                                     </div>
                                     <div class="col-sm-1 form-group">
@@ -720,7 +734,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-6 form-group">
-                                        <input id="f_especificar"   class="form-control" name="" style="margin-left: 18px;" type="text" readonly>
+                                        <input id="f_especificar"   class="form-control" name="proy34" style="margin-left: 18px;" type="text" readonly>
                
                                     </div>
                                 </div>
@@ -738,7 +752,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input class="form-control" readonly id="f_infra" name="" type="number">                    
+                                        <input class="form-control" readonly id="f_infra" name="proy35" type="number">                    
                                     </div>
                                 </div>
                                 <div class="row">
@@ -748,7 +762,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input id="f_consu" readonly class="form-control" name="" type="number">
+                                        <input id="f_consu" readonly class="form-control" name="proy36" type="number">
                               
                                     </div>
                                 </div>
@@ -759,7 +773,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input id="f_lics" readonly class="form-control" name="" type="number">
+                                        <input id="f_lics" readonly class="form-control" name="proy37" type="number">
                            
                                     </div>
                                 </div>
@@ -770,7 +784,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input id="f_viatic" readonly class="form-control" name="" type="number">
+                                        <input id="f_viatic" readonly class="form-control" name="proy38" type="number">
                              
                                     </div>
                                 </div>
@@ -781,7 +795,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input id="f_publica" readonly class="form-control" name="" type="number">
+                                        <input id="f_publica" readonly class="form-control" name="proy39" type="number">
                     
                                     </div>
                                 </div>
@@ -792,7 +806,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input id="f_equipo" readonly class="form-control" name="" type="number">
+                                        <input id="f_equipo" readonly class="form-control" name="proy40" type="number">
                                     
                                     </div>
                                 </div>
@@ -803,7 +817,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input id="f_patents" readonly class="form-control" name="" type="number">
+                                        <input id="f_patents" readonly class="form-control" name="proy41" type="number">
                               
                                     </div>
                                 </div>
@@ -814,8 +828,13 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input id="f_otros_especif" readonly class="form-control" name="" type="number">
-                                   
+                                        <input id="f_otros_especif" readonly class="form-control" name="proy42" type="number"> 
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label>Desglosar: </label>
+                                    </div>
+                                    <div class="form-group col-md-5">
+                                        <input type="text" id="otro_especificar" readonly name="proy43" class="form-control">
                                     </div>
                                 </div>
                                 <div class="row">
@@ -825,8 +844,7 @@
                                         </label>
                                     </div>
                                     <div class="col-sm-2 form-group">
-                                        <input class="form-control" id="f_total" name="" readonly type="text">
-                                      
+                                        <input class="form-control" id="f_total" name="proy44" readonly type="number">    
                                     </div>
                                 </div>
                                 <div class="row">
@@ -862,18 +880,18 @@
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label>*Semestre</label>
-                                                            <input type="text" name="cboSemestreAlumnoCol_1" id="cboSemestreAlumnoCol_1" class="form-control" readonly>
+                                                            <input type="text" name="cboSemestreAlumnoCol_1" id="cboSemestreAlumnoCol_1" class="form-control">
                                                     </div>                                                    
 
                                                     <div class="row text-center">
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" id="alumno_servicio_1" name="alumno_servicio_1" disabled style="margin-top: 35px;">S.S</label>
+                                                            <label><input type="checkbox" id="alumno_servicio_1" name="alumno_servicio_1" readonly style="margin-top: 35px;">S.S</label>
                                                         </div>
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" id="alumno_residencia_1" disabled name="alumno_residencia_1" style="margin-top: 35px;">R.P</label>
+                                                            <label><input type="checkbox" id="alumno_residencia_1" readonly name="alumno_residencia_1" style="margin-top: 35px;">R.P</label>
                                                         </div>
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" id="alumno_tesis_1" name="alumno_tesis_1" disabled style="margin-top: 35px;">T</label>
+                                                            <label><input type="checkbox" id="alumno_tesis_1" name="alumno_tesis_1" readonly style="margin-top: 35px;">T</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -921,8 +939,8 @@
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
-                                                                    <a class="accordion col-lg-4" href="#recep" style="color: #337ab7">
-                                                                        Recepción
+                                                                    <a class="accordion col-lg-4" href="#responsable" style="color: #337ab7">
+                                                                        Responsable
                                                                     </a>
                                                                     <div class="panel2">
                                                                         <textarea id="obsCom_2" class="form-control" name="" rows="5" style="resize:none">
@@ -933,7 +951,7 @@
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
-                                                                    <a class="accordion col-lg-4" href="#colab1" style="color: #337ab7">
+                                                                    <a class="accordion col-lg-4" href="#colaborador" style="color: #337ab7">
                                                                         Colaboradores
                                                                     </a>
                                                                     <div class="panel2">
@@ -952,8 +970,7 @@
                                                                         <textarea id="obsCom_4" class="form-control" name="" rows="5" style="resize:none">
                                                                         </textarea>
                                                                         <br>
-                                                                            <br>
-                                                            
+                                                                            <br>                                                           
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
@@ -981,7 +998,7 @@
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
-                                                                    <a class="accordion col-lg-4" href="#etapa1" style="color: #337ab7">
+                                                                    <a class="accordion col-lg-4" href="#etapas" style="color: #337ab7">
                                                                         Etapas
                                                                     </a>
                                                                     <div class="panel2">
@@ -1005,7 +1022,7 @@
                                                                     </div>
                                                                 </li>
                                                                 <li class="">
-                                                                    <a class="accordion col-lg-4" href="#al1" style="color: #337ab7">
+                                                                    <a class="accordion col-lg-4" href="#alums" style="color: #337ab7">
                                                                         Alumnos
                                                                     </a>
                                                                     <div class="panel2">
@@ -1052,8 +1069,8 @@
                                                 </div>
                                             </li>
                                             <li class="">
-                                                <a class="accordion col-lg-4" href="#recep" style="color: #337ab7">
-                                                    Recepción
+                                                <a class="accordion col-lg-4" href="#responsable" style="color: #337ab7">
+                                                    Responsable
                                                 </a>
                                                 <div class="panel2">
                                                     <textarea id="obsGes_2" class="form-control" name="" rows="5" style="resize:none">
@@ -1064,7 +1081,7 @@
                                                 </div>
                                             </li>
                                             <li class="">
-                                                <a class="accordion col-lg-4" href="#colab1" style="color: #337ab7">
+                                                <a class="accordion col-lg-4" href="#colaborador" style="color: #337ab7">
                                                     Colaboradores
                                                 </a>
                                                 <div class="panel2">
@@ -1112,7 +1129,7 @@
                                                 </div>
                                             </li>
                                             <li class="">
-                                                <a class="accordion col-lg-4" href="#etapa1" style="color: #337ab7">
+                                                <a class="accordion col-lg-4" href="#etapa" style="color: #337ab7">
                                                     Etapas
                                                 </a>
                                                 <div class="panel2">
@@ -1136,7 +1153,7 @@
                                                 </div>
                                             </li>
                                             <li class="">
-                                                <a class="accordion col-lg-4" href="#al1" style="color: #337ab7">
+                                                <a class="accordion col-lg-4" href="#alumno" style="color: #337ab7">
                                                     Alumnos
                                                 </a>
                                                 <div class="panel2">
@@ -1184,8 +1201,8 @@
                                                 </div>
                                             </li>
                                             <li class="">
-                                                <a class="accordion col-lg-4" href="#recep" style="color: #337ab7">
-                                                    Recepción
+                                                <a class="accordion col-lg-4" href="#responsable" style="color: #337ab7">
+                                                    Responsable
                                                 </a>
                                                 <div class="panel2">
                                                     <textarea id="obsInv_2" class="form-control" name="" rows="5" style="resize:none">
@@ -1196,7 +1213,7 @@
                                                 </div>
                                             </li>
                                             <li class="">
-                                                <a class="accordion col-lg-4" href="#colab1" style="color: #337ab7">
+                                                <a class="accordion col-lg-4" href="#colaborador" style="color: #337ab7">
                                                     Colaboradores
                                                 </a>
                                                 <div class="panel2">
@@ -1244,7 +1261,7 @@
                                                 </div>
                                             </li>
                                             <li class="">
-                                                <a class="accordion col-lg-4" href="#etapa1" style="color: #337ab7">
+                                                <a class="accordion col-lg-4" href="#etapa" style="color: #337ab7">
                                                     Etapas
                                                 </a>
                                                 <div class="panel2">
@@ -1268,7 +1285,7 @@
                                                 </div>
                                             </li>
                                             <li class="">
-                                                <a class="accordion col-lg-4" href="#al1" style="color: #337ab7">
+                                                <a class="accordion col-lg-4" href="#alumno" style="color: #337ab7">
                                                     Alumnos
                                                 </a>
                                                 <div class="panel2">
@@ -1285,15 +1302,16 @@
                             </ul>
                         </nav>
                         <div class="col-lg-12">
-                        <input  id="btnEnvSub" name="btnEnvSub" class="btn btn-primary btn-block" type="submit" onclick="Enviar2()" value="Enviar revisión a S.I.P.">
+                        <input  id="btnEnvSub" name="btnEnvSub" class="btn btn-primary btn-block" type="submit" onclick="Enviar2(form.id)" value="Enviar revisión a S.I.P.">
                         <button data-dismiss="modal" href="" class="btn btn-default btn-block">
                             Cerrar
                         </button>
                         </div>
                     </div>            
-                        </div>                        
+                    </div>                        
                     </div>
                 </div>
+               </div>
             </form>   
 
         <div class="modal-footer">

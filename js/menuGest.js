@@ -59,10 +59,10 @@ function menuGest(opcion, Inicio, PreRegistro, Seguimiento, Reporte, Prorrogas, 
     }
     if (opcion == 9) {
         document.write("<li style='float: left;' class='active'");
-        document.write("class='active'><a href=''><span class='glyphicon glyphicon-user' style='margin-right:0xp; margin-left:0px;'></span>Ofic. de segto. de proyectos de investigación</a>");
+        document.write("class='active'><a href=''><span class='glyphicon glyphicon-user' style='margin-right:0xp; margin-left:0px;'></span>OSPI</a>");
     } else {
         document.write("<li style='float: right;' class='has-sub'");
-        document.write("class='active'><a href=''><span class='glyphicon glyphicon-user' style='margin-right: 3px;'></span>Ofic. de segto. de proyectos de investigación</a>");
+        document.write("class='active'><a href=''><span class='glyphicon glyphicon-user' style='margin-right: 3px;'></span>OSPI</a>");
     }
     document.write(" <ul> ");
     document.write("<li class=''><a href='/accounts/login/'><span class='glyphicon glyphicon-remove-circle' style='color: #fff; margin-right: 10px;'></span>Cerrar Sesión</a> ");
