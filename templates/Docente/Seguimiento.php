@@ -1,0 +1,12 @@
+<?php 
+	include('../../externas/head.php');
+	include('../../externas/header.php');
+	include('../../externas/menuDocente.php');
+	include('../../externas/lateral.php');
+	include('../../controladores/Clases/clase_consultas.php');
+ ?>
+	<title>Seguimiento</title>	 
+<?php 
+	include('../../externas/SeguimientoDocente.php');
+	include('../../externas/footer.php');
+?>

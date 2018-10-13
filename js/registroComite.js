@@ -8,7 +8,7 @@ function consultarProyecto(proyecto)
 		url: '../../Ajax/ajax_consultas_proyectos.php',
 		data: 
 		{
-			accion: 'consultaProyectoRevision',
+			accion: 'consultaProyectoComite',
 			proyecto:proyecto
 		},
 		beforeSend: function()
@@ -62,7 +62,7 @@ function guardarObservaciones(estado)
 		async: true,
 		type: 'POST',
 		dataType: 'html',
-		url: '../../controladores/preregistro/insertar.php?&accion=observacionesRegistroInvest&estado='+estado,
+		url: '../../controladores/preregistro/insertar.php?&accion=observacionesRegistroComite&estado='+estado,
 		data: form,
 		beforeSend: function()
 		{
