@@ -190,7 +190,7 @@ $(document).ready(function () {
                                                 <?php
                                                     $res = $miConn->consultaFolio();
                                                     $r = pg_fetch_array($res);
-                                                    $prefolio = $r[0]+1;                                  
+                                                    $prefolio = $r[0]+2;                                  
                                                 ?> 
                                                 <input type="hidden" id="folio_proyecto1" name="folio_proyecto" readonly value=<?php echo "PRE".$prefolio ?>>
                                                 <input type="hidden" name="recepcion" value="recepcion">

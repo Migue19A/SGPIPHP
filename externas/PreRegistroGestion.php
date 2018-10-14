@@ -1,5 +1,5 @@
 <?php 
-    //session_start();
+    session_start();
  ?>
 
 <script>
@@ -230,6 +230,8 @@
                                     <h3 class="text-center" style="font-weight: bold;">
                                         Responsable
                                     </h3>
+                                    <?php print_r($_SESSION);
+                                    echo $_SESSION['NOMBRE']; ?>
                                     <div class="col-sm-4 form-group">
                                         <label>
                                             *Apellido paterno

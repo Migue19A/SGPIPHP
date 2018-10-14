@@ -83,18 +83,25 @@ class Consultas
 
 	function todosProyectos(){
 		$miConn = new ClassConn();
-		$consulta = "SELECT UPPER(\"NombreProyecto\"), \"FechaPresentacion\", \"FolioProyecto\" FROM proyecto;";
+		$consulta = "SELECT UPPER(\"NombreProyecto\"), \"FechaPresentacion\", \"FolioProyecto\" FROM proyecto"; //INNER JOIN entregable ON \"Etapas_FolioProyecto\" = \"FolioProyecto\";";
 		$result = pg_query($miConn->conexion(), $consulta);
 		return $result;
 	}
 
-	function misproyectos(){
+	function todosProyectosGIC(){
+		$miConn = new ClassConn();
+		$consulta = "SELECT UPPER(\"NombreProyecto\"), \"FechaPresentacion\", \"FolioProyecto\", \"etapa_solicitada\", \"fecha_solicitud\" FROM proyecto INNER JOIN prorroga  ON \"FolioProyecto\"= \"Proyecto_FolioProyecto\""; //INNER JOIN entregable ON \"Etapas_FolioProyecto\" = \"FolioProyecto\";";
+		$result = pg_query($miConn->conexion(), $consulta);
+		return $result;
+	}
+
+	/*function misproyectos(){
 		//$docente = $SESSION['no_control'];
 		$miConn = new ClassConn();
 		$consulta = "SELECT UPPER(\"NombreProyecto\"), \"FechaPresentacion\", \"FolioProyecto\" FROM proyecto;";
 		$result = pg_query($miConn->conexion(), $consulta);
 		return $result;
-	}
+	}*/
 
 
 	function obtenerDocentes()
@@ -126,7 +133,7 @@ class Consultas
 
 	function consultarEstadoProyecto($folio){
 		$miConn = new ClassConn();
-		$sqlEstado = "SELECT \"Descripcion\" estado FROM \"proyecto\" INNER JOIN \"cat_estadoproyecto\" ON \"idEstado\" = \"id_estado\" WHERE \"FolioProyecto\"='".$folio."';";
+		$sqlEstado = "SELECT \"Descripcion\" estado FROM \"proyecto\" INNER JOIN \"cat_estadoproyecto\" ON proyecto.\"idEstado\" = cat_estadoproyecto.\"idEstado\" WHERE \"FolioProyecto\"='".$folio."';";
 		$qry= pg_query($miConn->conexion(), $sqlEstado);
 		$result = pg_fetch_array($qry);	
 		$estado = $result[0];	
