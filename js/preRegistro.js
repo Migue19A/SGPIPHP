@@ -67,6 +67,13 @@ function muestra_colaborador(id) {
         i++;
     });
     i=1;
+    $('select[id=1]').each(function()
+    {
+        $(this).attr('id',''+i);
+        $(this).attr('name',''+i);
+        i++;
+    });
+    i=1;
     $('input[id*=apPaternoCol_]').each(function()
     {
         $(this).attr('id','apPaternoCol_'+i);
@@ -118,6 +125,7 @@ function muestra_colaborador(id) {
     i=1;
     $('input[id*=correoInstCol_]').each(function()
     {
+        $(this).attr('id','correoInstCol_'+i);
         $(this).attr('name','correoInstCol_'+i);
         i++;
     });
@@ -417,12 +425,12 @@ function validarNombre(){
 Date.prototype.mes = function() {
   var m = this.getMonth() + 1; // getMonth() is zero-based
   return (m>9 ? '' : '0') + m;
-};
+}
 
 Date.prototype.segundos = function() {
   var s = this.getSeconds();
   return (s>9 ? '' : '0') + s;
-};
+}
 
 function cambiarFecha(){
     var fechaIni= $('#fechaInicio').val();      
@@ -520,6 +528,19 @@ function ajaxPreregistro(id)
       });
 }
 
+function calcula_fechas(ejecutar){    
+    if(ejecutar == 1){
+        var fechaIniPre = new Date($('#fechaInicio').val());
+        var fechaFinPre = new Date($('#fechaFin').val());
+        var momFI = moment(fechaIniPre);
+        var momFF = moment(fechaFinPre); 
+        var diasEntrega = momFF.diff(momFI, 'days');
+        console.log("Dias para realizar el proyecto: " + diasEntrega);
+    }else{
+
+    }
+}
+
 function anexarFolio(){
     var folio = $('#folio_proyecto1').val();
     var i=2;
@@ -530,6 +551,38 @@ function anexarFolio(){
     }
 
 }
+
+function obtenerDatosColaborador(numero_cont, id){
+    //prevenir(event);
+    console.log("id"+ id);
+    var noControl = numero_cont;
+    $.ajax(
+    {
+        async: true,
+        type: 'GET',
+        //ContentType = "application/json; charset=utf-8",        
+        datatype: 'json',
+        url: '../../Ajax/ajax_consultas_proyectos.php',
+        data: {noControl: noControl, accion:'consultarColaborador'},
+        beforeSend: function()
+        {
+        },
+        success: function(response){            
+            var json = JSON.parse(response);
+            $('#apPaternoCol_'+id).val(json.paterno);
+            $('#apMaternoCol_'+id).val(json.materno);
+            $('#nombreCol_'+id).val(json.Nombre);
+            $('#gradMaximoCol_'+id).val(json.maxEstudios);
+            $('#academiaCol_'+id).val(json.academia);
+            $('#numPersonalCol_'+id).val(json.NoPersonal);
+            $('#movilCol_'+id).val(json.celular);
+            $('#correoInstCol_'+id).val(json.correo_inst);
+        },
+        error: function(data) {       
+        }
+      });
+}
+
 
 function productosHabilitar(){
     if($('#intelectual').is(':checked') ){
@@ -974,6 +1027,7 @@ function consulta_colaborador(num, nombre, paterno, materno, maxE, actividades, 
 function consultar_etapas(num, nEtapa, iniEtapa, finEtapa, mesEtapa, descripEtapa, metEtapas, activEtapas, prodEtapas)
 {
     var etapas= num;
+    $('#numero_etapas').val(num);
     $('#etapas').html('');
     for (var i = 0; i < (etapas-1); i++) 
     {
@@ -1074,92 +1128,108 @@ function consultarAlumnos(num, no_control, semestre, nombre, paterno, materno, a
     $('#alumnos').html('');
     //console.log(num);
     var numeroAlumnos=num;
+    $('#numero_alumnos').val(num);
     if(numeroAlumnos >20){
         alert("Has excedido el número máximo de colaboradores por proyecto");
     }else{
         var alumno=$('#alumno').html();
-        var i=1;
         for (var i = 0; i < (numeroAlumnos-1); i++) 
         {
             $('#alumnos').prepend('<div class="col-lg-12">'+alumno+'</div>');
-        }
-        i=1;
+        }        
+        var i=1;
+        var aux = 0;
         $('h2[id*="tituloAlumno_1"]').each(function()
         {
+            console.log("Valor de i: "+ i);
             $(this).text('Alumno Colaborador  '+i);
             i++;
         });
-        i=0;
+        i=1;
+        aux=0;
         $('input[id*="nombreAlumnoCol_"]').each(function()
         {
             $(this).attr('id','nombreAlumnoCol_'+i);
             $(this).attr('name','nombreAlumnoCol_'+i);
-            $(this).val(nombre[i]);
+            $(this).val(nombre[aux]);
             i++;
+            aux++;
         });
-        i=0;
+        i=1;
+        aux=0;
         $('input[id*="apPaternoAlumnoCol_"]').each(function()
         {
             $(this).attr('id','apPaternoAlumnoCol_'+i);
             $(this).attr('name','apPaternoAlumnoCol_'+i);
-            $(this).val(paterno[i]);
+            $(this).val(paterno[aux]);
             i++;
+            aux=0;
         });
-        i=0;
+        i=1;
+        aux=0;
         $('input[id*="apMaternoAlumnoCol_"]').each(function()
         {
             $(this).attr('id','apMaternoAlumnoCol_'+i);
             $(this).attr('name','apMaternoAlumnoCol_'+i);
-            $(this).val(materno[i]);
+            $(this).val(materno[aux]);
             i++;
+            aux++;
         });
-        i=0;
+        i=1;
+        aux=0;
         $('input[id*="noControlAlumnoCol_"]').each(function()
         {
             $(this).attr('id','noControlAlumnoCol_'+i);
             $(this).attr('name','noControlAlumnoCol_'+i);
-            $(this).val(no_control[i]);
+            $(this).val(no_control[aux]);
             i++;
+            aux++;
         });
-        i=0;
+        i=1;
+        aux=0;
         $('input[id*="cboCarreraAlumno_"]').each(function()
         {
             $(this).attr('id','cboCarreraAlumno_'+i);
             $(this).attr('name','cboCarreraAlumno_'+i);
-            $(this).val(carrera[i]);
+            $(this).val(carrera[aux]);
             i++;
+            aux++;
         });
-        i=0;
+        i=1;
+        aux=0;
         $('input[id*="cboSemestreAlumnoCol_"]').each(function()
         {
             $(this).attr('id','cboSemestreAlumnoCol_'+i);
             $(this).attr('name','cboSemestreAlumnoCol_'+i);
-            $(this).val(semestre[i]);
+            $(this).val(semestre[aux]);
             i++;
+            aux++;
         });
-        i=0;
+        i=1;
+        aux=0;
         $('textarea[id*="actividadesAlumnoCol_"]').each(function()
         {
             $(this).attr('id','actividadesAlumnoCol_'+i);
             $(this).attr('name','actividadesAlumnoCol_'+i);
-            $(this).text(actividades[i]);
+            $(this).text(actividades[aux]);
             i++;
+            aux++;
         });
-        i=0;
+        i=1;
         $('input[id*="alumno_servicio_"]').each(function()
         {
             $(this).attr('id','alumno_servicio_'+i);
             $(this).attr('name','alumno_servicio_'+i);
             i++;
         });
-        i=0;
+        i=1;
         $('input[id*="alumno_residencia_"]').each(function()
         {
             $(this).attr('id','alumno_residencia_'+i);
             $(this).attr('name','alumno_residencia_'+i);
             i++;
         });
-        i=0;
+        i=1;
         $('input[id*="alumno_tesis_"]').each(function()
         {
             $(this).attr('id','alumno_tesis_'+i);
@@ -1407,14 +1477,15 @@ function ajaxPreregistroConsultas(id)
                 //console.log(a_servicio[i]);
                 //console.log(a_residencia[i]);
                 //console.log(a_tesis[i]);
+
                 if(a_servicio[i]== "t"){
-                    $('#alumno_servicio_'+ i).attr("checked", true);
+                    $('#alumno_servicio_'+ (i+1)).attr("checked", true);
                 }
                 if(a_residencia[i]== "t"){
-                    $('#alumno_residencia_'+ i).attr("checked", true);
+                    $('#alumno_residencia_'+ (i+1)).attr("checked", true);
                 }
                 if(a_tesis[i]== "t"){
-                    $('#alumno_tesis_'+ i).attr("checked", true);                    
+                    $('#alumno_tesis_'+ (i+1)).attr("checked", true);                    
                 }
 
                 if(usr == 'Pre-Registro de Proyectos'){
@@ -1424,7 +1495,7 @@ function ajaxPreregistroConsultas(id)
                     var cons = 1;
                     var apartados = ["inicioP", "responsable", "colaborador", "objetivos", 
                     "vinculacion", "metas", "etapa", "financ", "alumno"];
-                    console.log("Observaciones: " + observG[1]);
+                    //console.log("Observaciones: " + observG[1]);
                     //Agregar observaciones en los distintos apartados
                     if (observG[0] != null){                        
                         $('#panel_obs_ges').attr('class', 'panel panel-danger panel-default');

@@ -1,6 +1,7 @@
 <?php 
     //session_start();
- ?>
+    $docentes=$miConn->obtenerDocentes();
+?>
 <script type="text/javascript">
 $(document).ready(function () {
     var currentStep = 1;
@@ -276,7 +277,7 @@ $(document).ready(function () {
                                                 </div>
                                                 <div class=" input-group date">
                                                 <label>Fin</label>
-                                                <input type="date" class="form-control" required name="fecha_fin" id="fechaFin">
+                                                <input type="date" class="form-control" required onchange="calcula_fechas(1)" name="fecha_fin" id="fechaFin">
                                                 </div>
                                                 </div>                                           
                                                 <div class="row">
@@ -379,25 +380,41 @@ $(document).ready(function () {
                                                 <div class="form-group col-md-12">
                                                     <h3 style="text-align: center;" id="tituloColaborador">Colaborador 1</h3>
                                                 </div>
+                                                <div class="row">
+                                                <div class="col-sm-8 form-group">
+                                                        <label>
+                                                            Docente
+                                                        </label>
+                                                        <select class="form-control" data-live-search="true" onchange="obtenerDatosColaborador(this.value, this.id)" id ="1">
+                                                            <option>Seleccione un Docente</option>
+                                                            <?php 
+                                                            foreach($docentes as $row){
+                                                                echo "<option value='".$row['NoPersonal']."'>".$row['Nombre']." - ".$row['academia']." - No. CONTROL: ".$row['NoPersonal']."</option>"; 
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Apellido paterno</label>
-                                                    <input type="text" class="form-control" required id="apPaternoCol_1" name="apPaternoCol_1">
+                                                    <input type="text" class="form-control" readonly id="apPaternoCol_1" name="apPaternoCol_1">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Apellido materno</label>
-                                                    <input type="text" class="form-control" id="apMaternoCol_1" name="apMaternoCol_1">
+                                                    <input type="text" class="form-control" readonly id="apMaternoCol_1" name="apMaternoCol_1">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>*Nombre(s)</label>
-                                                    <input type="text" class="form-control" required id="nombreCol_1" name="nombreCol_1">
+                                                    <input type="text" class="form-control" readonly id="nombreCol_1" name="nombreCol_1">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>*Grado máximo de estudios</label>
-                                                    <input type="text" class="form-control" required id="gradMaximoCol_1" name="gradMaximoCol_1">
+                                                    <input type="text" class="form-control" readonly id="gradMaximoCol_1" name="gradMaximoCol_1">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>*Academia a la que pertenece</label>
-                                                    <select class="form-control" id="academiaCol_1" required name="academiaCol_1">
+                                                    <select class="form-control" id="academiaCol_1" readonly name="academiaCol_1">
+                                                        <option>...</option>
                                                         <?php
                                                             $res = $miConn->cboCarrera();
                                                             while($r = pg_fetch_array($res)){
@@ -408,15 +425,15 @@ $(document).ready(function () {
                                                 </div>
                                                 <div class="form-group col-md-2">
                                                     <label>*N° de personal</label>
-                                                    <input type="number" class="form-control" required id="numPersonalCol_1" name="numPersonalCol_1">
+                                                    <input type="number" class="form-control" readonly id="numPersonalCol_1" name="numPersonalCol_1">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label>Móvil</label>
-                                                    <input type="number" class="form-control" pattern="^\d{10}$" id="movilCol_1" name="movilCol_1">
+                                                    <input type="number" class="form-control" readonly pattern="^\d{10}$" id="movilCol_1" name="movilCol_1">
                                                 </div>
                                                 <div class="form-grup col-md-3">
                                                     <label>*Correo institucional</label>
-                                                    <input type="email" class="form-control" required id="correoInstCol_1" name="correoInstCol_1">
+                                                    <input type="email" class="form-control" readonly id="correoInstCol_1" name="correoInstCol_1">
                                                 </div>
                                                 <div class="form-grup col-md-3">
                                                     <label>Correo alternativo</label>
@@ -639,7 +656,7 @@ $(document).ready(function () {
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-sm-2 form-group">
+                                                <!--<div class="col-sm-2 form-group">
                                                     <label>
                                                         Duración:
                                                     </label>
@@ -661,7 +678,7 @@ $(document).ready(function () {
                                                 <div class="col-sm-2 form-group">
                                                     <input class="form-control" name="finalEtapa_1" id="finalEtapa_1" style="margin-left: 18px;" require type="date">
                                                     </input>
-                                                </div>
+                                                </div>-->
                                                 <div class="col-sm-1 form-group">
                                                     <label>
                                                         Meses:

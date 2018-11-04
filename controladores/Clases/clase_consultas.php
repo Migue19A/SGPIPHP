@@ -41,6 +41,58 @@ class ClaseConsultas extends ClassConn
 		}
 		return $docentes;
 	}
+
+	function obtenerDocentesPre($num_control)
+	{
+		$sql = 'SELECT "NoPersonal", upper("Nombre"), upper("ApellidoP"), upper("ApellidoM"), "estado", "idCarrera" academia, "CorreoInstitucional", "GradoMaximoEstudios", "TelefonoMovil"  FROM usuario INNER JOIN docente ON docente."noPersonal" = usuario."NoPersonal" INNER JOIN carrera ON "Carrera_idCarrera" = "idCarrera" WHERE "estado"= 1 and "noPersonal" ='.$num_control.';';
+		$consulta = pg_query($this->conexion(), $sql);
+		$json=array();
+		$arregloConsulta=array();
+		$result=array();
+		$i=0;
+		while ($fila = pg_fetch_row($consulta)) 
+		{ 
+			$arregloConsulta[$i]=$fila;
+			$i++;
+		}
+		$i=0;
+		foreach ($arregloConsulta as $row) 
+		{
+			$NoPersonal=$row[0];
+			$nombre=$row[1];
+			$paterno = $row[2];
+			$materno = $row[3];
+			$estado=$row[4];
+			$academia = $row[5];
+			$correoI = $row[6];
+			$gradMaxEst = $row[7];
+			$movil = $row[8];
+			$json=array("NoPersonal"=>$NoPersonal, "Nombre"=>$nombre, "paterno"=>$paterno, "materno"=>$materno,  "estado"=>$estado, "academia"=>$academia, "correo_inst"=>$correoI, "maxEstudios"=>$gradMaxEst, "celular"=>$movil);
+			array_push($result,$json);
+			$i++;
+		}
+		return $result;
+	}
+
+	function obtenerProyectosDocente($responsable){
+		$sql = "SELECT \"FolioProyecto\", upper(\"NombreProyecto\") FROM proyecto INNER JOIN docente ON \"Responsable\" = \"noPersonal\" WHERE \"Responsable\"= ".$responsable.";";		
+		$result = pg_query($this->conexion(), $sql);
+        return $result;
+	}
+
+	function obtenerColaboradoresCam($folio){
+		$sql = "SELECT doc.\"ap_paterno\" paterno_colaborador, doc.\"ap_materno\" materno_colaborador, doc.\"nombre\" nombre_colaborador, doc.\"Docente_noPersonal\" personal_colaborador, doc.\"celular\" celular_colaborador, doc.\"correo_institucional\" correo_colaborador, usu.\"estado\" estado_colaborador, entre.\"Etapas_noEtapa\" etapa_actual FROM proyecto proy INNER JOIN docente doce ON proy.\"Responsable\" = doce.\"noPersonal\" INNER JOIN colaboradordocente doc ON proy.\"FolioProyecto\" = doc.\"Proyecto_FolioProyecto\" INNER JOIN usuario usu ON doc.\"Docente_noPersonal\" = usu.\"NoPersonal\" INNER JOIN entregable entre ON proy.\"FolioProyecto\" = entre.\"Etapas_FolioProyecto\" WHERE proy.\"FolioProyecto\"= '".$folio."' and entre.\"Estatus\" = 1;";		
+		$result = pg_query($this->conexion(), $sql);
+        return $result;
+	} 
+
+	function obtenerAlumnosCam($folio){
+		$sql = "SELECT alum.\"NoControl\" control_alum, alum.\"Paterno\" pat_alum, alum.\"Materno\" mat_alum, alum.\"Nombre\" nombre_alum, entre.\"Etapas_noEtapa\" etapa_actual FROM proyecto proy INNER JOIN docente doce ON proy.\"Responsable\" = doce.\"noPersonal\" INNER JOIN alumno alum ON proy.\"FolioProyecto\" = alum.\"Folio_proyecto\" INNER JOIN entregable entre ON proy.\"FolioProyecto\" = entre.\"Etapas_FolioProyecto\" WHERE proy.\"FolioProyecto\"= '".$folio."' and entre.\"Estatus\" = 1 ;";		
+		$result = pg_query($this->conexion(), $sql);
+        return $result;
+	}
+
+
 	function getAlumnosCol($proyecto)
 	{
 		$sql='select "FkNoControl" as NoControl,"Nombre"||\' \'||"Paterno"||\' \'||"Materno" as Nombre, 

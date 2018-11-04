@@ -5,7 +5,7 @@ include('classConn.php');
  * 
  */
 
-class Consultas
+class Consultas extends ClassConn
 {
 	// PreRegistro Docente
 
@@ -107,7 +107,7 @@ class Consultas
 	function obtenerDocentes()
 	{
 		$miConn = new ClassConn();
-		$sql = 'SELECT "NoPersonal","Nombre" ||\' \'||"ApellidoP"||\' \'||"ApellidoM" usuario, "estado" FROM usuario';
+		$sql = 'SELECT "NoPersonal", upper("Nombre") ||\' \'||upper("ApellidoP")||\' \'||upper("ApellidoM") usuario, "estado", upper("Descripcion") academia, "CorreoInstitucional", "GradoMaximoEstudios", "TelefonoMovil"  FROM usuario INNER JOIN docente ON docente."noPersonal" = usuario."NoPersonal" INNER JOIN carrera ON "Carrera_idCarrera" = "idCarrera" WHERE estado= 1';
 		$consulta = pg_query($miConn->conexion(), $sql);
 		$json=array();
 		$arregloConsulta=array();
@@ -124,12 +124,16 @@ class Consultas
 			$NoPersonal=$row[0];
 			$nombre=$row[1];
 			$estado=$row[2];
-			$json=array("NoPersonal"=>$NoPersonal, "Nombre"=>$nombre, "estado"=>$estado);
+			$academia = $row[3];
+			$correoI = $row[4];
+			$gradMaxEst = $row[5];
+			$movil = $row[6];
+			$json=array("NoPersonal"=>$NoPersonal, "Nombre"=>$nombre, "estado"=>$estado, "academia"=>$academia, "correo_inst"=>$correoI, "maxEstudios"=>$gradMaxEst, "celular"=>$movil);
 			array_push($result,$json);
 			$i++;
 		}
 		return $result;
-	}
+	}	
 
 	function consultarEstadoProyecto($folio){
 		$miConn = new ClassConn();

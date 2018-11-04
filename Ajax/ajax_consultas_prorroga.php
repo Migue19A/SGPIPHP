@@ -49,7 +49,7 @@
 	switch ($accion) {
 		case 'consultarProrroga':
 			$folio = $_GET['botonVer'];
-			$etapa_actual = "SELECT max(\"noEtapa\") FROM etapas WHERE \"FolioProyecto\" = '".$folio."';";	
+			$etapa_actual = "SELECT max(\"Etapas_noEtapa\") FROM entregable WHERE Estatus = 1 and \"Etapas_FolioProyecto\" = '".$folio."';";	
 			$result = pg_query($conex->conexion(), $etapa_actual);
 			$noEA = pg_fetch_array($result);
 			$sql = "SELECT \"FechaFin\", etapas.\"FolioProyecto\", \"NombreProyecto\", \"noEtapa\" FROM etapas inner join proyecto ON proyecto.\"FolioProyecto\" = etapas.\"FolioProyecto\" WHERE etapas.\"FolioProyecto\" = '".$folio."' and \"noEtapa\"= ".$noEA[0].";";

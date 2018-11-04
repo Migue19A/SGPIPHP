@@ -1,6 +1,7 @@
 <?php 
 	session_start();
 	include('../externas/Clases/classConn.php');
+	include('../controladores/Clases/clase_consultas.php');
 	// $accion = $_POST['accion'];
 	$arrayC_nombre[] = array();
 	$arrayC_paterno[] = array();
@@ -45,7 +46,26 @@
 		$accion=$_GET['accion'];
 	}
 	$miConn = new ClassConn();
+	$conex= new ClaseConsultas();
 	switch ($accion) {
+		case 'consultarColaborador':
+			$numero_control = $_GET['noControl'];
+			$colaborador = $conex->obtenerDocentesPre($numero_control);
+			$json=array();		
+			foreach($colaborador as $row){
+	            $np = $row['NoPersonal'];
+	            $nomb = $row['Nombre'];
+	            $ap = $row['paterno'];
+	            $am = $row['materno'];
+	            $acad = $row['academia'];
+	            $correo1 = $row['correo_inst'];
+	            $max_esutudios = $row['maxEstudios'];
+	            $cel = $row['celular'];          
+			}			
+	        $json=array("NoPersonal"=>$np, "Nombre"=>$nomb, "paterno"=>$ap, "materno"=>$am, "academia"=>$acad, "correo_inst"=>$correo1, "maxEstudios"=>$max_esutudios, "celular"=>$cel); 
+			echo json_encode($json);
+		break;
+
 		case 'login':
 			$usuario=$_GET['usuario'];
 			$password=$_GET['password'];

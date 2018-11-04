@@ -590,6 +590,7 @@
                                         <div class="col-lg-12" style="">
                                             <h3 class="text-center" id="tituloEtapa_1" style="font-weight: Yu Gothic UI Light; margin-top: 2px">Etapa 1</h3>
                                             <div class="row">
+                                                <input type="hidden" name="numero_etapas" id="numero_etapas">
                                                 <div class="col-sm-3 form-group">
                                                     <label>
                                                         Nombre de la etapa:
@@ -859,7 +860,8 @@
                                             <div class="form-group col-md-12 ">
                                                  <h3 style="text-align: center;" id="tituloAlumno_1">Alumno colaborador 1°</h3>
                                             </div>
-                                            <div class="row">
+                                            <div class="row">                                                
+                                                <input type="hidden" name="numero_alumnos" id="numero_alumnos">
                                                 <div class="form-group col-md-12">
                                                     <div class="col-lg-6"><label>*Nombre</label>
                                                     <input class="form-control" readonly type="text" id="nombreAlumnoCol_1" name="nombreAlumnoCol_1" size="15">

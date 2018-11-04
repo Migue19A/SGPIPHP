@@ -1,10 +1,7 @@
 <?php 
 	session_start();
 	include('../../externas/conexion.php');
-	//echo $_POST['accion'];
 	$accion=$_POST['accion'];
-			
-			//echo "<script>jQuery(function(){swal(\"¡Guardado con éxito!\", \"Datos guardados correctamente\", \"success\");});</script>";*/
 	switch ($accion) {            	
 
 			case 'recepcionForm':
@@ -286,6 +283,9 @@
             		$registro++;
     				echo $sql;
             		$resultado=pg_query($conexion, $sql);
+                    $sqlUpdateR = "UPDATE proyecto SET \"NoRevision\" = 1 WHERE \"FolioProyecto\" = '".$folio."'";
+                    echo "SQLU: ".$sqlUpdateR."\n";                    
+                    pg_query($conexion, $sqlUpdateR);
             		$sqlActEstado= "UPDATE \"proyecto\" SET \"idEstado\"=2 WHERE \"FolioProyecto\"='".$folio."';";
             		$resultado2 = pg_query($conexion, $sqlActEstado);
             	}

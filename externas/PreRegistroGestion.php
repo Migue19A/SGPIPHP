@@ -321,8 +321,7 @@
                                         <input id="palabra3" disabled class="form-control" name="" type="text"/>
                                     </div>
                                 </div>
-                                 <div id="colaborador"> 
-                                     <input type="hidden" name="numero_colaborador" id="numero_colaborador">
+                                 <div id="colaborador">                                      
                                      <div class="col-sm-12" style="background:#000">
                                     </div>                                           
                                     <div class="form-group col-md-12">
@@ -571,7 +570,7 @@
                                         
                                     </div>
                                     <div class="col-sm-4 form-group">
-                                        <input class="form-group" name="" disabled id="otros" style="margin-left: 18px;" type="checkbox">
+                                        <input class="form-group" name="" readonly id="otros" style="margin-left: 18px;" type="checkbox">
                                             <label>
                                                 Otros
                                             </label>
@@ -897,13 +896,13 @@
 
                                                     <div class="row text-center">
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" id="alumno_servicio_1" name="alumno_servicio_1" disabled style="margin-top: 35px;">S.S</label>
+                                                            <label><input type="checkbox" id="alumno_servicio_1" name="alumno_servicio_1" readonly="" style="margin-top: 35px;">S.S</label>
                                                         </div>
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" id="alumno_residencia_1" disabled name="alumno_residencia_1" style="margin-top: 35px;">R.P</label>
+                                                            <label><input type="checkbox" id="alumno_residencia_1" readonly name="alumno_residencia_1" style="margin-top: 35px;">R.P</label>
                                                         </div>
                                                         <div class="form-group col-md-2">
-                                                            <label><input type="checkbox" id="alumno_tesis_1" name="alumno_tesis_1" disabled style="margin-top: 35px;">T</label>
+                                                            <label><input type="checkbox" id="alumno_tesis_1" name="alumno_tesis_1" readonly style="margin-top: 35px;">T</label>
                                                         </div>
                                                     </div>
                                                 </div>
