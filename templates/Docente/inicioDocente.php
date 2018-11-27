@@ -1,0 +1,11 @@
+<?php
+session_start();
+include('../../externas/head.php');
+include('../../externas/header.php');
+include('../../externas/menuDocente.php');
+include('../../externas/lateral.php');
+ ?>
+	<title>Inicio</title>	 
+<?php 
+	include('../../externas/footer.php');
+?>

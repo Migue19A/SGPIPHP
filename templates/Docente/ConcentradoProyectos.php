@@ -5,8 +5,8 @@
 	include('../../externas/lateral.php');
 	//include('externas/Clases/classConn.php');
  ?>
-	<title>Pre-Registro</title>	 
+	<title>Concentrado de proyectos</title>	 
 <?php 
-	include('../../externas/Preregistro.php');
+	include('../../externas/ConcentradoProyectos.php');
 	include('../../externas/footer.php');
 ?>

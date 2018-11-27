@@ -69,3 +69,39 @@ function RegresarInvestigacion(entregable)
         }
     });
 }
+$(document).ready(function()
+{
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+    for (i = 0; i < acc.length; i++) 
+    {
+      acc[i].onclick = function() 
+      {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight)
+        {
+          panel.style.maxHeight = null;
+        } else 
+        {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        } 
+      }
+    }
+    $(document).on('click', '.panel-heading span.clickable',function(e)
+    {
+      var $this = $(this);
+      if(!$this.hasClass('panel-collapsed')) 
+      {
+        $this.parents('.panel').find('.panel-body').slideUp();
+        $this.addClass('panel-collapsed');
+        $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
+      } 
+      else 
+      {
+        $this.parents('.panel').find('.panel-body').slideDown();
+        $this.removeClass('panel-collapsed');
+        $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+      }
+    });
+});

@@ -90,6 +90,7 @@ function altaUsuario()
 		},
 		error: function(data)
 		{
+			alert("Ocurrio un error");
 		}
 	});
 }

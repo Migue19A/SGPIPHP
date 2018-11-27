@@ -1,7 +1,3 @@
-<?php 
-    session_start();
- ?>
-
 <script>
     $(document).ready(function(){
     //$('#btnEnvSub').attr('disabled', true);

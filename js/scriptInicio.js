@@ -20,19 +20,19 @@ function login(){
 		},
 		success: function(data)
 		{
-			if (data.resultado==1) {
+			if (data.resultado>=1) {
 				alert("Ha iniciado sesion correctamente");
-				if (data.tipoUsuario='Docente') {
-					// location.href('');
+				if (data.tipoUsuario=='Docente') {
+					location.href='Docente/inicioDocente.php';
 				}
-				if (data.tipoUsuario='Gestion') {
-					// location.href('');
+				else if (data.tipoUsuario=='Gestion') {
+					location.href='Gestion/inicioGestion.php';
 				}
-				if (data.tipoUsuario='Investigacion') {
-					// location.href('');
+				else if (data.tipoUsuario=='Investigacion') {
+					location.href='Investigacion/inicioInvest.php';
 				}
-				if (data.tipoUsuario='Comite') {
-					// location.href('');
+				else if (data.tipoUsuario=='Comite') {
+					location.href='Comite/inicioComite.php';
 				}
 			}
 			else if (data.resultado==0) 

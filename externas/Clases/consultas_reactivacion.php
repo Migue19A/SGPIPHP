@@ -1,11 +1,11 @@
 <?php 
 // session_start();
-include('classConn.php');
+// include('classConn.php');
 /**
  * 
  */
 
-class Consultas extends ClassConn
+class ConsultasReact extends ClassConn
 {
 	// PreRegistro Docente
 
@@ -242,32 +242,6 @@ class Consultas extends ClassConn
 			$NombreDoc=$row[5];
 			$Carrera=$row[6];
 			$json=array("Folio"=>$Folio, "Nombre"=>$Nombre, "FechaInicio"=>$FechaInicio, "Estado"=>$Estado, "Etapas"=>$Etapas,"NombreDoc"=>$NombreDoc,"Carrera"=>$Carrera);
-			array_push($result,$json);
-		}
-		return $result;
-	}
-	function getProyectoActivosDocente($docente)
-	{
-		$miConn=new ClassConn();
-		$sql='SELECT proy."FolioProyecto","NombreProyecto"
-			FROM PROYECTO proy
-			WHERE proy."Responsable"='.$docente.'
-			AND "idEstado"=3';
-		$consulta= pg_query($miConn->conexion(), $sql);
-		$json=array();
-		$arregloConsulta=array();
-		$result=array();
-		$i=0;
-		while ($fila = pg_fetch_row($consulta)) 
-		{ 
-			$arregloConsulta[$i]=$fila;
-			$i++;
-		}
-		foreach ($arregloConsulta as $row) 
-		{
-			$Folio=$row[0];
-			$Nombre=$row[1];
-			$json=array("Folio"=>$Folio, "Nombre"=>$Nombre);
 			array_push($result,$json);
 		}
 		return $result;

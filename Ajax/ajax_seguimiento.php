@@ -3,10 +3,21 @@ session_start();
 include('../externas/Clases/classConn.php');
 include('../controladores/Clases/clase_consultas.php');
 include('../externas/conexion.php');
-$entregable=$_GET['entregable'];
+$conn= new ClaseConsultas();
+if (isset($_GET['entregable'])) {
+	$entregable=$_GET['entregable'];
+	$etapa=$conn->getEtapa($entregable);
+}
 if (isset($_GET['proyecto'])) 
 {
 	$folio=$_GET['proyecto'];
+}
+else
+{
+	if (isset($_POST['proyecto'])) 
+	{
+		$folio=$_POST['proyecto'];
+	}
 }
 if (isset($_POST['accion'])) {
 	$accion =$_POST['accion'];
@@ -15,8 +26,7 @@ else
 {
 	$accion =$_GET['accion'];
 }
-$conn= new ClaseConsultas();
-$etapa=$conn->getEtapa($entregable);
+
 switch ($accion) {
 	case 'updateInformeGen1':
 		$fechaEntrega=$_POST['fechaEntrega'];
@@ -840,8 +850,6 @@ switch ($accion) {
 		    } 
 		  }
 		}
-		</script>
-		<script type="text/javascript">
 		$(document).on('click', '.panel-heading span.clickable',function(e)
 		{
 		  var $this = $(this);
@@ -1538,7 +1546,7 @@ switch ($accion) {
 	                                            <h1 class="text-center" id="informeG" style="font-weight: Yu Gothic UI Light; margin-bottom: 4px;">
 	                                                I.- Informe General
 	                                            </h1>
-	                                            <table class="table table-bordered">                                                                            
+	                                            <table class="table table-bordered">           
 	                                                <thead>
 	                                                    <tr>
 	                                                        <th>
@@ -1982,43 +1990,45 @@ switch ($accion) {
                                     <h3>
                                         Observaciones
                                     </h3>
-                                    <form class="panel panel-primary panel-default" id="Observ">
-                                        <div class="panel-heading">
-                                            <h5 class="panel-title">
-                                                Realizar Observaciones
-                                            </h5>
-                                            <span class="pull-right clickable panel-collapsed">
-                                                <i class="glyphicon glyphicon-chevron-down">
-                                                </i>
-                                            </span>
-                                        </div>
-                                        <div class="panel-body" style="display: none;">
-                                            <li class="">
-                                                <a class="accordion col-lg-4" href="#informe" style="color: #337ab7">
-                                                    Informe General I
-                                                </a>
-                                                <div class="panel2">
-                                                    <textarea class="form-control" name="informeGeneral1" rows="5" style="resize:none"></textarea>
-                                                </div>
-                                            </li>
-                                            <li class="">
-                                                <a class="accordion col-lg-4" href="#informeII" style="color: #337ab7">
-                                                    Informe Detallado II
-                                                </a>
-                                                <div class="panel2">
-                                                    <textarea class="form-control" name="informeDetallado1" rows="5" style="resize:none"></textarea>
-                                                </div>
-                                            </li>
-                                            <li class="">
-                                                <a class="accordion col-lg-4" href="#informeIII" style="color: #337ab7">
-                                                    Resumen Ejecutivo III
-                                                </a>
-                                                <div class="panel2">
-                                                    <textarea class="form-control" name="resumenEjec1" rows="5" style="resize:none"></textarea>
-                                                </div>
-                                            </li>
-                                        </div>
-                                    </form>
+                                    <div class="panel panel-primary panel-default">
+	                                    <form class="panel panel-primary panel-default" id="Observ">
+	                                        <div class="panel-heading">
+	                                            <h5 class="panel-title">
+	                                                Realizar Observaciones
+	                                            </h5>
+	                                            <span class="pull-right clickable panel-collapsed">
+	                                                <i class="glyphicon glyphicon-chevron-down">
+	                                                </i>
+	                                            </span>
+	                                        </div>
+	                                        <div class="panel-body" style="display: none;">
+	                                            <li class="">
+	                                                <a class="accordion col-lg-4" href="#informe" style="color: #337ab7">
+	                                                    Informe General I
+	                                                </a>
+	                                                <div class="panel2">
+	                                                    <textarea class="form-control" name="informeGeneral1" rows="5" style="resize:none"></textarea>
+	                                                </div>
+	                                            </li>
+	                                            <li class="">
+	                                                <a class="accordion col-lg-4" href="#informeII" style="color: #337ab7">
+	                                                    Informe Detallado II
+	                                                </a>
+	                                                <div class="panel2">
+	                                                    <textarea class="form-control" name="informeDetallado1" rows="5" style="resize:none"></textarea>
+	                                                </div>
+	                                            </li>
+	                                            <li class="">
+	                                                <a class="accordion col-lg-4" href="#informeIII" style="color: #337ab7">
+	                                                    Resumen Ejecutivo III
+	                                                </a>
+	                                                <div class="panel2">
+	                                                    <textarea class="form-control" name="resumenEjec1" rows="5" style="resize:none"></textarea>
+	                                                </div>
+	                                            </li>
+	                                        </div>
+	                                    </form>
+                                	</div>
                                     <li class="">
                                         <a href="#" onclick="GuardarObs(<?php echo $entregable ?>)">
                                             Enviar revisión a Subdirección de Investigación y Posgrado
@@ -2056,24 +2066,6 @@ switch ($accion) {
 		    } 
 		  }
 		}
-		</script>
-		<script type="text/javascript">
-		$(document).on('click', '.panel-heading span.clickable',function(e)
-		{
-		  var $this = $(this);
-		  if(!$this.hasClass('panel-collapsed')) 
-		  {
-		    $this.parents('.panel').find('.panel-body').slideUp();
-		    $this.addClass('panel-collapsed');
-		    $this.find('i').removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
-		  } 
-		  else 
-		  {
-		    $this.parents('.panel').find('.panel-body').slideDown();
-		    $this.removeClass('panel-collapsed');
-		    $this.find('i').removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
-		  }
-		})
 		</script>
 		<?php
 	break;
@@ -2128,11 +2120,41 @@ switch ($accion) {
 		$informeDetallado=$_POST['informeDetallado1'];
 		$resumen=$_POST['resumenEjec1'];
 		$entregable=$_GET['entregable'];
-		$sql='UPDATE entregable SET "Estatus"=3 WHERE "idEntregable"='.$entregable;
+		$sql='UPDATE entregable SET "Estatus"=3,"FechaEntregada"=localtimestamp WHERE "idEntregable"='.$entregable;
 		$resultado=pg_query($conexion, $sql);
 		$sql='INSERT INTO observacionesentregable("Entregable_idEntregable","InformeGeneral","InformeDetallado","ResumenEjecutivo","CatObservaciones_idObservaciones","Departamento") VALUES('.$entregable.',\''.$InformeGeneral.'\',\''.$informeDetallado.'\',\''.$resumen.'\','.$idObservacion.',2) ';
 		$resultado=pg_query($conexion, $sql);
 	break;
+	case 'proyectosActivos':
+		$etapas=$conn->getEtapasProyecto($folio);
+		foreach ($etapas as $row) 
+		{ ?>
+		<tr align="center">
+            <td><?php echo $row['NoEtapa'] ?></td>
+            <td><?php echo $row['Nombre'] ?></td>
+            <td><?php echo $row['FechaInicio'] ?></td>
+            <td><?php echo $row['FechaFin'] ?></td>
+            <td>---</td>
+            <td><?php echo $row['Estatus'] ?></td>
+            <td>
+            	<?php 
+            	if ($row['Estatus']==3) 
+            	{
+            		?>
+            	<a class="btn btn-success" href="seguimiento.pdf" target="_blank">Imprimir</a>
+            		<?php
+            	}
+            	else
+            	{
+            		?>
+					<a class="btn btn-info" href="Seguimiento.php?&proyecto=<?php echo $row['FolioProyecto']?>&entregable=<?php echo $row['Entregable'] ?>" target="_blank">Realizar entrega</a>
+            		<?php
+            	} ?>
+            </td>
+        </tr>
+			<?php
+		}
+		break;
 	default:
 	break;
 }
