@@ -275,8 +275,8 @@
 						$tesis='true';
 					}
 					echo "Entra";
-            		$sql="INSERT INTO alumno(\"NoControl\", \"Semestre\", \"Nombre\", \"Paterno\", \"Materno\", \"Actividades\", \"id_carrera\", \"Folio_proyecto\", \"servicio\", \"residencia\", \"tesis\")	 
-            				VALUES ('".$noControl."',".$semestre.",'".$nombreAlumno."','".$apPaterno."','".$apMaterno."','".$actividades."',".$carrera.",'".$folio."', ".$servicio.", ".$residencia.", ".$tesis.");";
+            		$sql="INSERT INTO alumno(\"NoControl\", \"Semestre\", \"Nombre\", \"Paterno\", \"Materno\", \"Actividades\", \"id_carrera\", \"Folio_proyecto\", \"servicio\", \"residencia\", \"tesis\", \"estado\")	 
+            				VALUES ('".$noControl."',".$semestre.",'".$nombreAlumno."','".$apPaterno."','".$apMaterno."','".$actividades."',".$carrera.",'".$folio."', ".$servicio.", ".$residencia.", ".$tesis.", 1);";
     				echo $sql;
             		$resultado=pg_query($conexion, $sql);
             		$sql="INSERT INTO alumnoscolaboradoresdetalle VALUES (".$registro.",'".$noControl."','".$folio."');";

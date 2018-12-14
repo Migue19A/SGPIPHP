@@ -5,9 +5,9 @@
 	include('../../externas/lateral.php');
 	//include('externas/Clases/classConn.php');
  ?>
-	<title>Pre-Registro</title>	 
+	<title>Historial Docente</title>	 
 <?php 
-	include('../../externas/PreRegistroGestion.php')
+	include('../../externas/HistorialDocenteIGC.php');
 ?>
 <?php 
 	include('../../externas/footer.php');

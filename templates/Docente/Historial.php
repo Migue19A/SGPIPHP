@@ -1,12 +1,14 @@
 <?php 
+ 	session_start();
 	include('../../externas/head.php');
 	include('../../externas/header.php');
 	include('../../externas/menuDocente.php');
 	include('../../externas/lateral.php');
+	include('../../controladores/Clases/clase_consultas.php');
  ?>
-	<title>Pre-Registro</title>	 
+	<title>Historial</title>	 
 <?php 
-	include('../../externas/registroComite.php');
+	include('../../externas/HistorialDocente.php')
 ?>
 <?php 
 	include('../../externas/footer.php');

@@ -49,6 +49,7 @@ $miConn= new Consultas();
         <script src="../../js/preRegistro.js" type="text/javascript"></script>
         <script src="../../js/prorroga.js" type="text/javascript"></script>
         <script src="../../js/cambioColaboradores.js" type="text/javascript"></script>
+        <script src="../../js/HistorialDocente.js" type="text/javascript"></script>
         <link href="../../css/sweetalert2.css" rel="stylesheet" type="text/css"/>
         <script src="../../js/sweetalert2.min.js"></script>
 	<script type="text/javascript" src="../../js/funciones.js"></script>

@@ -1,15 +1,13 @@
 <?php 
-	session_start();
     include('../../externas/head.php');
     include('../../externas/header.php');
-    include('../../externas/menuDocente.php');
+    include('../../externas/menuGestion.php');
     include('../../externas/lateral.php');
-    include('../../controladores/Clases/clase_consultas.php');
     //include('externas/Clases/classConn.php');
  ?>
-    <title>Cambio de colaboradores</title>     
+    <title>Historial de Proyectos</title>     
 <?php 
-    include('../../externas/cColaboradoresDocente.php')
+    include('../../externas/HistorialProyectos.php');
 ?>
 <?php 
     include('../../externas/footer.php');

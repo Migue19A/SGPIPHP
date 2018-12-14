@@ -65,11 +65,12 @@
 	        $json=array("NoPersonal"=>$np, "Nombre"=>$nomb, "paterno"=>$ap, "materno"=>$am, "academia"=>$acad, "correo_inst"=>$correo1, "maxEstudios"=>$max_esutudios, "celular"=>$cel); 
 			echo json_encode($json);
 		break;
+
 		case 'login':
 			$usuario=$_GET['usuario'];
 			$password=$_GET['password'];
 			$resultado=new stdClass;
-			$sql='select "descripciontipo","tipoUsuario", "Descripcion", "NoPersonal", "Nombre", "ApellidoP", "ApellidoM", "Sexo", "CorreoInstitucional", "GradoMaximoEstudios", "TelefonoMovil", "Carrera_idCarrera","estado"
+			$sql='select "descripciontipo", "Descripcion", "NoPersonal", "Nombre", "ApellidoP", "ApellidoM", "Sexo", "CorreoInstitucional", "GradoMaximoEstudios", "TelefonoMovil", "Carrera_idCarrera","estado"
 				from usuario as  us 
 				left join docente as doc on us."NoPersonal"=doc."noPersonal"
 				left join carrera as car on car."idCarrera"=doc."Carrera_idCarrera"
@@ -78,13 +79,10 @@
 				// echo $sql;
 			$resultados = pg_query($miConn->conexion(), $sql);
 			$result=pg_fetch_array($resultados);
-			// print_r($result);
 			if ($resultados && $result['NoPersonal']!=null) 
 			{
-				// echo "Hola";
 				$_SESSION['NoPersonal']=$result['NoPersonal'];
 				$_SESSION['TipoUsuario']=$result['descripciontipo'];
-				$_SESSION['Tipo']=$result['tipoUsuario'];
 				$_SESSION['Carrera']=$result['Descripcion'];
 				$_SESSION['Nombre']=$result['Nombre'];
 				$_SESSION['ApPaterno']=$result['ApellidoP'];
@@ -94,14 +92,13 @@
 				$_SESSION['Telefono']=$result['TelefonoMovil'];
 				$_SESSION['GradEstudios']=$result['GradoMaximoEstudios'];
 				$_SESSION['Estado']=$result['estado'];
-				$resultado->resultado=$_SESSION['Tipo'];
+				$resultado->resultado=1;
 				$resultado->tipoUsuario=$result['descripciontipo'];
 			}
 			else
 			{
 				$resultado->resultado=0;
 			}
-			// print_r($_SESSION);
 			$resultado=json_encode($resultado, JSON_FORCE_OBJECT);
 			echo $resultado;
 			break;

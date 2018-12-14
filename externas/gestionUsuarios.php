@@ -162,10 +162,10 @@ $docentes=$conn->obtenerDocentes();
                                     <div class="form-group col-md-4">
                                         <label>Tipo de ususario</label>
                                         <select class="form-control" id="tipoUsuEdita" name="tipoUsu">
-                                            <option value="1">Gestion</option>
-                                            <option value="2">Investigacion</option>
-                                            <option value="3">Comité</option>
-                                            <option value="4">Docente</option>
+                                            <option value="1">Docente</option>
+                                            <option value="2">Gestion</option>
+                                            <option value="3">Investigacion</option>
+                                            <option value="4">Comite</option>
                                         </select>
                                     </div>
                                 </div>
